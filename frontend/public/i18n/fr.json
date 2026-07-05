@@ -1,0 +1,25 @@
+{
+  "nav": {
+    "servicios": "Expertise",
+    "sectores": "Secteurs",
+    "proyectos": "Projets",
+    "contacto": "Contact",
+    "cta": "Contactez-nous"
+  },
+  "hero": {
+    "eyebrow": "[NOM_ENTREPRISE]",
+    "title_pre": "Solutions Complètes de",
+    "title_accent": "Sécurité Physique",
+    "subtitle": "De l'étude initiale à l'installation finale, nous accompagnons vos projets stratégiques de sécurité avec expertise et rigueur technique.",
+    "cta_primary": "Demander une Démo",
+    "cta_secondary": "Découvrir nos capacités"
+  },
+  "servicios": {
+    "card1_title": "Étude de Projet",
+    "card1_desc": "Nous analysons votre infrastructure pour concevoir la meilleure stratégie de sécurité, avec visites techniques et analyse des risques.",
+    "card2_title": "Design & Conception",
+    "card2_desc": "Nous concevons des solutions sur mesure, en sélectionnant les équipements les plus adaptés à vos besoins spécifiques.",
+    "card3_title": "Installation & Intégration",
+    "card3_desc": "Nos techniciens certifiés installent et configurent chaque système avec une qualité professionnelle garantie."
+  }
+}

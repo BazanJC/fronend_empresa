@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component , inject} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../core/theme.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+
 
 /**
  * MÓDULO 2 — Estilo visual
@@ -13,12 +15,18 @@ import { ThemeService } from '../../core/theme.service';
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
 export class LandingComponent {
+    private translate = inject(TranslateService);
+
   constructor(public theme: ThemeService) {}
+
+  cambiarIdioma(lang: string): void {      
+    this.translate.use(lang);
+  }
 
   contactoForm = {
     nombre: '', telefono: '', email: '', tipoProyecto: '',
