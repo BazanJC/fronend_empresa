@@ -1,1 +1,77 @@
 /* You can add global styles to this file, and also import other style files */
+// ============================================================
+// REEMPLAZA frontend/src/styles.scss por esto
+// ============================================================
+@use "tailwindcss";
+
+// --- Tema CLARO (valores por defecto) ---
+@theme {
+  --color-primary: #0061a5;
+  --color-primary-container: #0099ff;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #ffffff;
+
+  --color-surface: #f7f9fa;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eef1f2;
+  --color-surface-container: #e6e9ea;
+  --color-surface-container-high: #dde1e3;
+  --color-surface-container-highest: #d3d8da;
+
+  --color-on-surface: #16191a;
+  --color-on-surface-variant: #44494c;
+  --color-outline: #74797c;
+  --color-outline-variant: #c4c9cc;
+
+  --font-display: "Hanken Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+// --- Tema OSCURO (sobreescribe las mismas variables) ---
+.dark {
+  --color-primary: #9fcaff;
+  --color-primary-container: #0099ff;
+  --color-on-primary: #003259;
+  --color-on-primary-container: #002f54;
+
+  --color-surface: #101415;
+  --color-surface-container-lowest: #0b0f10;
+  --color-surface-container-low: #191c1e;
+  --color-surface-container: #1d2022;
+  --color-surface-container-high: #272a2c;
+  --color-surface-container-highest: #323537;
+
+  --color-on-surface: #e0e3e5;
+  --color-on-surface-variant: #bfc7d5;
+  --color-outline: #89919e;
+  --color-outline-variant: #3f4753;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: var(--font-body);
+}
+
+// --- Tarjeta con efecto vidrio, se adapta a ambos temas ---
+.glass-card {
+  background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+
+  &:hover {
+    border-color: var(--color-primary-container);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--color-primary-container) 20%, transparent);
+    transform: translateY(-4px);
+  }
+}
+
+.cyan-glow {
+  text-shadow: 0 0 15px color-mix(in srgb, var(--color-primary-container) 60%, transparent);
+}

@@ -1,298 +1,255 @@
+<!-- Botón de tema (temporal aquí; se moverá a la nav cuando exista, Módulo 3+) -->
+<button
+  class="fixed top-4 right-4 z-50 w-11 h-11 rounded-full glass-card flex items-center justify-center text-lg"
+  (click)="theme.toggle()"
+  [attr.aria-label]="theme.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+  {{ theme.isDark() ? '☀️' : '🌙' }}
+</button>
+
 <!-- ============================================================ -->
 <!-- HERO -->
 <!-- ============================================================ -->
-<section id="hero" class="section section--hero">
-  <p class="eyebrow">[NOMBRE_EMPRESA]</p>
-  <h1>
-    Soluciones Completas de <span class="accent">Seguridad Física</span>
+<section class="min-h-screen flex flex-col items-center justify-center text-center px-6 py-24" id="hero">
+  <p class="text-sm font-medium uppercase tracking-widest text-primary mb-4">[NOMBRE_EMPRESA]</p>
+  <h1 class="text-5xl md:text-6xl font-bold max-w-3xl leading-tight mb-6">
+    Soluciones Completas de <span class="text-primary cyan-glow">Seguridad Física</span>
   </h1>
-  <p class="subtitle">
+  <p class="text-lg text-on-surface-variant max-w-xl mb-10">
     Desde el estudio inicial hasta la instalación final, acompañamos cada
     proyecto estratégico de seguridad con experiencia y rigor técnico.
   </p>
-  <div class="hero__cta">
-    <button type="button" class="btn btn--primary">Solicitar una Demo</button>
-    <button type="button" class="btn btn--secondary">Descubrir todas nuestras capacidades</button>
+  <div class="flex flex-wrap gap-4 justify-center">
+    <button class="bg-primary-container text-on-primary-container px-8 py-4 rounded-lg font-medium hover:brightness-110 transition-all">Solicitar una Demo</button>
+    <button class="border border-outline px-8 py-4 rounded-lg font-medium hover:bg-on-surface/5 transition-all">Descubrir nuestras capacidades</button>
   </div>
 </section>
 
 <!-- ============================================================ -->
-<!-- SERVICIOS (3 pasos) -->
+<!-- SERVICIOS -->
 <!-- ============================================================ -->
-<section id="servicios" class="section">
-  <div class="cards-grid cards-grid--3">
-    <article class="card">
-      <h3>Estudio de Proyecto</h3>
-      <p>Analizamos su infraestructura para diseñar la mejor estrategia de seguridad, con visitas técnicas y evaluación de riesgos.</p>
+<section class="py-24 px-6 max-w-6xl mx-auto" id="servicios">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <article class="glass-card rounded-xl p-8">
+      <h3 class="text-xl font-semibold mb-3">Estudio de Proyecto</h3>
+      <p class="text-on-surface-variant">Analizamos su infraestructura para diseñar la mejor estrategia de seguridad, con visitas técnicas y evaluación de riesgos.</p>
     </article>
-    <article class="card">
-      <h3>Diseño &amp; Concepción</h3>
-      <p>Concebimos soluciones a medida, seleccionando los equipos más adecuados según sus necesidades específicas.</p>
+    <article class="glass-card rounded-xl p-8">
+      <h3 class="text-xl font-semibold mb-3">Diseño &amp; Concepción</h3>
+      <p class="text-on-surface-variant">Concebimos soluciones a medida, seleccionando los equipos más adecuados según sus necesidades específicas.</p>
     </article>
-    <article class="card">
-      <h3>Instalación &amp; Integración del Sistema</h3>
-      <p>Nuestros técnicos certificados instalan y configuran cada sistema con calidad profesional garantizada.</p>
+    <article class="glass-card rounded-xl p-8">
+      <h3 class="text-xl font-semibold mb-3">Instalación &amp; Integración</h3>
+      <p class="text-on-surface-variant">Nuestros técnicos certificados instalan y configuran cada sistema con calidad profesional garantizada.</p>
     </article>
   </div>
 </section>
 
 <!-- ============================================================ -->
 <!-- LÍNEA DE TIEMPO / EXPANSIÓN -->
-<!-- (los numerados aquí SÍ tienen sentido: es una cronología real) -->
 <!-- ============================================================ -->
-<section id="expansion" class="section">
-  <p class="eyebrow">A 8 Pasos de Nosotros</p>
-  <h2>De <span class="accent">[CIUDAD_ORIGEN]</span> a lo Internacional</h2>
-  <p class="section-intro">
+<section class="py-24 px-6 max-w-6xl mx-auto" id="expansion">
+  <p class="text-sm font-medium text-primary uppercase tracking-widest mb-2">A 8 Pasos de Nosotros</p>
+  <h2 class="text-4xl font-bold mb-4">De <span class="text-primary">[CIUDAD_ORIGEN]</span> a lo Internacional</h2>
+  <p class="text-on-surface-variant max-w-2xl mb-12">
     [NOMBRE_EMPRESA] nació en [CIUDAD_ORIGEN], [PAÍS], en [AÑO_FUNDACIÓN].
-    Desde entonces, hemos trabajado sin descanso para imponer nuestra
-    experiencia reconocida en seguridad física a nivel [REGIONAL/INTERNACIONAL].
   </p>
 
-  <ol class="timeline">
-    <li class="timeline__item">
-      <span class="timeline__year">[AÑO_1]</span>
-      <h4>Creación de [NOMBRE_EMPRESA]</h4>
-      <p>Fundación de la empresa.</p>
+  <ol class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
+    <li class="border-l-2 border-primary pl-4">
+      <span class="block text-2xl font-bold text-primary mb-1">[AÑO_1]</span>
+      <h4 class="font-semibold mb-1">Creación de [NOMBRE_EMPRESA]</h4>
+      <p class="text-sm text-on-surface-variant">Fundación de la empresa.</p>
     </li>
-    <li class="timeline__item">
-      <span class="timeline__year">[AÑO_2]–[AÑO_3]</span>
-      <h4>Proyectos Locales Mayores</h4>
-      <p>Consolidación en el mercado nacional.</p>
+    <li class="border-l-2 border-primary pl-4">
+      <span class="block text-2xl font-bold text-primary mb-1">[AÑO_2]–[AÑO_3]</span>
+      <h4 class="font-semibold mb-1">Proyectos Locales Mayores</h4>
+      <p class="text-sm text-on-surface-variant">Consolidación en el mercado nacional.</p>
     </li>
-    <li class="timeline__item">
-      <span class="timeline__year">[AÑO_4]–[AÑO_5]</span>
-      <h4>Expansión Internacional</h4>
-      <p>Primeros proyectos fuera del país de origen.</p>
+    <li class="border-l-2 border-primary pl-4">
+      <span class="block text-2xl font-bold text-primary mb-1">[AÑO_4]–[AÑO_5]</span>
+      <h4 class="font-semibold mb-1">Expansión Internacional</h4>
+      <p class="text-sm text-on-surface-variant">Primeros proyectos fuera del país de origen.</p>
     </li>
-    <li class="timeline__item">
-      <span class="timeline__year">[AÑO_6]</span>
-      <h4>[NOMBRE_EMPRESA] Internacional</h4>
-      <p>Apertura de nuevas sucursales.</p>
+    <li class="border-l-2 border-primary pl-4">
+      <span class="block text-2xl font-bold text-primary mb-1">[AÑO_6]</span>
+      <h4 class="font-semibold mb-1">[NOMBRE_EMPRESA] Internacional</h4>
+      <p class="text-sm text-on-surface-variant">Apertura de nuevas sucursales.</p>
     </li>
   </ol>
 
-  <div class="stats-grid">
-    <div class="stat"><strong>15+</strong><span>Años de Experiencia</span></div>
-    <div class="stat"><strong>5+</strong><span>Países</span></div>
-    <div class="stat"><strong>50+</strong><span>Proyectos</span></div>
-    <div class="stat"><strong>20+</strong><span>Certificaciones</span></div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-16">
+    <div><strong class="block text-3xl text-primary">15+</strong><span class="text-sm text-on-surface-variant">Años de Experiencia</span></div>
+    <div><strong class="block text-3xl text-primary">5+</strong><span class="text-sm text-on-surface-variant">Países</span></div>
+    <div><strong class="block text-3xl text-primary">50+</strong><span class="text-sm text-on-surface-variant">Proyectos</span></div>
+    <div><strong class="block text-3xl text-primary">20+</strong><span class="text-sm text-on-surface-variant">Certificaciones</span></div>
   </div>
 
-  <div class="cta-banner">
-    <h3>Únase a Nuestra Expansión</h3>
-    <p>¿Tiene un proyecto en [PAÍS_1], [PAÍS_2] o América Latina? Le acompañamos donde lo necesite.</p>
-    <button type="button" class="btn btn--primary">Contáctenos</button>
+  <div class="glass-card rounded-xl p-10 text-center">
+    <h3 class="text-2xl font-semibold mb-2">Únase a Nuestra Expansión</h3>
+    <p class="text-on-surface-variant mb-6">¿Tiene un proyecto en [PAÍS_1], [PAÍS_2] o América Latina? Le acompañamos donde lo necesite.</p>
+    <button class="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-medium">Contáctenos</button>
   </div>
 </section>
 
 <!-- ============================================================ -->
-<!-- PRESENCIA INTERNACIONAL (mapa interactivo — Módulo 5) -->
+<!-- PRESENCIA INTERNACIONAL (mapa real — Módulo 5) -->
 <!-- ============================================================ -->
-<section id="presencia-internacional" class="section">
-  <h2>Presencia <span class="accent">Internacional</span></h2>
-
-  <!--
-    PLACEHOLDER: aquí se integra el mapa SVG interactivo con marcadores
-    y modal al hacer clic (definido en el Módulo 5).
-    Estructura de datos esperada (ver PaisPresencia en el servicio):
-    { nombre, lat, lng, añoIngreso, descripcion, proyectosDestacados[] }
-  -->
-  <div class="map-placeholder">
-    <p>[ AQUÍ VA EL MAPA INTERACTIVO — MÓDULO 5 ]</p>
+<section class="py-24 px-6 max-w-6xl mx-auto">
+  <h2 class="text-4xl font-bold mb-8">Presencia <span class="text-primary">Internacional</span></h2>
+  <div class="glass-card rounded-xl min-h-[280px] flex items-center justify-center mb-8 opacity-70">
+    <p class="text-sm">[ Mapa interactivo real — Módulo 5 ]</p>
   </div>
-
-  <ul class="country-list">
-    <li><strong>[PAÍS_1]</strong> — Oficina principal</li>
-    <li><strong>[PAÍS_2]</strong> — Oficina regional</li>
-    <li><strong>[PAÍS_3]</strong> — Proyectos activos</li>
-    <li><strong>[PAÍS_4]</strong> — Proyectos activos</li>
+  <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <li class="glass-card rounded-lg p-4"><strong>[PAÍS_1]</strong><br /><span class="text-sm text-on-surface-variant">Oficina principal</span></li>
+    <li class="glass-card rounded-lg p-4"><strong>[PAÍS_2]</strong><br /><span class="text-sm text-on-surface-variant">Oficina regional</span></li>
+    <li class="glass-card rounded-lg p-4"><strong>[PAÍS_3]</strong><br /><span class="text-sm text-on-surface-variant">Proyectos activos</span></li>
+    <li class="glass-card rounded-lg p-4"><strong>[PAÍS_4]</strong><br /><span class="text-sm text-on-surface-variant">Proyectos activos</span></li>
   </ul>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTORES DE EXCELENCIA -->
+<!-- SECTORES -->
 <!-- ============================================================ -->
-<section id="sectores" class="section">
-  <p class="eyebrow">Sectores de Excelencia</p>
-  <h2>Intervenimos en los sectores que exigen el más alto nivel de seguridad y confiabilidad</h2>
-
-  <div class="cards-grid cards-grid--3">
-    <article class="card">
-      <h3>Bancos &amp; Finanzas</h3>
-      <p>Salvaguarda de instituciones financieras con sistemas de última tecnología.</p>
+<section class="py-24 px-6 max-w-6xl mx-auto" id="sectores">
+  <p class="text-sm font-medium text-primary uppercase tracking-widest mb-2">Sectores de Excelencia</p>
+  <h2 class="text-4xl font-bold mb-12 max-w-2xl">Intervenimos en los sectores que exigen el más alto nivel de seguridad y confiabilidad</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+    <article class="glass-card rounded-xl p-8">
+      <h3 class="text-xl font-semibold mb-3">Bancos &amp; Finanzas</h3>
+      <p class="text-on-surface-variant">Salvaguarda de instituciones financieras con sistemas de última tecnología.</p>
     </article>
-    <article class="card">
-      <h3>Embajadas &amp; Diplomacia</h3>
-      <p>Protección a la medida para representaciones diplomáticas internacionales.</p>
+    <article class="glass-card rounded-xl p-8">
+      <h3 class="text-xl font-semibold mb-3">Embajadas &amp; Diplomacia</h3>
+      <p class="text-on-surface-variant">Protección a la medida para representaciones diplomáticas internacionales.</p>
     </article>
-    <article class="card">
-      <h3>Instituciones Gubernamentales</h3>
-      <p>Soluciones de seguridad para infraestructuras de administración pública.</p>
+    <article class="glass-card rounded-xl p-8">
+      <h3 class="text-xl font-semibold mb-3">Instituciones Gubernamentales</h3>
+      <p class="text-on-surface-variant">Soluciones de seguridad para infraestructuras de administración pública.</p>
     </article>
   </div>
-
-  <div class="stats-grid">
-    <div class="stat"><strong>200+</strong><span>Proyectos Estratégicos</span></div>
-    <div class="stat"><strong>50+</strong><span>Clientes Institucionales</span></div>
-    <div class="stat"><strong>15+</strong><span>Países</span></div>
-    <div class="stat"><strong>98%</strong><span>Tasa de Satisfacción</span></div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+    <div><strong class="block text-3xl text-primary">200+</strong><span class="text-sm text-on-surface-variant">Proyectos Estratégicos</span></div>
+    <div><strong class="block text-3xl text-primary">50+</strong><span class="text-sm text-on-surface-variant">Clientes Institucionales</span></div>
+    <div><strong class="block text-3xl text-primary">15+</strong><span class="text-sm text-on-surface-variant">Países</span></div>
+    <div><strong class="block text-3xl text-primary">98%</strong><span class="text-sm text-on-surface-variant">Tasa de Satisfacción</span></div>
   </div>
 </section>
 
 <!-- ============================================================ -->
 <!-- EQUIPO CERTIFICADO -->
 <!-- ============================================================ -->
-<section id="equipo" class="section">
-  <h2>Un Equipo de <span class="accent">Profesionales Certificados</span></h2>
-  <p class="section-intro">
+<section class="py-24 px-6 max-w-6xl mx-auto" id="equipo">
+  <h2 class="text-4xl font-bold mb-4">Un Equipo de <span class="text-primary">Profesionales Certificados</span></h2>
+  <p class="text-on-surface-variant max-w-2xl mb-12">
     Nuestros técnicos son ingenieros altamente calificados y capacitados
     para las especialidades de la industria de la seguridad física.
   </p>
-
-  <div class="stats-grid">
-    <div class="stat"><strong>15+</strong><span>Ingenieros Certificados</span></div>
-    <div class="stat"><strong>200+</strong><span>Proyectos Realizados</span></div>
-    <div class="stat"><strong>10+</strong><span>Años de Experiencia Promedio</span></div>
-    <div class="stat"><strong>24/7</strong><span>Disponibilidad</span></div>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-10">
+    <div><strong class="block text-3xl text-primary">15+</strong><span class="text-sm text-on-surface-variant">Ingenieros Certificados</span></div>
+    <div><strong class="block text-3xl text-primary">200+</strong><span class="text-sm text-on-surface-variant">Proyectos Realizados</span></div>
+    <div><strong class="block text-3xl text-primary">10+</strong><span class="text-sm text-on-surface-variant">Años Promedio</span></div>
+    <div><strong class="block text-3xl text-primary">24/7</strong><span class="text-sm text-on-surface-variant">Disponibilidad</span></div>
   </div>
-
-  <ul class="badges">
-    <li>Certificación [NORMA_1]</li>
-    <li>Certificación [NORMA_2]</li>
-    <li>Habilitación Sector Defensa</li>
+  <ul class="flex flex-wrap gap-4">
+    <li class="glass-card rounded-full px-5 py-2 text-sm">Certificación [NORMA_1]</li>
+    <li class="glass-card rounded-full px-5 py-2 text-sm">Certificación [NORMA_2]</li>
+    <li class="glass-card rounded-full px-5 py-2 text-sm">Habilitación Sector Defensa</li>
   </ul>
 </section>
 
 <!-- ============================================================ -->
-<!-- TECNOLOGÍAS AVANZADAS -->
+<!-- TECNOLOGÍAS -->
 <!-- ============================================================ -->
-<section id="tecnologias" class="section">
-  <p class="eyebrow">Tecnologías Avanzadas</p>
-  <h2>Desplegamos las soluciones más performantes del mercado, integrando IA y análisis en tiempo real</h2>
-
-  <div class="cards-grid cards-grid--4">
-    <article class="card">
-      <h3>Videovigilancia</h3>
-      <p>Sistemas de cámaras fijas y móviles con análisis inteligente.</p>
-      <a href="#" class="link">Saber más →</a>
+<section class="py-24 px-6 max-w-6xl mx-auto" id="tecnologias">
+  <p class="text-sm font-medium text-primary uppercase tracking-widest mb-2">Tecnologías Avanzadas</p>
+  <h2 class="text-4xl font-bold mb-12 max-w-2xl">Desplegamos las soluciones más performantes del mercado, integrando IA y análisis en tiempo real</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <article class="glass-card rounded-xl p-6">
+      <h3 class="text-lg font-semibold mb-2">Videovigilancia</h3>
+      <p class="text-sm text-on-surface-variant mb-4">Sistemas de cámaras fijas y móviles con análisis inteligente.</p>
+      <a href="#" class="text-primary text-sm font-medium">Saber más →</a>
     </article>
-    <article class="card">
-      <h3>Control de Acceso</h3>
-      <p>Gestión biométrica y electrónica de accesos a instalaciones.</p>
-      <a href="#" class="link">Saber más →</a>
+    <article class="glass-card rounded-xl p-6">
+      <h3 class="text-lg font-semibold mb-2">Control de Acceso</h3>
+      <p class="text-sm text-on-surface-variant mb-4">Gestión biométrica y electrónica de accesos a instalaciones.</p>
+      <a href="#" class="text-primary text-sm font-medium">Saber más →</a>
     </article>
-    <article class="card">
-      <h3>Sistemas de Alarma</h3>
-      <p>Detección de intrusión con respuesta en tiempo real.</p>
-      <a href="#" class="link">Saber más →</a>
+    <article class="glass-card rounded-xl p-6">
+      <h3 class="text-lg font-semibold mb-2">Sistemas de Alarma</h3>
+      <p class="text-sm text-on-surface-variant mb-4">Detección de intrusión con respuesta en tiempo real.</p>
+      <a href="#" class="text-primary text-sm font-medium">Saber más →</a>
     </article>
-    <article class="card">
-      <h3>Integración de Seguridad</h3>
-      <p>Unificación de todos los sistemas bajo una sola plataforma de gestión.</p>
-      <a href="#" class="link">Saber más →</a>
+    <article class="glass-card rounded-xl p-6">
+      <h3 class="text-lg font-semibold mb-2">Integración de Seguridad</h3>
+      <p class="text-sm text-on-surface-variant mb-4">Unificación de todos los sistemas bajo una sola plataforma.</p>
+      <a href="#" class="text-primary text-sm font-medium">Saber más →</a>
     </article>
-  </div>
-
-  <div class="cards-grid cards-grid--3">
-    <div class="mini-card">
-      <h4>Análisis Inteligente</h4>
-      <p>Detección de comportamiento, reconocimiento y aprendizaje automático.</p>
-    </div>
-    <div class="mini-card">
-      <h4>Supervisión Centralizada</h4>
-      <p>Plataforma única, alertas en tiempo real, acceso remoto.</p>
-    </div>
-    <div class="mini-card">
-      <h4>Integración Total</h4>
-      <p>Multi-constructor, API abiertas, escalabilidad garantizada.</p>
-    </div>
   </div>
 </section>
 
 <!-- ============================================================ -->
-<!-- PROYECTOS ESTRATÉGICOS -->
+<!-- PROYECTOS -->
 <!-- ============================================================ -->
-<section id="proyectos" class="section">
-  <h2>Proyectos <span class="accent">Estratégicos</span></h2>
-  <p class="section-intro">Descubra algunos de nuestros trabajos más destacados para instituciones de primer nivel.</p>
-
-  <div class="cards-grid cards-grid--3">
-    <article class="card card--project">
-      <span class="badge">Confidencial</span>
-      <h3>[NOMBRE_PROYECTO_1]</h3>
-      <p>[Descripción breve del proyecto]</p>
-      <a href="#" class="link">Ver el proyecto ↗</a>
+<section class="py-24 px-6 max-w-6xl mx-auto" id="proyectos">
+  <p class="text-sm font-medium text-primary uppercase tracking-widest mb-2">Portafolio</p>
+  <h2 class="text-4xl font-bold mb-12">Proyectos <span class="text-primary">Estratégicos</span></h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <article class="glass-card rounded-xl p-6">
+      <span class="inline-block text-xs px-3 py-1 rounded-full bg-on-surface/10 mb-4">Confidencial</span>
+      <h3 class="text-lg font-semibold mb-2">[NOMBRE_PROYECTO_1]</h3>
+      <p class="text-sm text-on-surface-variant mb-4">[Descripción breve del proyecto]</p>
+      <a href="#" class="text-primary text-sm font-medium">Ver el proyecto ↗</a>
     </article>
-    <article class="card card--project">
-      <span class="badge">Confidencial</span>
-      <h3>[NOMBRE_PROYECTO_2]</h3>
-      <p>[Descripción breve del proyecto]</p>
-      <a href="#" class="link">Ver el proyecto ↗</a>
+    <article class="glass-card rounded-xl p-6">
+      <span class="inline-block text-xs px-3 py-1 rounded-full bg-on-surface/10 mb-4">Confidencial</span>
+      <h3 class="text-lg font-semibold mb-2">[NOMBRE_PROYECTO_2]</h3>
+      <p class="text-sm text-on-surface-variant mb-4">[Descripción breve del proyecto]</p>
+      <a href="#" class="text-primary text-sm font-medium">Ver el proyecto ↗</a>
     </article>
-    <article class="card card--project">
-      <span class="badge">Confidencial</span>
-      <h3>[NOMBRE_PROYECTO_3]</h3>
-      <p>[Descripción breve del proyecto]</p>
-      <a href="#" class="link">Ver el proyecto ↗</a>
+    <article class="glass-card rounded-xl p-6">
+      <span class="inline-block text-xs px-3 py-1 rounded-full bg-on-surface/10 mb-4">Confidencial</span>
+      <h3 class="text-lg font-semibold mb-2">[NOMBRE_PROYECTO_3]</h3>
+      <p class="text-sm text-on-surface-variant mb-4">[Descripción breve del proyecto]</p>
+      <a href="#" class="text-primary text-sm font-medium">Ver el proyecto ↗</a>
     </article>
   </div>
-
-  <p class="note">Por confidencialidad, algunos proyectos no se muestran públicamente. Solicite más información sobre nuestro portafolio completo.</p>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECCIÓN OPCIONAL: confirmar con el cliente si aplica a su negocio -->
-<!-- (en la referencia era "Cartas de Visita Premium", un servicio -->
-<!-- específico de esa empresa; puede no aplicar aquí) -->
+<!-- CONTACTO -->
 <!-- ============================================================ -->
-<!--
-<section id="servicio-opcional" class="section">
-  ...
-</section>
--->
-
-<!-- ============================================================ -->
-<!-- FORMULARIO DE CONTACTO (seguro — Módulo 6) -->
-<!-- ============================================================ -->
-<section id="contacto" class="section">
-  <h2>Comencemos Su <span class="accent">Proyecto</span></h2>
-  <p class="section-intro">
+<section class="py-24 px-6 max-w-4xl mx-auto" id="contacto">
+  <h2 class="text-4xl font-bold mb-4">Comencemos Su <span class="text-primary">Proyecto</span></h2>
+  <p class="text-on-surface-variant mb-10">
     Cuéntenos sobre su necesidad de seguridad física y le responderemos
     con la mejor propuesta en las próximas 24 horas hábiles.
   </p>
 
-  <form class="contact-form" (ngSubmit)="enviarContacto()" novalidate>
-    <div class="form-row">
-      <label>
-        Teléfono
-        <input type="tel" name="telefono" [(ngModel)]="contactoForm.telefono" placeholder="+591 700 00000" />
-      </label>
-      <label>
-        Tipo de proyecto
-        <select name="tipoProyecto" [(ngModel)]="contactoForm.tipoProyecto">
-          <option value="">Seleccione una opción</option>
-          <option value="nuevo">Proyecto nuevo</option>
-          <option value="mantenimiento">Mantenimiento</option>
-          <option value="otro">Otro</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="form-row">
-      <label>
-        Nombre
-        <input type="text" name="nombre" [(ngModel)]="contactoForm.nombre" />
-      </label>
-      <label>
-        Email
-        <input type="email" name="email" [(ngModel)]="contactoForm.email" />
-      </label>
-    </div>
-
-    <label class="full-width">
+  <form class="glass-card rounded-xl p-8 grid grid-cols-1 md:grid-cols-2 gap-5" (ngSubmit)="enviarContacto()">
+    <label class="flex flex-col gap-1 text-sm">
+      Teléfono
+      <input type="tel" name="telefono" [(ngModel)]="contactoForm.telefono" placeholder="+591 700 00000" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary" />
+    </label>
+    <label class="flex flex-col gap-1 text-sm">
+      Tipo de proyecto
+      <select name="tipoProyecto" [(ngModel)]="contactoForm.tipoProyecto" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary">
+        <option value="">Seleccione una opción</option>
+        <option value="nuevo">Proyecto nuevo</option>
+        <option value="mantenimiento">Mantenimiento</option>
+        <option value="otro">Otro</option>
+      </select>
+    </label>
+    <label class="flex flex-col gap-1 text-sm">
+      Nombre
+      <input type="text" name="nombre" [(ngModel)]="contactoForm.nombre" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary" />
+    </label>
+    <label class="flex flex-col gap-1 text-sm">
+      Email
+      <input type="email" name="email" [(ngModel)]="contactoForm.email" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary" />
+    </label>
+    <label class="md:col-span-2 flex flex-col gap-1 text-sm">
       Servicio de interés
-      <select name="servicio" [(ngModel)]="contactoForm.servicio">
+      <select name="servicio" [(ngModel)]="contactoForm.servicio" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary">
         <option value="">Seleccione un servicio</option>
         <option value="videovigilancia">Videovigilancia</option>
         <option value="control-acceso">Control de Acceso</option>
@@ -300,18 +257,19 @@
         <option value="integracion">Integración de Seguridad</option>
       </select>
     </label>
-
-    <label class="full-width">
+    <label class="md:col-span-2 flex flex-col gap-1 text-sm">
       Mensaje
-      <textarea name="mensaje" rows="4" [(ngModel)]="contactoForm.mensaje"></textarea>
+      <textarea rows="4" name="mensaje" [(ngModel)]="contactoForm.mensaje" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary"></textarea>
     </label>
 
-    <!-- Honeypot: invisible para humanos vía CSS (ver .hp-field en el SCSS), no type="hidden" -->
-    <label class="hp-field" aria-hidden="true">
+    <!-- Honeypot -->
+    <label class="absolute -left-[9999px]" aria-hidden="true">
       No llenar este campo
       <input type="text" name="_hp" tabindex="-1" autocomplete="off" [(ngModel)]="contactoForm._hp" />
     </label>
 
-    <button type="submit" class="btn btn--primary">Enviar la Solicitud</button>
+    <button type="submit" class="md:col-span-2 bg-primary-container text-on-primary-container p-4 rounded-lg font-medium hover:brightness-110 transition-all">
+      Enviar la Solicitud
+    </button>
   </form>
 </section>
