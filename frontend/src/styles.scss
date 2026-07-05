@@ -75,3 +75,36 @@ body {
 .cyan-glow {
   text-shadow: 0 0 15px color-mix(in srgb, var(--color-primary-container) 60%, transparent);
 }
+
+// --- Animación de escaneo tipo radar sobre el logo del preloader ---
+.preloader-logo-wrap {
+  position: relative;
+  overflow: hidden;
+  padding: 6px 4px;
+}
+
+.preloader-logo {
+  animation: logoPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0%, 100% { text-shadow: 0 0 12px color-mix(in srgb, var(--color-primary-container) 40%, transparent); }
+  50% { text-shadow: 0 0 26px color-mix(in srgb, var(--color-primary-container) 90%, transparent); }
+}
+
+.scan-line {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-primary-container) 50%, transparent);
+  box-shadow: 0 0 14px 3px color-mix(in srgb, var(--color-primary-container) 80%, transparent);
+  animation: scanMove 1.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes scanMove {
+  0%   { top: -15%; opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { top: 115%; opacity: 0; }
+}
