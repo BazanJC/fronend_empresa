@@ -1,4 +1,4 @@
-import { Component, inject, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
+import { Component, inject, AfterViewInit, ElementRef, OnDestroy,signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../core/theme.service';
@@ -16,6 +16,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   private translate = inject(TranslateService);
   private el = inject(ElementRef);
   private observer: IntersectionObserver | null = null;
+  estadoEnvio = signal<'idle' | 'enviando' | 'exito' | 'error'>('idle');
 
   constructor(public theme: ThemeService) {}
 
@@ -47,7 +48,25 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     servicio: '', mensaje: '', _hp: ''
   };
 
-  enviarContacto(): void {
-    console.log('Formulario listo para conectar con Laravel:', this.contactoForm);
+   enviarContacto(): void {
+    if (this.estadoEnvio() === 'enviando') return; // evita doble clic
+ 
+    // Honeypot: si el campo trampa viene lleno, es un bot — no hacemos
+    // nada real, pero fingimos éxito para no delatar la protección.
+    if (this.contactoForm._hp) {
+      this.estadoEnvio.set('exito');
+      return;
+    }
+ 
+    this.estadoEnvio.set('enviando');
+ 
+    setTimeout(() => {
+      this.estadoEnvio.set('exito');
+      this.contactoForm = {
+        nombre: '', telefono: '', email: '', tipoProyecto: '',
+        servicio: '', mensaje: '', _hp: ''
+      };
+    }, 1200);
   }
+  
 }

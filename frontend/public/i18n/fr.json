@@ -118,7 +118,10 @@
     "option_alarmas": "Systèmes d'Alarme",
     "option_integracion": "Intégration de Sécurité",
     "label_mensaje": "Message",
-    "submit": "Envoyer la Demande"
+    "submit": "Envoyer la Demande",
+    "enviando": "Envoi en cours…",
+    "exito": "Merci ! Nous avons bien reçu votre demande, nous vous répondrons bientôt.",
+    "error": "Un problème est survenu lors de l'envoi. Veuillez réessayer."
   },
   "mapa": {
     "cargando": "Chargement de la carte…",

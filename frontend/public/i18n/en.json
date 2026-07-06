@@ -118,7 +118,10 @@
     "option_alarmas": "Alarm Systems",
     "option_integracion": "Security Integration",
     "label_mensaje": "Message",
-    "submit": "Send Request"
+    "submit": "Send Request",
+    "enviando": "Sending…",
+    "exito": "Thank you! We received your request and will respond soon.",
+    "error": "There was a problem sending your message. Please try again."
   },
   "mapa": {
     "cargando": "Loading map…",

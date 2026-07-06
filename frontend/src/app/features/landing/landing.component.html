@@ -262,8 +262,22 @@
       <input type="text" name="_hp" tabindex="-1" autocomplete="off" [(ngModel)]="contactoForm._hp" />
     </label>
 
-    <button type="submit" class="md:col-span-2 bg-primary-container text-on-primary-container p-4 rounded-lg font-medium hover:brightness-110 transition-all">
-      {{ 'contacto.submit' | translate }}
+     <button
+      type="submit"
+      [disabled]="estadoEnvio() === 'enviando'"
+      class="md:col-span-2 bg-primary-container text-on-primary-container p-4 rounded-lg font-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+      @if (estadoEnvio() === 'enviando') {
+        {{ 'contacto.enviando' | translate }}
+      } @else {
+        {{ 'contacto.submit' | translate }}
+      }
     </button>
+ 
+    @if (estadoEnvio() === 'exito') {
+      <p class="md:col-span-2 text-sm text-center text-primary">{{ 'contacto.exito' | translate }}</p>
+    }
+    @if (estadoEnvio() === 'error') {
+      <p class="md:col-span-2 text-sm text-center" style="color: #ff6b6b;">{{ 'contacto.error' | translate }}</p>
+    }
   </form>
 </section>

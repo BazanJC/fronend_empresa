@@ -118,7 +118,10 @@
     "option_alarmas": "Sistemas de Alarma",
     "option_integracion": "Integración de Seguridad",
     "label_mensaje": "Mensaje",
-    "submit": "Enviar la Solicitud"
+    "submit": "Enviar la Solicitud",
+    "enviando": "Enviando…",
+    "exito": "¡Gracias! Recibimos su solicitud, le responderemos pronto.",
+    "error": "Hubo un problema al enviar. Por favor intente de nuevo."
   },
   "mapa": {
     "cargando": "Cargando mapa…",
@@ -152,4 +155,5 @@
       }
     }
   }
+  
 }
