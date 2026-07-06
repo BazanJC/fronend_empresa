@@ -1,17 +1,9 @@
-import { Component , inject} from '@angular/core';
+import { Component, inject, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../core/theme.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-
-/**
- * MÓDULO 2 — Estilo visual
- * -----------------------------------------
- * Misma estructura y contenido del Módulo 1, ahora con estilo real:
- * Tailwind CSS, tarjetas "glass", tipografía de marca, y soporte
- * completo de tema claro/oscuro (ThemeService).
- */
 @Component({
   selector: 'app-landing',
   standalone: true,
@@ -19,10 +11,31 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })
-export class LandingComponent {
-    private translate = inject(TranslateService);
+export class LandingComponent implements AfterViewInit, OnDestroy {
+  private translate = inject(TranslateService);
+  private el = inject(ElementRef);
+  private observer: IntersectionObserver | null = null;
 
   constructor(public theme: ThemeService) {}
+
+  ngAfterViewInit(): void {
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    const reveals = this.el.nativeElement.querySelectorAll('.reveal');
+    reveals.forEach((reveal: Element) => this.observer?.observe(reveal));
+  }
+
+  ngOnDestroy(): void {
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
 
   cambiarIdioma(lang: string): void {      
     this.translate.use(lang);

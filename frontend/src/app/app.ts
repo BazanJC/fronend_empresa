@@ -17,6 +17,7 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App implements OnInit {
   loading = signal(true);
+  isClosing = signal(false);
   progressWidth = signal('0%');
 
   ngOnInit(): void {
@@ -24,6 +25,7 @@ export class App implements OnInit {
     // Tiempo mínimo de 2s para que la animación no se sienta cortada,
     // incluso si la app carga más rápido que eso.
     setTimeout(() => this.progressWidth.set('100%'), 100);
-    setTimeout(() => this.loading.set(false), 2000);
+    setTimeout(() => this.isClosing.set(true), 2800);
+    setTimeout(() => this.loading.set(false), 3500);
   }
 }
