@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../core/theme.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MapaMundialComponent } from '../../shared/mapa-mundial/mapa-mundial.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TranslatePipe, MapaMundialComponent],
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.scss'
 })

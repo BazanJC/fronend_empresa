@@ -99,9 +99,7 @@
 <!-- ============================================================ -->
 <section class="py-24 px-6 max-w-6xl mx-auto">
   <h2 class="text-4xl font-bold mb-8">{{ 'presencia.title_pre' | translate }} <span class="text-primary">{{ 'presencia.title_accent' | translate }}</span></h2>
-  <div class="glass-card rounded-xl min-h-[280px] flex items-center justify-center mb-8 opacity-70">
-    <p class="text-sm">{{ 'presencia.map_placeholder' | translate }}</p>
-  </div>
+  <app-mapa-mundial class="block mb-8"></app-mapa-mundial>
   <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <li class="glass-card rounded-lg p-4"><strong>[PAÍS_1]</strong><br /><span class="text-sm text-on-surface-variant">{{ 'presencia.pais1_label' | translate }}</span></li>
     <li class="glass-card rounded-lg p-4"><strong>[PAÍS_2]</strong><br /><span class="text-sm text-on-surface-variant">{{ 'presencia.pais2_label' | translate }}</span></li>

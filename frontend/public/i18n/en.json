@@ -119,5 +119,37 @@
     "option_integracion": "Security Integration",
     "label_mensaje": "Message",
     "submit": "Send Request"
+  },
+  "mapa": {
+    "cargando": "Loading map…",
+    "error_carga": "The base map could not be loaded (check your internet connection).",
+    "presencia_desde": "Present since",
+    "proyectos_destacados": "Featured projects",
+    "paises": {
+      "bolivia": {
+        "nombre": "Bolivia (headquarters)",
+        "descripcion": "Head office, coordinating regional operations.",
+        "proyecto1": "International Embassy — perimeter security system",
+        "proyecto2": "Central Bank — 150+ IP cameras"
+      },
+      "honduras": {
+        "nombre": "Honduras (founding country)",
+        "descripcion": "The company's founding country, historic base of operations.",
+        "proyecto1": "Ministry of Administration — multi-site integration",
+        "proyecto2": "24/7 Monitoring Center — commissioning"
+      },
+      "usa": {
+        "nombre": "United States",
+        "descripcion": "Expansion into North America, projects in the financial and tech sectors.",
+        "proyecto1": "Fintech project — payments platform",
+        "proyecto2": "Data center — cloud infrastructure"
+      },
+      "francia": {
+        "nombre": "France",
+        "descripcion": "Presence in Europe, government and energy sector projects.",
+        "proyecto1": "Renewable energy project — wind farms",
+        "proyecto2": "Traffic management system"
+      }
+    }
   }
 }

@@ -119,5 +119,37 @@
     "option_integracion": "Intégration de Sécurité",
     "label_mensaje": "Message",
     "submit": "Envoyer la Demande"
+  },
+  "mapa": {
+    "cargando": "Chargement de la carte…",
+    "error_carga": "Impossible de charger la carte (vérifiez votre connexion internet).",
+    "presencia_desde": "Présence depuis",
+    "proyectos_destacados": "Projets phares",
+    "paises": {
+      "bolivia": {
+        "nombre": "Bolivie (siège principal)",
+        "descripcion": "Siège principal, coordonnant les opérations régionales.",
+        "proyecto1": "Ambassade Internationale — système de sécurité périmétrique",
+        "proyecto2": "Banque Centrale — 150+ caméras IP"
+      },
+      "honduras": {
+        "nombre": "Honduras (pays d'origine)",
+        "descripcion": "Pays de fondation de l'entreprise, base historique des opérations.",
+        "proyecto1": "Ministère de l'Administration — intégration multi-sites",
+        "proyecto2": "Centre de surveillance 24/7 — mise en service"
+      },
+      "usa": {
+        "nombre": "États-Unis",
+        "descripcion": "Expansion en Amérique du Nord, projets dans les secteurs financier et technologique.",
+        "proyecto1": "Projet fintech — plateforme de paiement",
+        "proyecto2": "Centre de données — infrastructure cloud"
+      },
+      "francia": {
+        "nombre": "France",
+        "descripcion": "Présence en Europe, projets gouvernementaux et énergétiques.",
+        "proyecto1": "Projet d'énergie renouvelable — parcs éoliens",
+        "proyecto2": "Système de gestion du trafic"
+      }
+    }
   }
 }

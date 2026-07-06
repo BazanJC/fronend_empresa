@@ -175,4 +175,83 @@ body {
 
 .bg-glow-primary { background-color: var(--color-primary-container); }
 .bg-glow-accent { background-color: #3b82f6; } // Un toque azul diferente para mezclar
-
+
+
+.marker-ring {
+  fill: var(--color-primary-container);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: markerPulse 2s ease-out infinite;
+}
+ 
+@keyframes markerPulse {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+ 
+// --- Modal genérico (reutilizado por el mapa) ---
+.tech-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+ 
+.modal-zoom {
+  animation: modalZoomIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+ 
+@keyframes modalZoomIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.country-shape {
+  fill: var(--color-outline-variant);
+  stroke: var(--color-outline);
+  stroke-width: 0.5;
+  stroke-linejoin: round;
+}
+ 
+.marker-ring {
+  fill: var(--color-primary-container);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: markerPulse 2s ease-out infinite;
+}
+ 
+@keyframes markerPulse {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+ 
+// --- Filtro para que las fotos de referencia combinen con el tema oscuro ---
+.img-tinted {
+  filter: grayscale(0.5) brightness(0.55) contrast(1.05) saturate(0.8) hue-rotate(180deg);
+}
+ 
+// --- Modal genérico ---
+.tech-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+ 
+.modal-zoom {
+  animation: modalZoomIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+ 
+@keyframes modalZoomIn {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
