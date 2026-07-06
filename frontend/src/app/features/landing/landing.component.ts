@@ -1,7 +1,7 @@
-import { Component, inject, AfterViewInit, ElementRef, OnDestroy,signal} from '@angular/core';
+import { Component, inject, AfterViewInit, ElementRef, OnDestroy, signal, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ThemeService } from '../../core/theme.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MapaMundialComponent } from '../../shared/mapa-mundial/mapa-mundial.component';
 
@@ -16,11 +16,11 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   private translate = inject(TranslateService);
   private el = inject(ElementRef);
   private observer: IntersectionObserver | null = null;
+  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   estadoEnvio = signal<'idle' | 'enviando' | 'exito' | 'error'>('idle');
 
-  constructor(public theme: ThemeService) {}
-
   ngAfterViewInit(): void {
+    if (!this.isBrowser) return;
     this.observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {

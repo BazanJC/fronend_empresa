@@ -86,10 +86,10 @@ body {
 .preloader-logo {
   animation: logoPulse 2.4s ease-in-out infinite;
 }
-
+ 
 @keyframes logoPulse {
-  0%, 100% { text-shadow: 0 0 12px color-mix(in srgb, var(--color-primary-container) 40%, transparent); }
-  50% { text-shadow: 0 0 26px color-mix(in srgb, var(--color-primary-container) 90%, transparent); }
+  0%, 100% { filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-primary-container) 40%, transparent)); }
+  50% { filter: drop-shadow(0 0 22px color-mix(in srgb, var(--color-primary-container) 90%, transparent)); }
 }
 
 .scan-line {

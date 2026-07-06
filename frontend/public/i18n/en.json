@@ -4,10 +4,11 @@
     "sectores": "Sectors",
     "proyectos": "Projects",
     "contacto": "Contact",
-    "cta": "Contact Us"
+    "cta": "Contact Us",
+    "plataforma": "Platform" 
   },
   "hero": {
-    "eyebrow": "[COMPANY_NAME]",
+    "eyebrow": "NOVAXIS INTERNATIONAL",
     "title_pre": "Complete Solutions for",
     "title_accent": "Physical Security",
     "subtitle": "From the initial study to final installation, we support every strategic security project with technical expertise and rigor.",
@@ -154,5 +155,22 @@
         "proyecto2": "Traffic management system"
       }
     }
+  },
+  "plataforma": {
+    "titulo_eyebrow": "Platform Access",
+    "titulo": "Select your area of interest",
+    "portal_titulo": "Client Portal",
+    "portal_desc": "Track your service progress in real time and digitally sign off on maintenance work.",
+    "tecnico_titulo": "Technical Service / Workshop",
+    "tecnico_desc": "Access for technicians: maintenance checklists, photo evidence and offline sync.",
+    "admin_titulo": "Admin Panel",
+    "admin_desc": "Project and asset management, progress goals and reports for supervisors and management."
+  },
+  "footer": {
+    "descripcion": "Leader in design, installation and integration of physical security systems for strategic projects and critical infrastructure.",
+    "navegacion": "Navigation",
+    "inicio": "Home",
+    "servicios": "Services",
+    "derechos": "All rights reserved."
   }
 }

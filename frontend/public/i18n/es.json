@@ -4,10 +4,11 @@
     "sectores": "Sectores",
     "proyectos": "Proyectos",
     "contacto": "Contacto",
-    "cta": "Contáctenos"
+    "cta": "Contáctenos",
+    "plataforma": "Plataforma"
   },
   "hero": {
-    "eyebrow": "[NOMBRE_EMPRESA]",
+    "eyebrow": "NOVAXIS INTERNATIONAL",
     "title_pre": "Soluciones Completas de",
     "title_accent": "Seguridad Física",
     "subtitle": "Desde el estudio inicial hasta la instalación final, acompañamos cada proyecto estratégico de seguridad con experiencia y rigor técnico.",
@@ -154,6 +155,23 @@
         "proyecto2": "Sistema de gestión de tráfico"
       }
     }
+  },
+  "plataforma": {
+    "titulo_eyebrow": "Acceso a Plataforma",
+    "titulo": "Seleccione el área de su interés",
+    "portal_titulo": "Portal del Cliente",
+    "portal_desc": "Consulte en tiempo real el avance de su servicio y firme digitalmente sus mantenimientos.",
+    "tecnico_titulo": "Servicio Técnico / Taller",
+    "tecnico_desc": "Acceso para técnicos: checklist de mantenimiento, evidencia fotográfica y sincronización offline.",
+    "admin_titulo": "Panel Administrativo",
+    "admin_desc": "Gestión de proyectos, equipos, metas de avance y reportes para supervisión y gerencia."
+  },
+  "footer": {
+    "descripcion": "Líder en diseño, instalación e integración de sistemas de seguridad física para proyectos estratégicos e infraestructuras críticas.",
+    "navegacion": "Navegación",
+    "inicio": "Inicio",
+    "servicios": "Servicios",
+    "derechos": "Todos los derechos reservados."
   }
   
 }

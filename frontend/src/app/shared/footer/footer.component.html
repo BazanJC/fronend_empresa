@@ -1,0 +1,46 @@
+<footer class="border-t border-outline-variant pt-16 pb-8 px-6">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+    <div class="col-span-1">
+      <img src="/logo-novaxis.png" alt="NOVAXIS International" class="h-10 w-auto mb-4" />
+      <p class="text-sm text-on-surface-variant leading-relaxed">{{ 'footer.descripcion' | translate }}</p>
+      <div class="flex gap-3 mt-6">
+        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+           class="w-9 h-9 rounded-full border border-outline-variant flex items-center justify-center hover:border-primary transition-all text-sm">f</a>
+        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
+           class="w-9 h-9 rounded-full border border-outline-variant flex items-center justify-center hover:border-primary transition-all text-sm">in</a>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="text-sm font-medium text-primary mb-4">{{ 'footer.navegacion' | translate }}</h4>
+      <ul class="space-y-3 text-sm text-on-surface-variant">
+        <li><a href="#hero" class="hover:text-primary transition-colors">{{ 'footer.inicio' | translate }}</a></li>
+        <li><a href="#servicios" class="hover:text-primary transition-colors">{{ 'nav.servicios' | translate }}</a></li>
+        <li><a href="#sectores" class="hover:text-primary transition-colors">{{ 'nav.sectores' | translate }}</a></li>
+        <li><a href="#proyectos" class="hover:text-primary transition-colors">{{ 'nav.proyectos' | translate }}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="text-sm font-medium text-primary mb-4">{{ 'footer.servicios' | translate }}</h4>
+      <ul class="space-y-3 text-sm text-on-surface-variant">
+        <li>{{ 'servicios.card1_title' | translate }}</li>
+        <li>{{ 'servicios.card2_title' | translate }}</li>
+        <li>{{ 'servicios.card3_title' | translate }}</li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="text-sm font-medium text-primary mb-4">{{ 'nav.contacto' | translate }}</h4>
+      <ul class="space-y-3 text-sm text-on-surface-variant">
+        <li>contacto&#64;[dominio-empresa].com</li>
+        <li>+591 [TELÉFONO]</li>
+        <li>[CIUDAD], Bolivia</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto pt-6 border-t border-outline-variant text-center">
+    <p class="text-sm text-on-surface-variant">© {{ anioActual }} NOVAXIS International. {{ 'footer.derechos' | translate }}</p>
+  </div>
+</footer>

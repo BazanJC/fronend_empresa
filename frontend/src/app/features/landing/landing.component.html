@@ -1,17 +1,3 @@
-<div class="fixed top-4 right-4 z-50 flex items-center gap-2">
-  <div class="glass-card rounded-full flex overflow-hidden text-xs font-medium">
-    <button class="px-3 py-2 hover:bg-primary/20 transition-colors" (click)="cambiarIdioma('es')">ES</button>
-    <button class="px-3 py-2 hover:bg-primary/20 transition-colors" (click)="cambiarIdioma('en')">EN</button>
-    <button class="px-3 py-2 hover:bg-primary/20 transition-colors" (click)="cambiarIdioma('fr')">FR</button>
-  </div>
-  <button
-    class="w-11 h-11 rounded-full glass-card flex items-center justify-center text-lg"
-    (click)="theme.toggle()"
-    [attr.aria-label]="theme.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
-    {{ theme.isDark() ? '☀️' : '🌙' }}
-  </button>
-</div>
-
 <!-- ============================================================ -->
 <!-- HERO -->
 <!-- ============================================================ -->
