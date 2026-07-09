@@ -164,7 +164,20 @@
     "tecnico_titulo": "Service Technique / Atelier",
     "tecnico_desc": "Accès techniciens : checklist de maintenance, preuves photo et synchronisation hors ligne.",
     "admin_titulo": "Panneau d'Administration",
-    "admin_desc": "Gestion des projets, équipements, objectifs d'avancement et rapports pour la supervision."
+    "admin_desc": "Gestion des projets, équipements, objectifs d'avancement et rapports pour la supervision.",
+    "volver": "← Retour",
+    "login_titulo_cliente": "Accès à Votre Service",
+    "login_subtitulo_cliente": "Entrez votre numéro de commande RX et votre code d'accès pour suivre en temps réel l'avancement de votre équipement ou maintenance.",
+    "label_rx": "Numéro de Commande (RX)",
+    "placeholder_rx": "Ex : RX-20260228-...",
+    "label_codigo": "Code d'Accès",
+    "placeholder_codigo": "Code à 6 caractères",
+    "consultar": "Consulter Ma Commande",
+    "login_titulo_staff": "Accès au Système",
+    "login_subtitulo_staff": "Entrez vos identifiants pour continuer.",
+    "label_usuario": "Utilisateur",
+    "label_password": "Mot de passe",
+    "ingresar": "Se connecter"
   },
   "footer": {
     "descripcion": "Leader dans la conception, l'installation et l'intégration de systèmes de sécurité physique pour projets stratégiques et infrastructures critiques.",

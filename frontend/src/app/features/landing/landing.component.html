@@ -1,269 +1,365 @@
-<!-- ============================================================ -->
-<!-- HERO -->
-<!-- ============================================================ -->
-<section class="min-h-screen flex flex-col items-center justify-center text-center px-6 py-24" id="hero">
-  <p class="text-sm font-medium uppercase tracking-widest text-primary mb-4">{{ 'hero.eyebrow' | translate }}</p>
-  <h1 class="text-5xl md:text-6xl font-bold max-w-3xl leading-tight mb-6">
-    {{ 'hero.title_pre' | translate }} <span class="text-primary cyan-glow">{{ 'hero.title_accent' | translate }}</span>
-  </h1>
-  <p class="text-lg text-on-surface-variant max-w-xl mb-10">
-    {{ 'hero.subtitle' | translate }}
-  </p>
-  <div class="flex flex-wrap gap-4 justify-center">
-    <button class="bg-primary-container text-on-primary-container px-8 py-4 rounded-lg font-medium hover:brightness-110 transition-all">{{ 'hero.cta_primary' | translate }}</button>
-    <button class="border border-outline px-8 py-4 rounded-lg font-medium hover:bg-on-surface/5 transition-all">{{ 'hero.cta_secondary' | translate }}</button>
-  </div>
-</section>
-
-<!-- ============================================================ -->
-<!-- SERVICIOS -->
-<!-- ============================================================ -->
-<section class="py-24 px-6 max-w-6xl mx-auto" id="servicios">
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <article class="glass-card rounded-xl p-8">
-      <h3 class="text-xl font-semibold mb-3">{{ 'servicios.card1_title' | translate }}</h3>
-      <p class="text-on-surface-variant">{{ 'servicios.card1_desc' | translate }}</p>
-    </article>
-    <article class="glass-card rounded-xl p-8">
-      <h3 class="text-xl font-semibold mb-3">{{ 'servicios.card2_title' | translate }}</h3>
-      <p class="text-on-surface-variant">{{ 'servicios.card2_desc' | translate }}</p>
-    </article>
-    <article class="glass-card rounded-xl p-8">
-      <h3 class="text-xl font-semibold mb-3">{{ 'servicios.card3_title' | translate }}</h3>
-      <p class="text-on-surface-variant">{{ 'servicios.card3_desc' | translate }}</p>
-    </article>
-  </div>
-</section>
-
-<!-- ============================================================ -->
-<!-- LÍNEA DE TIEMPO / EXPANSIÓN -->
-<!-- ============================================================ -->
-<section class="py-24 px-6 max-w-6xl mx-auto" id="expansion">
-  <p class="text-sm font-medium text-primary uppercase tracking-widest mb-2">{{ 'expansion.eyebrow' | translate }}</p>
-  <h2 class="text-4xl font-bold mb-4">{{ 'expansion.title_pre' | translate }} <span class="text-primary">[CIUDAD_ORIGEN]</span> {{ 'expansion.title_post' | translate }}</h2>
-  <p class="text-on-surface-variant max-w-2xl mb-12">{{ 'expansion.intro' | translate }}</p>
-
-  <ol class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-    <li class="border-l-2 border-primary pl-4">
-      <span class="block text-2xl font-bold text-primary mb-1">[AÑO_1]</span>
-      <h4 class="font-semibold mb-1">{{ 'expansion.item1_title' | translate }}</h4>
-      <p class="text-sm text-on-surface-variant">{{ 'expansion.item1_desc' | translate }}</p>
-    </li>
-    <li class="border-l-2 border-primary pl-4">
-      <span class="block text-2xl font-bold text-primary mb-1">[AÑO_2]–[AÑO_3]</span>
-      <h4 class="font-semibold mb-1">{{ 'expansion.item2_title' | translate }}</h4>
-      <p class="text-sm text-on-surface-variant">{{ 'expansion.item2_desc' | translate }}</p>
-    </li>
-    <li class="border-l-2 border-primary pl-4">
-      <span class="block text-2xl font-bold text-primary mb-1">[AÑO_4]–[AÑO_5]</span>
-      <h4 class="font-semibold mb-1">{{ 'expansion.item3_title' | translate }}</h4>
-      <p class="text-sm text-on-surface-variant">{{ 'expansion.item3_desc' | translate }}</p>
-    </li>
-    <li class="border-l-2 border-primary pl-4">
-      <span class="block text-2xl font-bold text-primary mb-1">[AÑO_6]</span>
-      <h4 class="font-semibold mb-1">{{ 'expansion.item4_title' | translate }}</h4>
-      <p class="text-sm text-on-surface-variant">{{ 'expansion.item4_desc' | translate }}</p>
-    </li>
-  </ol>
-
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-16">
-    <div><strong class="block text-3xl text-primary">15+</strong><span class="text-sm text-on-surface-variant">{{ 'expansion.stat1_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">5+</strong><span class="text-sm text-on-surface-variant">{{ 'expansion.stat2_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">50+</strong><span class="text-sm text-on-surface-variant">{{ 'expansion.stat3_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">20+</strong><span class="text-sm text-on-surface-variant">{{ 'expansion.stat4_label' | translate }}</span></div>
+<main class="landing-page">
+  <div class="landing-atmosphere" aria-hidden="true">
+    <span class="atmosphere-grid"></span>
+    <span class="atmosphere-beam atmosphere-beam--one"></span>
+    <span class="atmosphere-beam atmosphere-beam--two"></span>
+    <span class="bokeh-particle particle-1"></span>
+    <span class="bokeh-particle particle-2"></span>
+    <span class="bokeh-particle particle-3"></span>
+    <span class="bokeh-particle particle-4"></span>
+    <span class="bokeh-particle particle-5"></span>
   </div>
 
-  <div class="glass-card rounded-xl p-10 text-center">
-    <h3 class="text-2xl font-semibold mb-2">{{ 'expansion.cta_title' | translate }}</h3>
-    <p class="text-on-surface-variant mb-6">{{ 'expansion.cta_desc' | translate }}</p>
-    <button class="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-medium">{{ 'expansion.cta_button' | translate }}</button>
-  </div>
-</section>
+  <!-- HERO -->
+  <section class="hero-section section-shell" id="hero">
+    <div class="hero-copy reveal">
+      <p class="section-eyebrow">{{ 'hero.eyebrow' | translate }}</p>
+      <h1 class="hero-title">
+        {{ 'hero.title_pre' | translate }}
+        <span>{{ 'hero.title_accent' | translate }}</span>
+      </h1>
+      <p class="hero-subtitle">
+        {{ 'hero.subtitle' | translate }}
+      </p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#servicios">{{ 'hero.cta_primary' | translate }}</a>
+        <a class="btn-secondary" href="#proyectos">{{ 'hero.cta_secondary' | translate }}</a>
+      </div>
+    </div>
 
-<!-- ============================================================ -->
-<!-- PRESENCIA INTERNACIONAL (mapa real — Módulo 5) -->
-<!-- ============================================================ -->
-<section class="py-24 px-6 max-w-6xl mx-auto">
-  <h2 class="text-4xl font-bold mb-8">{{ 'presencia.title_pre' | translate }} <span class="text-primary">{{ 'presencia.title_accent' | translate }}</span></h2>
-  <app-mapa-mundial class="block mb-8"></app-mapa-mundial>
-  <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    <li class="glass-card rounded-lg p-4"><strong>[PAÍS_1]</strong><br /><span class="text-sm text-on-surface-variant">{{ 'presencia.pais1_label' | translate }}</span></li>
-    <li class="glass-card rounded-lg p-4"><strong>[PAÍS_2]</strong><br /><span class="text-sm text-on-surface-variant">{{ 'presencia.pais2_label' | translate }}</span></li>
-    <li class="glass-card rounded-lg p-4"><strong>[PAÍS_3]</strong><br /><span class="text-sm text-on-surface-variant">{{ 'presencia.pais3_label' | translate }}</span></li>
-    <li class="glass-card rounded-lg p-4"><strong>[PAÍS_4]</strong><br /><span class="text-sm text-on-surface-variant">{{ 'presencia.pais4_label' | translate }}</span></li>
-  </ul>
-</section>
+    <div class="hero-visual reveal reveal-delay-200" aria-hidden="true">
+      <div class="security-radar">
+        <span class="radar-ring radar-ring--one"></span>
+        <span class="radar-ring radar-ring--two"></span>
+        <span class="radar-ring radar-ring--three"></span>
+        <span class="radar-sweep"></span>
+        <span class="radar-node radar-node--one"></span>
+        <span class="radar-node radar-node--two"></span>
+        <span class="radar-node radar-node--three"></span>
+        <div class="radar-core">
+          <img src="/logo-novaxis.png" alt="" />
+        </div>
+      </div>
 
-<!-- ============================================================ -->
-<!-- SECTORES -->
-<!-- ============================================================ -->
-<section class="py-24 px-6 max-w-6xl mx-auto" id="sectores">
-  <p class="text-sm font-medium text-primary uppercase tracking-widest mb-2">{{ 'sectores.eyebrow' | translate }}</p>
-  <h2 class="text-4xl font-bold mb-12 max-w-2xl">{{ 'sectores.title' | translate }}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-    <article class="glass-card rounded-xl p-8">
-      <h3 class="text-xl font-semibold mb-3">{{ 'sectores.card1_title' | translate }}</h3>
-      <p class="text-on-surface-variant">{{ 'sectores.card1_desc' | translate }}</p>
-    </article>
-    <article class="glass-card rounded-xl p-8">
-      <h3 class="text-xl font-semibold mb-3">{{ 'sectores.card2_title' | translate }}</h3>
-      <p class="text-on-surface-variant">{{ 'sectores.card2_desc' | translate }}</p>
-    </article>
-    <article class="glass-card rounded-xl p-8">
-      <h3 class="text-xl font-semibold mb-3">{{ 'sectores.card3_title' | translate }}</h3>
-      <p class="text-on-surface-variant">{{ 'sectores.card3_desc' | translate }}</p>
-    </article>
-  </div>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-    <div><strong class="block text-3xl text-primary">200+</strong><span class="text-sm text-on-surface-variant">{{ 'sectores.stat1_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">50+</strong><span class="text-sm text-on-surface-variant">{{ 'sectores.stat2_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">15+</strong><span class="text-sm text-on-surface-variant">{{ 'sectores.stat3_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">98%</strong><span class="text-sm text-on-surface-variant">{{ 'sectores.stat4_label' | translate }}</span></div>
-  </div>
-</section>
+      <div class="hero-metric hero-metric--left">
+        <strong>24/7</strong>
+        <span>Monitoreo activo</span>
+      </div>
+      <div class="hero-metric hero-metric--right">
+        <strong>98%</strong>
+        <span>Respuesta validada</span>
+      </div>
+    </div>
+  </section>
 
-<!-- ============================================================ -->
-<!-- EQUIPO CERTIFICADO -->
-<!-- ============================================================ -->
-<section class="py-24 px-6 max-w-6xl mx-auto" id="equipo">
-  <h2 class="text-4xl font-bold mb-4">{{ 'equipo.title_pre' | translate }} <span class="text-primary">{{ 'equipo.title_accent' | translate }}</span></h2>
-  <p class="text-on-surface-variant max-w-2xl mb-12">{{ 'equipo.desc' | translate }}</p>
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center mb-10">
-    <div><strong class="block text-3xl text-primary">15+</strong><span class="text-sm text-on-surface-variant">{{ 'equipo.stat1_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">200+</strong><span class="text-sm text-on-surface-variant">{{ 'equipo.stat2_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">10+</strong><span class="text-sm text-on-surface-variant">{{ 'equipo.stat3_label' | translate }}</span></div>
-    <div><strong class="block text-3xl text-primary">24/7</strong><span class="text-sm text-on-surface-variant">{{ 'equipo.stat4_label' | translate }}</span></div>
-  </div>
-  <ul class="flex flex-wrap gap-4">
-    <li class="glass-card rounded-full px-5 py-2 text-sm">{{ 'equipo.badge1' | translate }}</li>
-    <li class="glass-card rounded-full px-5 py-2 text-sm">{{ 'equipo.badge2' | translate }}</li>
-    <li class="glass-card rounded-full px-5 py-2 text-sm">{{ 'equipo.badge3' | translate }}</li>
-  </ul>
-</section>
+  <!-- SERVICIOS -->
+  <section class="section-band section-band--raised" id="servicios">
+    <div class="section-shell">
+      <div class="section-heading reveal">
+        <p class="section-eyebrow">Servicios</p>
+        <h2>Soluciones integradas para seguridad critica</h2>
+        <p>Una propuesta tecnica con diagnostico, diseno, instalacion y soporte operativo.</p>
+      </div>
 
-<!-- ============================================================ -->
-<!-- TECNOLOGÍAS -->
-<!-- ============================================================ -->
-<section class="py-24 px-6 max-w-6xl mx-auto" id="tecnologias">
-  <p class="text-sm font-medium text-primary uppercase tracking-widest mb-2">{{ 'tecnologias.eyebrow' | translate }}</p>
-  <h2 class="text-4xl font-bold mb-12 max-w-2xl">{{ 'tecnologias.title' | translate }}</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-    <article class="glass-card rounded-xl p-6">
-      <h3 class="text-lg font-semibold mb-2">{{ 'tecnologias.card1_title' | translate }}</h3>
-      <p class="text-sm text-on-surface-variant mb-4">{{ 'tecnologias.card1_desc' | translate }}</p>
-      <a href="#" class="text-primary text-sm font-medium">{{ 'tecnologias.link_more' | translate }}</a>
-    </article>
-    <article class="glass-card rounded-xl p-6">
-      <h3 class="text-lg font-semibold mb-2">{{ 'tecnologias.card2_title' | translate }}</h3>
-      <p class="text-sm text-on-surface-variant mb-4">{{ 'tecnologias.card2_desc' | translate }}</p>
-      <a href="#" class="text-primary text-sm font-medium">{{ 'tecnologias.link_more' | translate }}</a>
-    </article>
-    <article class="glass-card rounded-xl p-6">
-      <h3 class="text-lg font-semibold mb-2">{{ 'tecnologias.card3_title' | translate }}</h3>
-      <p class="text-sm text-on-surface-variant mb-4">{{ 'tecnologias.card3_desc' | translate }}</p>
-      <a href="#" class="text-primary text-sm font-medium">{{ 'tecnologias.link_more' | translate }}</a>
-    </article>
-    <article class="glass-card rounded-xl p-6">
-      <h3 class="text-lg font-semibold mb-2">{{ 'tecnologias.card4_title' | translate }}</h3>
-      <p class="text-sm text-on-surface-variant mb-4">{{ 'tecnologias.card4_desc' | translate }}</p>
-      <a href="#" class="text-primary text-sm font-medium">{{ 'tecnologias.link_more' | translate }}</a>
-    </article>
-  </div>
-</section>
+      <div class="feature-grid feature-grid--three">
+        <article class="feature-card reveal reveal-delay-100">
+          <span class="feature-index">01</span>
+          <h3>{{ 'servicios.card1_title' | translate }}</h3>
+          <p>{{ 'servicios.card1_desc' | translate }}</p>
+        </article>
+        <article class="feature-card reveal reveal-delay-200">
+          <span class="feature-index">02</span>
+          <h3>{{ 'servicios.card2_title' | translate }}</h3>
+          <p>{{ 'servicios.card2_desc' | translate }}</p>
+        </article>
+        <article class="feature-card reveal reveal-delay-300">
+          <span class="feature-index">03</span>
+          <h3>{{ 'servicios.card3_title' | translate }}</h3>
+          <p>{{ 'servicios.card3_desc' | translate }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<!-- ============================================================ -->
-<!-- PROYECTOS -->
-<!-- ============================================================ -->
-<section class="py-24 px-6 max-w-6xl mx-auto" id="proyectos">
-  <p class="text-sm font-medium text-primary uppercase tracking-widest mb-2">{{ 'proyectos.eyebrow' | translate }}</p>
-  <h2 class="text-4xl font-bold mb-12">{{ 'proyectos.title_pre' | translate }} <span class="text-primary">{{ 'proyectos.title_accent' | translate }}</span></h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <article class="glass-card rounded-xl p-6">
-      <span class="inline-block text-xs px-3 py-1 rounded-full bg-on-surface/10 mb-4">{{ 'proyectos.confidential' | translate }}</span>
-      <h3 class="text-lg font-semibold mb-2">[NOMBRE_PROYECTO_1]</h3>
-      <p class="text-sm text-on-surface-variant mb-4">{{ 'proyectos.desc_placeholder' | translate }}</p>
-      <a href="#" class="text-primary text-sm font-medium">{{ 'proyectos.view_project' | translate }}</a>
-    </article>
-    <article class="glass-card rounded-xl p-6">
-      <span class="inline-block text-xs px-3 py-1 rounded-full bg-on-surface/10 mb-4">{{ 'proyectos.confidential' | translate }}</span>
-      <h3 class="text-lg font-semibold mb-2">[NOMBRE_PROYECTO_2]</h3>
-      <p class="text-sm text-on-surface-variant mb-4">{{ 'proyectos.desc_placeholder' | translate }}</p>
-      <a href="#" class="text-primary text-sm font-medium">{{ 'proyectos.view_project' | translate }}</a>
-    </article>
-    <article class="glass-card rounded-xl p-6">
-      <span class="inline-block text-xs px-3 py-1 rounded-full bg-on-surface/10 mb-4">{{ 'proyectos.confidential' | translate }}</span>
-      <h3 class="text-lg font-semibold mb-2">[NOMBRE_PROYECTO_3]</h3>
-      <p class="text-sm text-on-surface-variant mb-4">{{ 'proyectos.desc_placeholder' | translate }}</p>
-      <a href="#" class="text-primary text-sm font-medium">{{ 'proyectos.view_project' | translate }}</a>
-    </article>
-  </div>
-</section>
+  <!-- LINEA DE TIEMPO / EXPANSION -->
+  <section class="section-band" id="expansion">
+    <div class="section-shell">
+      <div class="split-layout">
+        <div class="section-heading reveal">
+          <p class="section-eyebrow">{{ 'expansion.eyebrow' | translate }}</p>
+          <h2>
+            {{ 'expansion.title_pre' | translate }}
+            <span>[CIUDAD_ORIGEN]</span>
+            {{ 'expansion.title_post' | translate }}
+          </h2>
+          <p>{{ 'expansion.intro' | translate }}</p>
+        </div>
 
-<!-- ============================================================ -->
-<!-- CONTACTO -->
-<!-- ============================================================ -->
-<section class="py-24 px-6 max-w-4xl mx-auto" id="contacto">
-  <h2 class="text-4xl font-bold mb-4">{{ 'contacto.title_pre' | translate }} <span class="text-primary">{{ 'contacto.title_accent' | translate }}</span></h2>
-  <p class="text-on-surface-variant mb-10">{{ 'contacto.desc' | translate }}</p>
+        <div class="stat-panel reveal reveal-delay-200">
+          <div><strong>15+</strong><span>{{ 'expansion.stat1_label' | translate }}</span></div>
+          <div><strong>5+</strong><span>{{ 'expansion.stat2_label' | translate }}</span></div>
+          <div><strong>50+</strong><span>{{ 'expansion.stat3_label' | translate }}</span></div>
+          <div><strong>20+</strong><span>{{ 'expansion.stat4_label' | translate }}</span></div>
+        </div>
+      </div>
 
-  <form class="glass-card rounded-xl p-8 grid grid-cols-1 md:grid-cols-2 gap-5" (ngSubmit)="enviarContacto()">
-    <label class="flex flex-col gap-1 text-sm">
-      {{ 'contacto.label_telefono' | translate }}
-      <input type="tel" name="telefono" [(ngModel)]="contactoForm.telefono" placeholder="+591 700 00000" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary" />
-    </label>
-    <label class="flex flex-col gap-1 text-sm">
-      {{ 'contacto.label_tipo_proyecto' | translate }}
-      <select name="tipoProyecto" [(ngModel)]="contactoForm.tipoProyecto" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary">
-        <option value="">{{ 'contacto.option_select' | translate }}</option>
-        <option value="nuevo">{{ 'contacto.option_nuevo' | translate }}</option>
-        <option value="mantenimiento">{{ 'contacto.option_mantenimiento' | translate }}</option>
-        <option value="otro">{{ 'contacto.option_otro' | translate }}</option>
-      </select>
-    </label>
-    <label class="flex flex-col gap-1 text-sm">
-      {{ 'contacto.label_nombre' | translate }}
-      <input type="text" name="nombre" [(ngModel)]="contactoForm.nombre" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary" />
-    </label>
-    <label class="flex flex-col gap-1 text-sm">
-      {{ 'contacto.label_email' | translate }}
-      <input type="email" name="email" [(ngModel)]="contactoForm.email" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary" />
-    </label>
-    <label class="md:col-span-2 flex flex-col gap-1 text-sm">
-      {{ 'contacto.label_servicio' | translate }}
-      <select name="servicio" [(ngModel)]="contactoForm.servicio" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary">
-        <option value="">{{ 'contacto.option_select_servicio' | translate }}</option>
-        <option value="videovigilancia">{{ 'contacto.option_video' | translate }}</option>
-        <option value="control-acceso">{{ 'contacto.option_acceso' | translate }}</option>
-        <option value="alarmas">{{ 'contacto.option_alarmas' | translate }}</option>
-        <option value="integracion">{{ 'contacto.option_integracion' | translate }}</option>
-      </select>
-    </label>
-    <label class="md:col-span-2 flex flex-col gap-1 text-sm">
-      {{ 'contacto.label_mensaje' | translate }}
-      <textarea rows="4" name="mensaje" [(ngModel)]="contactoForm.mensaje" class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary"></textarea>
-    </label>
+      <ol class="timeline reveal reveal-delay-100">
+        <li>
+          <span>[ANO_1]</span>
+          <h4>{{ 'expansion.item1_title' | translate }}</h4>
+          <p>{{ 'expansion.item1_desc' | translate }}</p>
+        </li>
+        <li>
+          <span>[ANO_2]-[ANO_3]</span>
+          <h4>{{ 'expansion.item2_title' | translate }}</h4>
+          <p>{{ 'expansion.item2_desc' | translate }}</p>
+        </li>
+        <li>
+          <span>[ANO_4]-[ANO_5]</span>
+          <h4>{{ 'expansion.item3_title' | translate }}</h4>
+          <p>{{ 'expansion.item3_desc' | translate }}</p>
+        </li>
+        <li>
+          <span>[ANO_6]</span>
+          <h4>{{ 'expansion.item4_title' | translate }}</h4>
+          <p>{{ 'expansion.item4_desc' | translate }}</p>
+        </li>
+      </ol>
 
-    <label class="absolute -left-[9999px]" aria-hidden="true">
-      No llenar este campo
-      <input type="text" name="_hp" tabindex="-1" autocomplete="off" [(ngModel)]="contactoForm._hp" />
-    </label>
+      <div class="cta-strip reveal">
+        <div>
+          <h3>{{ 'expansion.cta_title' | translate }}</h3>
+          <p>{{ 'expansion.cta_desc' | translate }}</p>
+        </div>
+        <a class="btn-primary" href="#contacto">{{ 'expansion.cta_button' | translate }}</a>
+      </div>
+    </div>
+  </section>
 
-     <button
-      type="submit"
-      [disabled]="estadoEnvio() === 'enviando'"
-      class="md:col-span-2 bg-primary-container text-on-primary-container p-4 rounded-lg font-medium hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-      @if (estadoEnvio() === 'enviando') {
-        {{ 'contacto.enviando' | translate }}
-      } @else {
-        {{ 'contacto.submit' | translate }}
-      }
-    </button>
- 
-    @if (estadoEnvio() === 'exito') {
-      <p class="md:col-span-2 text-sm text-center text-primary">{{ 'contacto.exito' | translate }}</p>
-    }
-    @if (estadoEnvio() === 'error') {
-      <p class="md:col-span-2 text-sm text-center" style="color: #ff6b6b;">{{ 'contacto.error' | translate }}</p>
-    }
-  </form>
-</section>
+  <!-- PRESENCIA INTERNACIONAL -->
+  <section class="section-band section-band--map">
+    <div class="section-shell">
+      <div class="section-heading section-heading--center reveal">
+        <p class="section-eyebrow">Presencia</p>
+        <h2>
+          {{ 'presencia.title_pre' | translate }}
+          <span>{{ 'presencia.title_accent' | translate }}</span>
+        </h2>
+      </div>
+
+      <div class="map-frame reveal reveal-delay-100">
+        <app-mapa-mundial></app-mapa-mundial>
+      </div>
+
+      <ul class="country-grid reveal reveal-delay-200">
+        <li><strong>[PAIS_1]</strong><span>{{ 'presencia.pais1_label' | translate }}</span></li>
+        <li><strong>[PAIS_2]</strong><span>{{ 'presencia.pais2_label' | translate }}</span></li>
+        <li><strong>[PAIS_3]</strong><span>{{ 'presencia.pais3_label' | translate }}</span></li>
+        <li><strong>[PAIS_4]</strong><span>{{ 'presencia.pais4_label' | translate }}</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTORES -->
+  <section class="section-band" id="sectores">
+    <div class="section-shell">
+      <div class="section-heading reveal">
+        <p class="section-eyebrow">{{ 'sectores.eyebrow' | translate }}</p>
+        <h2>{{ 'sectores.title' | translate }}</h2>
+      </div>
+
+      <div class="sector-grid">
+        <article class="sector-card reveal reveal-delay-100">
+          <span></span>
+          <h3>{{ 'sectores.card1_title' | translate }}</h3>
+          <p>{{ 'sectores.card1_desc' | translate }}</p>
+        </article>
+        <article class="sector-card reveal reveal-delay-200">
+          <span></span>
+          <h3>{{ 'sectores.card2_title' | translate }}</h3>
+          <p>{{ 'sectores.card2_desc' | translate }}</p>
+        </article>
+        <article class="sector-card reveal reveal-delay-300">
+          <span></span>
+          <h3>{{ 'sectores.card3_title' | translate }}</h3>
+          <p>{{ 'sectores.card3_desc' | translate }}</p>
+        </article>
+      </div>
+
+      <div class="metric-row reveal">
+        <div><strong>200+</strong><span>{{ 'sectores.stat1_label' | translate }}</span></div>
+        <div><strong>50+</strong><span>{{ 'sectores.stat2_label' | translate }}</span></div>
+        <div><strong>15+</strong><span>{{ 'sectores.stat3_label' | translate }}</span></div>
+        <div><strong>98%</strong><span>{{ 'sectores.stat4_label' | translate }}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EQUIPO CERTIFICADO -->
+  <section class="section-band section-band--raised" id="equipo">
+    <div class="section-shell">
+      <div class="split-layout">
+        <div class="section-heading reveal">
+          <p class="section-eyebrow">Equipo</p>
+          <h2>
+            {{ 'equipo.title_pre' | translate }}
+            <span>{{ 'equipo.title_accent' | translate }}</span>
+          </h2>
+          <p>{{ 'equipo.desc' | translate }}</p>
+        </div>
+
+        <div class="certification-panel reveal reveal-delay-200">
+          <div><strong>15+</strong><span>{{ 'equipo.stat1_label' | translate }}</span></div>
+          <div><strong>200+</strong><span>{{ 'equipo.stat2_label' | translate }}</span></div>
+          <div><strong>10+</strong><span>{{ 'equipo.stat3_label' | translate }}</span></div>
+          <div><strong>24/7</strong><span>{{ 'equipo.stat4_label' | translate }}</span></div>
+        </div>
+      </div>
+
+      <ul class="badge-list reveal">
+        <li>{{ 'equipo.badge1' | translate }}</li>
+        <li>{{ 'equipo.badge2' | translate }}</li>
+        <li>{{ 'equipo.badge3' | translate }}</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- TECNOLOGIAS -->
+  <section class="section-band" id="tecnologias">
+    <div class="section-shell">
+      <div class="section-heading reveal">
+        <p class="section-eyebrow">{{ 'tecnologias.eyebrow' | translate }}</p>
+        <h2>{{ 'tecnologias.title' | translate }}</h2>
+      </div>
+
+      <div class="tech-grid">
+        <article class="tech-card reveal reveal-delay-100">
+          <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card1_desc' | translate }}</p>
+          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
+        </article>
+        <article class="tech-card reveal reveal-delay-200">
+          <h3>{{ 'tecnologias.card2_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card2_desc' | translate }}</p>
+          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
+        </article>
+        <article class="tech-card reveal reveal-delay-300">
+          <h3>{{ 'tecnologias.card3_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card3_desc' | translate }}</p>
+          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
+        </article>
+        <article class="tech-card reveal reveal-delay-300">
+          <h3>{{ 'tecnologias.card4_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card4_desc' | translate }}</p>
+          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section class="section-band section-band--projects" id="proyectos">
+    <div class="section-shell">
+      <div class="section-heading reveal">
+        <p class="section-eyebrow">{{ 'proyectos.eyebrow' | translate }}</p>
+        <h2>
+          {{ 'proyectos.title_pre' | translate }}
+          <span>{{ 'proyectos.title_accent' | translate }}</span>
+        </h2>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card reveal reveal-delay-100">
+          <span>{{ 'proyectos.confidential' | translate }}</span>
+          <h3>[NOMBRE_PROYECTO_1]</h3>
+          <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
+          <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
+        </article>
+        <article class="project-card reveal reveal-delay-200">
+          <span>{{ 'proyectos.confidential' | translate }}</span>
+          <h3>[NOMBRE_PROYECTO_2]</h3>
+          <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
+          <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
+        </article>
+        <article class="project-card reveal reveal-delay-300">
+          <span>{{ 'proyectos.confidential' | translate }}</span>
+          <h3>[NOMBRE_PROYECTO_3]</h3>
+          <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
+          <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="section-band section-band--contact" id="contacto">
+    <div class="section-shell contact-layout">
+      <div class="section-heading reveal">
+        <p class="section-eyebrow">Contacto</p>
+        <h2>
+          {{ 'contacto.title_pre' | translate }}
+          <span>{{ 'contacto.title_accent' | translate }}</span>
+        </h2>
+        <p>{{ 'contacto.desc' | translate }}</p>
+      </div>
+
+      <form class="contact-form reveal reveal-delay-100" (ngSubmit)="enviarContacto()">
+        <label>
+          {{ 'contacto.label_telefono' | translate }}
+          <input type="tel" name="telefono" [(ngModel)]="contactoForm.telefono" placeholder="+591 700 00000" />
+        </label>
+        <label>
+          {{ 'contacto.label_tipo_proyecto' | translate }}
+          <select name="tipoProyecto" [(ngModel)]="contactoForm.tipoProyecto">
+            <option value="">{{ 'contacto.option_select' | translate }}</option>
+            <option value="nuevo">{{ 'contacto.option_nuevo' | translate }}</option>
+            <option value="mantenimiento">{{ 'contacto.option_mantenimiento' | translate }}</option>
+            <option value="otro">{{ 'contacto.option_otro' | translate }}</option>
+          </select>
+        </label>
+        <label>
+          {{ 'contacto.label_nombre' | translate }}
+          <input type="text" name="nombre" [(ngModel)]="contactoForm.nombre" />
+        </label>
+        <label>
+          {{ 'contacto.label_email' | translate }}
+          <input type="email" name="email" [(ngModel)]="contactoForm.email" />
+        </label>
+        <label class="contact-form__wide">
+          {{ 'contacto.label_servicio' | translate }}
+          <select name="servicio" [(ngModel)]="contactoForm.servicio">
+            <option value="">{{ 'contacto.option_select_servicio' | translate }}</option>
+            <option value="videovigilancia">{{ 'contacto.option_video' | translate }}</option>
+            <option value="control-acceso">{{ 'contacto.option_acceso' | translate }}</option>
+            <option value="alarmas">{{ 'contacto.option_alarmas' | translate }}</option>
+            <option value="integracion">{{ 'contacto.option_integracion' | translate }}</option>
+          </select>
+        </label>
+        <label class="contact-form__wide">
+          {{ 'contacto.label_mensaje' | translate }}
+          <textarea rows="4" name="mensaje" [(ngModel)]="contactoForm.mensaje"></textarea>
+        </label>
+
+        <label class="honeypot" aria-hidden="true">
+          No llenar este campo
+          <input type="text" name="_hp" tabindex="-1" autocomplete="off" [(ngModel)]="contactoForm._hp" />
+        </label>
+
+        <button type="submit" [disabled]="estadoEnvio() === 'enviando'" class="contact-form__wide btn-primary">
+          @if (estadoEnvio() === 'enviando') {
+            {{ 'contacto.enviando' | translate }}
+          } @else {
+            {{ 'contacto.submit' | translate }}
+          }
+        </button>
+
+        @if (estadoEnvio() === 'exito') {
+          <p class="contact-form__wide form-message form-message--success">{{ 'contacto.exito' | translate }}</p>
+        }
+        @if (estadoEnvio() === 'error') {
+          <p class="contact-form__wide form-message form-message--error">{{ 'contacto.error' | translate }}</p>
+        }
+      </form>
+    </div>
+  </section>
+</main>

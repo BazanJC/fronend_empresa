@@ -1,36 +1,110 @@
-import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, inject, effect, AfterViewInit, OnDestroy, PLATFORM_ID, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { inject } from '@angular/core';
 import { ThemeService } from '../../core/theme.service';
+
+type TipoLogin = 'cliente' | 'staff';
 
 interface PlataformaOption {
   numero: string;
   tituloKey: string;
   descripcionKey: string;
   ruta: string;
+  tipoLogin: TipoLogin;
 }
 
 const PLATAFORMA_OPTIONS: PlataformaOption[] = [
-  { numero: '1', tituloKey: 'plataforma.portal_titulo', descripcionKey: 'plataforma.portal_desc', ruta: 'portal.[dominio-empresa].com' },
-  { numero: '2', tituloKey: 'plataforma.tecnico_titulo', descripcionKey: 'plataforma.tecnico_desc', ruta: 'tecnico.[dominio-empresa].com' },
-  { numero: '3', tituloKey: 'plataforma.admin_titulo', descripcionKey: 'plataforma.admin_desc', ruta: 'admin.[dominio-empresa].com' }
+  { numero: '1', tituloKey: 'plataforma.portal_titulo', descripcionKey: 'plataforma.portal_desc', ruta: 'portal.[dominio-empresa].com', tipoLogin: 'cliente' },
+  { numero: '2', tituloKey: 'plataforma.tecnico_titulo', descripcionKey: 'plataforma.tecnico_desc', ruta: 'tecnico.[dominio-empresa].com', tipoLogin: 'staff' },
+  { numero: '3', tituloKey: 'plataforma.admin_titulo', descripcionKey: 'plataforma.admin_desc', ruta: 'admin.[dominio-empresa].com', tipoLogin: 'staff' }
 ];
+
+const SECCIONES_OBSERVADAS = ['servicios', 'sectores', 'proyectos', 'contacto'];
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements AfterViewInit, OnDestroy {
   theme = inject(ThemeService);
   private translate = inject(TranslateService);
+  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private observer?: IntersectionObserver;
+
+  @ViewChildren('navLink') navLinks!: QueryList<ElementRef<HTMLAnchorElement>>;
 
   menuMovilAbierto = signal(false);
-  platformModalOpen = signal(false);
   platformOptions = PLATAFORMA_OPTIONS;
+
+  seccionActiva = signal<string>('');
+
+  // Posición/ancho del indicador deslizante (el "subrayado" que se mueve)
+  indicadorLeft = signal(0);
+  indicadorWidth = signal(0);
+  indicadorListo = signal(false); // evita que el indicador "viaje" desde 0 en la primera carga
+
+  platformModalOpen = signal(false);
+  vistaModal = signal<'seleccion' | 'login'>('seleccion');
+  opcionSeleccionada = signal<PlataformaOption | null>(null);
+
+  loginForm = { rx: '', codigoAcceso: '', usuario: '', password: '' };
+
+  constructor() {
+    // Cada vez que cambia la sección activa, recalcula dónde debe ir el indicador.
+    // effect() se re-ejecuta automáticamente cuando seccionActiva() cambia.
+    effect(() => {
+      const activa = this.seccionActiva();
+      if (activa) {
+        queueMicrotask(() => this.actualizarIndicador(activa));
+      }
+    });
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.isBrowser) return;
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.seccionActiva.set(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    );
+
+    SECCIONES_OBSERVADAS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) this.observer!.observe(el);
+    });
+
+    window.addEventListener('resize', this.onResize);
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+    if (this.isBrowser) window.removeEventListener('resize', this.onResize);
+  }
+
+  private onResize = (): void => {
+    this.actualizarIndicador(this.seccionActiva());
+  };
+
+  private actualizarIndicador(idActivo: string): void {
+    if (!this.navLinks) return;
+    const enlace = this.navLinks.find((ref) => ref.nativeElement.dataset['id'] === idActivo);
+    if (!enlace) return;
+
+    const el = enlace.nativeElement;
+    this.indicadorLeft.set(el.offsetLeft);
+    this.indicadorWidth.set(el.offsetWidth);
+    this.indicadorListo.set(true);
+  }
 
   cambiarIdioma(lang: string): void {
     this.translate.use(lang);
@@ -46,17 +120,29 @@ export class HeaderComponent {
 
   openPlatformModal(): void {
     this.platformModalOpen.set(true);
-    document.body.style.overflow = 'hidden';
+    this.vistaModal.set('seleccion');
+    this.opcionSeleccionada.set(null);
+    if (this.isBrowser) document.body.style.overflow = 'hidden';
   }
 
   closePlatformModal(): void {
     this.platformModalOpen.set(false);
-    document.body.style.overflow = 'auto';
+    if (this.isBrowser) document.body.style.overflow = 'auto';
   }
 
   seleccionarPlataforma(opcion: PlataformaOption): void {
-    // DEMO: en producción esto navega al subdominio real (opcion.ruta).
-    alert(`Demo: esto llevaría a ${opcion.ruta}`);
+    this.opcionSeleccionada.set(opcion);
+    this.vistaModal.set('login');
+  }
+
+  volverASeleccion(): void {
+    this.vistaModal.set('seleccion');
+    this.opcionSeleccionada.set(null);
+  }
+
+  enviarLogin(): void {
+    const opcion = this.opcionSeleccionada();
+    alert(`Demo: acceso enviado para ${opcion?.ruta}`);
     this.closePlatformModal();
   }
 }

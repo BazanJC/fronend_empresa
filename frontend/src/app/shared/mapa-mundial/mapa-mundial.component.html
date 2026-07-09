@@ -1,8 +1,15 @@
-<div #mapContainer class="relative w-full aspect-[2/1] rounded-xl overflow-hidden glass-card">
+<div
+  #mapContainer
+  class="relative w-full aspect-[2/1] rounded-xl overflow-hidden glass-card select-none"
+  [class.cursor-grab]="zoom() > 1"
+  (wheel)="onWheel($event)"
+  (pointerdown)="onPointerDown($event)"
+  (pointermove)="onPointerMove($event)"
+  (pointerup)="onPointerUp()"
+  (pointerleave)="onPointerUp(); onMarkerLeave()">
+
   @if (cargando()) {
-    <div class="absolute inset-0 flex items-center justify-center text-sm opacity-60">
-      {{ 'mapa.cargando' | translate }}
-    </div>
+    <div class="absolute inset-0 skeleton-shimmer"></div>
   }
 
   @if (errorCarga()) {
@@ -12,20 +19,51 @@
   }
 
   <svg [attr.viewBox]="viewBox()" class="w-full h-full block">
-    <!--
-      Un solo path con TODOS los países (fill + stroke).
-      El stroke traza el borde de cada país individualmente, por eso
-      aparecen tanto la costa exterior como las fronteras entre países.
-    -->
-    <path [attr.d]="countriesPathD()" class="country-shape"></path>
+    <g [attr.transform]="'translate(' + panX() + ' ' + panY() + ') scale(' + zoom() + ')'">
+      <!-- Resto del mundo -->
+      <path [attr.d]="otrosPaisesPathD()" class="country-shape"></path>
 
-    @for (m of marcadores(); track m.id) {
-      <g class="cursor-pointer" (click)="seleccionarPais(m)" role="button" [attr.aria-label]="'mapa.paises.' + m.id + '.nombre' | translate">
-        <circle [attr.cx]="m.x" [attr.cy]="m.y" r="6" class="marker-ring"></circle>
-        <circle [attr.cx]="m.x" [attr.cy]="m.y" r="4.5" fill="var(--color-primary-container)" stroke="var(--color-surface)" stroke-width="1"></circle>
-      </g>
-    }
+      <!-- Países con oficina: territorio resaltado con el color de marca -->
+      @for (p of paisesResaltados(); track p.id) {
+        <path [attr.d]="p.d" class="country-shape-oficina"></path>
+      }
+
+      <!-- Marcadores (stopPropagation: evita que el clic aquí dispare el arrastre del mapa) -->
+      @for (m of marcadores(); track m.id) {
+        <g
+          class="cursor-pointer marker-group"
+          (pointerdown)="$event.stopPropagation()"
+          (click)="seleccionarPais(m)"
+          (mouseenter)="onMarkerEnter(m, $event)"
+          (mousemove)="onMarkerMove($event)"
+          (mouseleave)="onMarkerLeave()"
+          role="button"
+          [attr.aria-label]="'mapa.paises.' + m.id + '.nombre' | translate">
+          <circle [attr.cx]="m.x" [attr.cy]="m.y" r="6" class="marker-ring"></circle>
+          <circle [attr.cx]="m.x" [attr.cy]="m.y" r="4.5" fill="var(--color-primary-container)" stroke="var(--color-surface)" stroke-width="1"></circle>
+        </g>
+      }
+    </g>
   </svg>
+
+  <!-- Tooltip con el nombre del país -->
+  @if (tooltipVisible()) {
+    <div
+      class="absolute pointer-events-none glass-card px-3 py-1.5 rounded-lg text-xs font-semibold z-10 whitespace-nowrap"
+      [style.left.px]="tooltipX() + 14"
+      [style.top.px]="tooltipY() - 14">
+      {{ tooltipTexto() }}
+    </div>
+  }
+
+  <!-- Controles de zoom (stopPropagation: evita que el clic aquí dispare el arrastre del mapa) -->
+  <div class="absolute bottom-3 right-3 flex flex-col gap-1 z-10" (pointerdown)="$event.stopPropagation()">
+    <button class="w-8 h-8 rounded-lg glass-card flex items-center justify-center hover:bg-primary/20 transition-colors font-bold" (click)="zoomIn()" aria-label="Acercar">+</button>
+    <button class="w-8 h-8 rounded-lg glass-card flex items-center justify-center hover:bg-primary/20 transition-colors font-bold" (click)="zoomOut()" aria-label="Alejar">−</button>
+    @if (zoom() > 1) {
+      <button class="w-8 h-8 rounded-lg glass-card flex items-center justify-center hover:bg-primary/20 transition-colors text-sm" (click)="resetVista()" aria-label="Restablecer vista">⟲</button>
+    }
+  </div>
 </div>
 
 <!-- Modal de detalle del país -->
@@ -39,7 +77,6 @@
     </span>
     <h3 class="text-2xl font-bold mb-4">{{ 'mapa.paises.' + pais.id + '.nombre' | translate }}</h3>
 
-    <!-- Imagen de referencia (placeholder — reemplazar por foto real del cliente) -->
     <img
       [src]="'https://picsum.photos/seed/' + pais.imagenSeed + '/600/400'"
       class="w-full h-40 object-cover rounded-lg mb-6 img-tinted"

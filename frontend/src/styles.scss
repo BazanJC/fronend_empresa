@@ -6,22 +6,22 @@
 
 // --- Tema CLARO (valores por defecto) ---
 @theme {
-  --color-primary: #0061a5;
-  --color-primary-container: #0099ff;
+  --color-primary: #155b8d;
+  --color-primary-container: #1d8ed8;
   --color-on-primary: #ffffff;
   --color-on-primary-container: #ffffff;
 
-  --color-surface: #f7f9fa;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #eef1f2;
-  --color-surface-container: #e6e9ea;
-  --color-surface-container-high: #dde1e3;
-  --color-surface-container-highest: #d3d8da;
+  --color-surface: #eef4f7;
+  --color-surface-container-lowest: #f8fbfc;
+  --color-surface-container-low: #e5edf2;
+  --color-surface-container: #dbe6ec;
+  --color-surface-container-high: #cfdee7;
+  --color-surface-container-highest: #c2d3dd;
 
-  --color-on-surface: #16191a;
-  --color-on-surface-variant: #44494c;
-  --color-outline: #74797c;
-  --color-outline-variant: #c4c9cc;
+  --color-on-surface: #142027;
+  --color-on-surface-variant: #4c5d68;
+  --color-outline: #738792;
+  --color-outline-variant: #b8c8d1;
 
   --font-display: "Hanken Grotesk", sans-serif;
   --font-body: "Inter", sans-serif;
@@ -52,7 +52,9 @@ html {
 }
 
 body {
-  background-color: var(--color-surface);
+  background:
+    radial-gradient(circle at 14% 0%, color-mix(in srgb, var(--color-primary-container) 12%, transparent), transparent 28rem),
+    linear-gradient(180deg, var(--color-surface) 0%, var(--color-surface-container-low) 100%);
   color: var(--color-on-surface);
   transition: background-color 0.3s ease, color 0.3s ease;
   font-family: var(--font-body);
@@ -60,16 +62,24 @@ body {
 
 // --- Tarjeta con efecto vidrio, se adapta a ambos temas ---
 .glass-card {
-  background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
-  backdrop-filter: blur(12px);
-  border: 1px solid color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--color-surface-container-lowest) 82%, transparent), color-mix(in srgb, var(--color-surface-container-low) 58%, transparent));
+  backdrop-filter: blur(14px);
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 72%, transparent);
+  box-shadow: 0 18px 44px color-mix(in srgb, #4d6b7c 12%, transparent);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 
   &:hover {
     border-color: var(--color-primary-container);
-    box-shadow: 0 0 30px color-mix(in srgb, var(--color-primary-container) 20%, transparent);
+    box-shadow: 0 22px 52px color-mix(in srgb, var(--color-primary-container) 18%, transparent);
     transform: translateY(-4px);
   }
+}
+
+.dark .glass-card {
+  background: color-mix(in srgb, var(--color-on-surface) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+  box-shadow: none;
 }
 
 .cyan-glow {
@@ -198,8 +208,14 @@ body {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(0, 0, 0, 0.7);
+  background:
+    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--color-primary-container) 14%, transparent), transparent 30rem),
+    color-mix(in srgb, var(--color-surface) 72%, transparent);
   backdrop-filter: blur(8px);
+}
+
+.dark .tech-modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
 }
  
 .modal-zoom {
@@ -243,8 +259,14 @@ body {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: rgba(0, 0, 0, 0.7);
+  background:
+    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--color-primary-container) 14%, transparent), transparent 30rem),
+    color-mix(in srgb, var(--color-surface) 72%, transparent);
   backdrop-filter: blur(8px);
+}
+
+.dark .tech-modal-overlay {
+  background: rgba(0, 0, 0, 0.7);
 }
  
 .modal-zoom {
@@ -254,4 +276,64 @@ body {
 @keyframes modalZoomIn {
   from { transform: scale(0.92); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+// ============================================================
+// AGREGA esto al FINAL de frontend/src/styles.scss
+// (mejoras del mapa: territorio resaltado, hover, skeleton)
+// ============================================================
+
+// --- Países normales (resto del mundo) ---
+.country-shape {
+  fill: var(--color-surface-container-high);
+  stroke: var(--color-outline-variant);
+  stroke-width: 0.5;
+}
+
+// --- Países donde hay oficina: resaltados con el color de marca ---
+.country-shape-oficina {
+  fill: color-mix(in srgb, var(--color-primary-container) 35%, var(--color-surface-container-high));
+  stroke: var(--color-primary-container);
+  stroke-width: 1.2;
+  transition: fill 0.3s ease;
+}
+
+// --- Hover en los marcadores: crecen y brillan ---
+.marker-group {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.25s ease;
+
+  &:hover {
+    transform: scale(1.35);
+  }
+
+  &:hover circle:not(.marker-ring) {
+    filter: drop-shadow(0 0 6px var(--color-primary-container));
+  }
+}
+
+// --- Skeleton / shimmer mientras carga el mapa ---
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-container) 25%,
+    var(--color-surface-container-high) 50%,
+    var(--color-surface-container) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+// --- Cursores para el zoom/arrastre del mapa ---
+.cursor-grab {
+  cursor: grab;
+}
+.cursor-grab:active {
+  cursor: grabbing;
 }

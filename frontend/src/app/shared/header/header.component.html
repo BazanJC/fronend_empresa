@@ -6,12 +6,36 @@
       <img src="/logo-novaxis.png" alt="NOVAXIS International" class="h-10 w-auto" />
     </a>
 
-    <!-- Navegación (desktop) -->
-    <div class="hidden lg:flex items-center gap-8">
-      <a href="#servicios" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">{{ 'nav.servicios' | translate }}</a>
-      <a href="#sectores" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">{{ 'nav.sectores' | translate }}</a>
-      <a href="#proyectos" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">{{ 'nav.proyectos' | translate }}</a>
-      <a href="#contacto" class="text-sm font-medium text-on-surface-variant hover:text-primary transition-colors">{{ 'nav.contacto' | translate }}</a>
+     <!-- Navegación (desktop) — con indicador deslizante suave -->
+    <div class="relative hidden lg:flex items-center gap-8">
+      @for (item of [
+        { id: 'servicios', key: 'nav.servicios' },
+        { id: 'sectores', key: 'nav.sectores' },
+        { id: 'proyectos', key: 'nav.proyectos' },
+        { id: 'contacto', key: 'nav.contacto' }
+      ]; track item.id) {
+        <a
+          #navLink
+          [attr.data-id]="item.id"
+          [href]="'#' + item.id"
+          class="text-sm pb-1 transition-all duration-300"
+          [class.text-primary]="seccionActiva() === item.id"
+          [class.font-semibold]="seccionActiva() === item.id"
+          [class.cyan-glow]="seccionActiva() === item.id"
+          [class.text-on-surface-variant]="seccionActiva() !== item.id"
+          [class.font-medium]="seccionActiva() !== item.id"
+          [class.hover:text-primary]="seccionActiva() !== item.id">
+          {{ item.key | translate }}
+        </a>
+      }
+ 
+      <!-- Indicador deslizante: se mueve suavemente bajo el link activo -->
+      <span
+        class="absolute bottom-0 h-0.5 bg-primary rounded-full transition-all duration-500 ease-out"
+        [class.opacity-0]="!indicadorListo()"
+        [style.left.px]="indicadorLeft()"
+        [style.width.px]="indicadorWidth()">
+      </span>
     </div>
 
     <!-- Acciones -->
@@ -44,10 +68,18 @@
   <!-- Menú móvil -->
   @if (menuMovilAbierto()) {
     <div class="lg:hidden glass-card mx-4 mb-4 rounded-xl p-4 flex flex-col gap-3">
-      <a href="#servicios" (click)="cerrarMenuMovil()" class="text-sm font-medium py-2">{{ 'nav.servicios' | translate }}</a>
-      <a href="#sectores" (click)="cerrarMenuMovil()" class="text-sm font-medium py-2">{{ 'nav.sectores' | translate }}</a>
-      <a href="#proyectos" (click)="cerrarMenuMovil()" class="text-sm font-medium py-2">{{ 'nav.proyectos' | translate }}</a>
-      <a href="#contacto" (click)="cerrarMenuMovil()" class="text-sm font-medium py-2">{{ 'nav.contacto' | translate }}</a>
+      @for (item of [
+        { id: 'servicios', key: 'nav.servicios' },
+        { id: 'sectores', key: 'nav.sectores' },
+        { id: 'proyectos', key: 'nav.proyectos' },
+        { id: 'contacto', key: 'nav.contacto' }
+      ]; track item.id) {
+        <a [href]="'#' + item.id" (click)="cerrarMenuMovil()"
+           class="text-sm font-medium py-2"
+           [class.text-primary]="seccionActiva() === item.id">
+          {{ item.key | translate }}
+        </a>
+      }
       <div class="flex items-center gap-2 pt-2 border-t border-outline-variant">
         <button class="px-3 py-1 text-xs glass-card rounded-full" (click)="cambiarIdioma('es')">ES</button>
         <button class="px-3 py-1 text-xs glass-card rounded-full" (click)="cambiarIdioma('en')">EN</button>
@@ -66,23 +98,80 @@
 <!-- Espaciador para que el contenido no quede tapado por la nav fija -->
 <div class="h-[64px]"></div>
 
-<!-- Modal de plataforma -->
+<!-- ============================================================ -->
+<!-- Modal de plataforma: paso 1 = selección, paso 2 = login -->
+<!-- ============================================================ -->
 @if (platformModalOpen()) {
 <div class="tech-modal-overlay" (click)="closePlatformModal()">
   <div class="relative w-full max-w-xl glass-card p-10 modal-zoom rounded-xl" (click)="$event.stopPropagation()">
     <button class="absolute top-6 right-6 text-on-surface-variant hover:text-primary transition-colors text-2xl" (click)="closePlatformModal()">✕</button>
-    <span class="text-sm font-medium text-primary mb-2 block uppercase tracking-widest">{{ 'plataforma.titulo_eyebrow' | translate }}</span>
-    <h3 class="text-2xl font-bold mb-8">{{ 'plataforma.titulo' | translate }}</h3>
-    <div class="space-y-4">
-      @for (opcion of platformOptions; track opcion.numero) {
-        <button
-          class="w-full text-left glass-card rounded-xl p-6 hover:border-primary/60 transition-all"
-          (click)="seleccionarPlataforma(opcion)">
-          <h4 class="text-lg font-semibold mb-1">{{ opcion.numero }}. {{ opcion.tituloKey | translate }}</h4>
-          <p class="text-sm text-on-surface-variant">{{ opcion.descripcionKey | translate }}</p>
-        </button>
+
+    @if (vistaModal() === 'seleccion') {
+      <!-- PASO 1: elegir a qué portal se quiere entrar -->
+      <span class="text-sm font-medium text-primary mb-2 block uppercase tracking-widest">{{ 'plataforma.titulo_eyebrow' | translate }}</span>
+      <h3 class="text-2xl font-bold mb-8">{{ 'plataforma.titulo' | translate }}</h3>
+      <div class="space-y-4">
+        @for (opcion of platformOptions; track opcion.numero) {
+          <button
+            class="w-full text-left glass-card rounded-xl p-6 hover:border-primary/60 transition-all"
+            (click)="seleccionarPlataforma(opcion)">
+            <h4 class="text-lg font-semibold mb-1">{{ opcion.numero }}. {{ opcion.tituloKey | translate }}</h4>
+            <p class="text-sm text-on-surface-variant">{{ opcion.descripcionKey | translate }}</p>
+          </button>
+        }
+      </div>
+    }
+
+    @if (vistaModal() === 'login' && opcionSeleccionada(); as opcion) {
+      <!-- PASO 2: formulario de acceso, según el tipo de portal elegido -->
+      <button class="text-sm text-primary mb-6 flex items-center gap-1 hover:gap-2 transition-all" (click)="volverASeleccion()">
+        {{ 'plataforma.volver' | translate }}
+      </button>
+
+      @if (opcion.tipoLogin === 'cliente') {
+        <!-- Login estilo "Acceso a su Servicio" (portal del cliente) -->
+        <h3 class="text-2xl font-bold mb-3 text-center">{{ 'plataforma.login_titulo_cliente' | translate }}</h3>
+        <p class="text-sm text-on-surface-variant text-center mb-8">{{ 'plataforma.login_subtitulo_cliente' | translate }}</p>
+
+        <form class="space-y-5" (ngSubmit)="enviarLogin()">
+          <label class="flex flex-col gap-1 text-sm font-semibold">
+            {{ 'plataforma.label_rx' | translate }}
+            <input type="text" name="rx" [(ngModel)]="loginForm.rx"
+                   [placeholder]="'plataforma.placeholder_rx' | translate"
+                   class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
+          </label>
+          <label class="flex flex-col gap-1 text-sm font-semibold">
+            {{ 'plataforma.label_codigo' | translate }}
+            <input type="text" name="codigoAcceso" [(ngModel)]="loginForm.codigoAcceso"
+                   [placeholder]="'plataforma.placeholder_codigo' | translate"
+                   class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
+          </label>
+          <button type="submit" class="w-full bg-primary-container text-on-primary-container p-4 rounded-lg font-semibold hover:brightness-110 transition-all">
+            {{ 'plataforma.consultar' | translate }}
+          </button>
+        </form>
+      } @else {
+        <!-- Login estilo "Acceso al Sistema" (técnico / admin) -->
+        <h3 class="text-2xl font-bold mb-3 text-center">{{ 'plataforma.login_titulo_staff' | translate }}</h3>
+        <p class="text-sm text-on-surface-variant text-center mb-8">{{ 'plataforma.login_subtitulo_staff' | translate }}</p>
+
+        <form class="space-y-5" (ngSubmit)="enviarLogin()">
+          <label class="flex flex-col gap-1 text-sm font-semibold">
+            {{ 'plataforma.label_usuario' | translate }}
+            <input type="text" name="usuario" [(ngModel)]="loginForm.usuario"
+                   class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
+          </label>
+          <label class="flex flex-col gap-1 text-sm font-semibold">
+            {{ 'plataforma.label_password' | translate }}
+            <input type="password" name="password" [(ngModel)]="loginForm.password"
+                   class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
+          </label>
+          <button type="submit" class="w-full bg-primary-container text-on-primary-container p-4 rounded-lg font-semibold hover:brightness-110 transition-all">
+            {{ 'plataforma.ingresar' | translate }}
+          </button>
+        </form>
       }
-    </div>
+    }
   </div>
 </div>
 }

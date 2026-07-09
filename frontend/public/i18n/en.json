@@ -164,7 +164,20 @@
     "tecnico_titulo": "Technical Service / Workshop",
     "tecnico_desc": "Access for technicians: maintenance checklists, photo evidence and offline sync.",
     "admin_titulo": "Admin Panel",
-    "admin_desc": "Project and asset management, progress goals and reports for supervisors and management."
+    "admin_desc": "Project and asset management, progress goals and reports for supervisors and management.",
+    "volver": "← Back",
+    "login_titulo_cliente": "Access Your Service",
+    "login_subtitulo_cliente": "Enter your RX order number and access code to see the real-time progress of your equipment or maintenance.",
+    "label_rx": "Order Number (RX)",
+    "placeholder_rx": "e.g., RX-20260228-...",
+    "label_codigo": "Access Code",
+    "placeholder_codigo": "6-character code",
+    "consultar": "Check My Order",
+    "login_titulo_staff": "System Access",
+    "login_subtitulo_staff": "Enter your credentials to continue.",
+    "label_usuario": "Username",
+    "label_password": "Password",
+    "ingresar": "Log In"
   },
   "footer": {
     "descripcion": "Leader in design, installation and integration of physical security systems for strategic projects and critical infrastructure.",

@@ -164,7 +164,20 @@
     "tecnico_titulo": "Servicio Técnico / Taller",
     "tecnico_desc": "Acceso para técnicos: checklist de mantenimiento, evidencia fotográfica y sincronización offline.",
     "admin_titulo": "Panel Administrativo",
-    "admin_desc": "Gestión de proyectos, equipos, metas de avance y reportes para supervisión y gerencia."
+    "admin_desc": "Gestión de proyectos, equipos, metas de avance y reportes para supervisión y gerencia.",
+    "volver": "← Volver",
+    "login_titulo_cliente": "Acceso a su Servicio",
+    "login_subtitulo_cliente": "Ingrese su orden RX y código de acceso para ver en tiempo real el progreso de su equipo o mantenimiento.",
+    "label_rx": "Número de Orden (RX)",
+    "placeholder_rx": "Ej: RX-20260228-...",
+    "label_codigo": "Código de Acceso",
+    "placeholder_codigo": "Código de 6 letras/números",
+    "consultar": "Consultar mi Orden",
+    "login_titulo_staff": "Acceso al Sistema",
+    "login_subtitulo_staff": "Ingrese sus credenciales para continuar.",
+    "label_usuario": "Usuario",
+    "label_password": "Contraseña",
+    "ingresar": "Ingresar"
   },
   "footer": {
     "descripcion": "Líder en diseño, instalación e integración de sistemas de seguridad física para proyectos estratégicos e infraestructuras críticas.",
