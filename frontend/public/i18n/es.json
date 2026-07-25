@@ -21,7 +21,10 @@
     "card2_title": "Diseño & Concepción",
     "card2_desc": "Concebimos soluciones a medida, seleccionando los equipos más adecuados según sus necesidades específicas.",
     "card3_title": "Instalación & Integración",
-    "card3_desc": "Nuestros técnicos certificados instalan y configuran cada sistema con calidad profesional garantizada."
+    "card3_desc": "Nuestros técnicos certificados instalan y configuran cada sistema con calidad profesional garantizada.",
+    "eyebrow": "Servicios",
+    "heading": "Soluciones integradas para seguridad crítica",
+    "heading_desc": "Una propuesta técnica con diagnóstico, diseño, instalación y soporte operativo."
   },
   "expansion": {
     "eyebrow": "A 8 Pasos de Nosotros",
@@ -52,6 +55,7 @@
     "pais2_label": "Oficina regional",
     "pais3_label": "Proyectos activos",
     "pais4_label": "Proyectos activos"
+
   },
   "sectores": {
     "eyebrow": "Sectores de Excelencia",
@@ -68,6 +72,7 @@
     "stat4_label": "Tasa de Satisfacción"
   },
   "equipo": {
+    "eyebrow": "Equipo",
     "title_pre": "Un Equipo de",
     "title_accent": "Profesionales Certificados",
     "desc": "Nuestros técnicos son ingenieros altamente calificados y capacitados para las especialidades de la industria de la seguridad física.",
@@ -101,6 +106,7 @@
     "view_project": "Ver el proyecto ↗"
   },
   "contacto": {
+    "eyebrow": "Contacto",
     "title_pre": "Comencemos Su",
     "title_accent": "Proyecto",
     "desc": "Cuéntenos sobre su necesidad de seguridad física y le responderemos con la mejor propuesta en las próximas 24 horas hábiles.",

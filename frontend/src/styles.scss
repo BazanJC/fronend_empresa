@@ -1,50 +1,74 @@
 /* You can add global styles to this file, and also import other style files */
-// ============================================================
-// REEMPLAZA frontend/src/styles.scss por esto
-// ============================================================
 @use "tailwindcss";
 
-// --- Tema CLARO (valores por defecto) ---
 @theme {
-  --color-primary: #155b8d;
-  --color-primary-container: #1d8ed8;
+  // --- Rampa principal: azul de marca (deriva del triángulo del logo) ---
+  --color-brand-50: #E6F1FF;
+  --color-brand-100: #B8D8FF;
+  --color-brand-200: #9FCAFF;
+  --color-brand-300: #5CA5FF;
+  --color-brand-400: #2E8CFF;
+  --color-brand-500: #0073FF;
+  --color-brand-600: #005ED1;
+  --color-brand-700: #0049A3;
+  --color-brand-800: #003575;
+  --color-brand-900: #002047;
+  --color-brand-950: #0B1F33; // ajustado para que tire a marino, no a negro puro
+
+  // --- Rampa secundaria: celeste del "ojo" del logo (para glow/degradados) ---
+  --color-accent-50: #EAFBFF;
+  --color-accent-100: #C9F3FF;
+  --color-accent-200: #9FE8FF;
+  --color-accent-300: #6BD9FF;
+  --color-accent-400: #4FC3F7; // tono exacto del brillo del ojo
+  --color-accent-500: #29AEF0;
+  --color-accent-600: #1690CE;
+  --color-accent-700: #0F70A3;
+}
+
+// --- Tema CLARO: alias semánticos apuntando a la rampa ---
+@theme {
+  --color-primary: var(--color-brand-700);
+  --color-primary-container: var(--color-brand-500);
   --color-on-primary: #ffffff;
   --color-on-primary-container: #ffffff;
 
-  --color-surface: #eef4f7;
-  --color-surface-container-lowest: #f8fbfc;
-  --color-surface-container-low: #e5edf2;
-  --color-surface-container: #dbe6ec;
-  --color-surface-container-high: #cfdee7;
-  --color-surface-container-highest: #c2d3dd;
+  --color-surface: #F6FAFF;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: var(--color-brand-50);
+  --color-surface-container: #E2EEFB;
+  --color-surface-container-high: var(--color-brand-100);
+  --color-surface-container-highest: #A9CBF2;
 
-  --color-on-surface: #142027;
-  --color-on-surface-variant: #4c5d68;
-  --color-outline: #738792;
-  --color-outline-variant: #b8c8d1;
-
-  --font-display: "Hanken Grotesk", sans-serif;
-  --font-body: "Inter", sans-serif;
+  --color-on-surface: var(--color-brand-950);
+  --color-on-surface-variant: var(--color-brand-700);
+  --color-outline: var(--color-brand-400);
+  --color-outline-variant: var(--color-brand-200);
 }
 
-// --- Tema OSCURO (sobreescribe las mismas variables) ---
+// --- Tema OSCURO ---
 .dark {
-  --color-primary: #9fcaff;
-  --color-primary-container: #0099ff;
-  --color-on-primary: #003259;
-  --color-on-primary-container: #002f54;
+  --color-primary: var(--color-accent-300);
+  --color-primary-container: var(--color-brand-500);
+  --color-on-primary: var(--color-brand-950);
+  --color-on-primary-container: #ffffff;
 
-  --color-surface: #101415;
-  --color-surface-container-lowest: #0b0f10;
-  --color-surface-container-low: #191c1e;
-  --color-surface-container: #1d2022;
-  --color-surface-container-high: #272a2c;
-  --color-surface-container-highest: #323537;
+  --color-surface: var(--color-brand-950);
+  --color-surface-container-lowest: #071523;
+  --color-surface-container-low: #0E2035;
+  --color-surface-container: var(--color-brand-900);
+  --color-surface-container-high: #10294A;
+  --color-surface-container-highest: var(--color-brand-800);
 
-  --color-on-surface: #e0e3e5;
-  --color-on-surface-variant: #bfc7d5;
-  --color-outline: #89919e;
-  --color-outline-variant: #3f4753;
+  --color-on-surface: var(--color-accent-50);
+  --color-on-surface-variant: var(--color-brand-200);
+  --color-outline: var(--color-brand-600);
+  --color-outline-variant: var(--color-brand-800);
+}
+
+// --- Degradado de marca reutilizable (botones, glow, hero) ---
+:root {
+  --gradient-brand: linear-gradient(135deg, var(--color-brand-800), var(--color-brand-500) 55%, var(--color-accent-400));
 }
 
 html {
@@ -278,11 +302,6 @@ body {
   to { transform: scale(1); opacity: 1; }
 }
 
-// ============================================================
-// AGREGA esto al FINAL de frontend/src/styles.scss
-// (mejoras del mapa: territorio resaltado, hover, skeleton)
-// ============================================================
-
 // --- Países normales (resto del mundo) ---
 .country-shape {
   fill: var(--color-surface-container-high);
@@ -336,4 +355,56 @@ body {
 }
 .cursor-grab:active {
   cursor: grabbing;
+}
+
+.preloader-overlay {
+  transition: opacity 600ms ease;
+}
+ 
+.preloader-overlay--closing {
+  opacity: 0;
+}
+ 
+.preloader-content {
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), opacity 600ms ease;
+}
+ 
+.preloader-content--closing {
+  transform: scale(1.08);
+  opacity: 0;
+}
+  
+// --- Reveal del hero sincronizado con la salida del preloader (~1.9-2.5s) ---
+.reveal-delay-hero { transition-delay: 2100ms; }
+.reveal-delay-hero-2 { transition-delay: 2300ms; }
+ 
+// --- Fotos (sectores/tecnologías/proyectos): entran desenfocadas y hacen foco ---
+// Nota: se repite el filtro de .img-tinted (grayscale/brightness/saturate)
+// explícitamente aquí porque "filter" no se combina entre clases distintas
+// en CSS — si no lo repetimos, esta regla pisaría el tinte al quitar el blur.
+.sector-card__image,
+.tech-card__image,
+.project-card__image {
+  transform: scale(1.08);
+  opacity: 0;
+  filter: grayscale(0.35) brightness(0.72) saturate(0.85) blur(14px);
+  transition: filter 900ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 900ms ease;
+}
+ 
+.reveal.visible .sector-card__image,
+.reveal.visible .tech-card__image,
+.reveal.visible .project-card__image {
+  transform: scale(1);
+  opacity: 1;
+  filter: grayscale(0.35) brightness(0.72) saturate(0.85);
+}
+ 
+// --- El fondo (grid) también respira, no solo los haces de luz ---
+.atmosphere-grid {
+  animation: gridDrift 22s ease-in-out infinite alternate;
+}
+ 
+@keyframes gridDrift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
 }

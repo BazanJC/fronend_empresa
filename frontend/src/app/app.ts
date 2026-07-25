@@ -13,6 +13,7 @@ import { FooterComponent } from './shared/footer/footer.component';
 })
 export class App implements OnInit {
   loading = signal(true);
+  cerrando = signal(false); // activa la transición de salida antes de quitarlo del DOM
   progressWidth = signal('0%');
   private seo = inject(SeoService);
 
@@ -20,6 +21,7 @@ export class App implements OnInit {
     this.seo.inicializar();
 
     setTimeout(() => this.progressWidth.set('100%'), 100);
-    setTimeout(() => this.loading.set(false), 2000);
+    setTimeout(() => this.cerrando.set(true), 1900);  // empieza el fundido
+    setTimeout(() => this.loading.set(false), 2500);  // recién aquí sale del DOM
   }
 }

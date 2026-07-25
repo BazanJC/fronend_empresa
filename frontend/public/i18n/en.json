@@ -21,7 +21,10 @@
     "card2_title": "Design & Conception",
     "card2_desc": "We create tailor-made solutions, selecting the most suitable equipment for your specific needs.",
     "card3_title": "Installation & Integration",
-    "card3_desc": "Our certified technicians install and configure every system with guaranteed professional quality."
+    "card3_desc": "Our certified technicians install and configure every system with guaranteed professional quality.",
+    "eyebrow": "Services",
+    "heading": "Integrated solutions for critical security",
+    "heading_desc": "A technical approach with diagnostics, design, installation and operational support."
   },
   "expansion": {
     "eyebrow": "8 Steps Away From Us",
@@ -51,7 +54,8 @@
     "pais1_label": "Head office",
     "pais2_label": "Regional office",
     "pais3_label": "Active projects",
-    "pais4_label": "Active projects"
+    "pais4_label": "Active projects",
+    "eyebrow": "Presence"
   },
   "sectores": {
     "eyebrow": "Sectors of Excellence",
@@ -77,7 +81,8 @@
     "stat4_label": "Availability",
     "badge1": "[STANDARD_1] Certification",
     "badge2": "[STANDARD_2] Certification",
-    "badge3": "Defense Sector Clearance"
+    "badge3": "Defense Sector Clearance",
+    "eyebrow": "Team"
   },
   "tecnologias": {
     "eyebrow": "Advanced Technologies",
@@ -101,6 +106,7 @@
     "view_project": "View project ↗"
   },
   "contacto": {
+    "eyebrow": "Contact",
     "title_pre": "Let's Start Your",
     "title_accent": "Project",
     "desc": "Tell us about your physical security needs and we'll get back to you with the best proposal within 24 business hours.",

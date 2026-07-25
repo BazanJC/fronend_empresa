@@ -12,7 +12,7 @@
 
   <!-- HERO -->
   <section class="hero-section section-shell" id="hero">
-    <div class="hero-copy reveal">
+    <div class="hero-copy reveal reveal-delay-hero">
       <p class="section-eyebrow">{{ 'hero.eyebrow' | translate }}</p>
       <h1 class="hero-title">
         {{ 'hero.title_pre' | translate }}
@@ -42,11 +42,11 @@
       </div>
 
       <div class="hero-metric hero-metric--left">
-        <strong>24/7</strong>
+        <strong appCountUp="24/7"></strong>
         <span>Monitoreo activo</span>
       </div>
       <div class="hero-metric hero-metric--right">
-        <strong>98%</strong>
+        <strong appCountUp="98%"></strong>
         <span>Respuesta validada</span>
       </div>
     </div>
@@ -56,9 +56,9 @@
   <section class="section-band section-band--raised" id="servicios">
     <div class="section-shell">
       <div class="section-heading reveal">
-        <p class="section-eyebrow">Servicios</p>
-        <h2>Soluciones integradas para seguridad critica</h2>
-        <p>Una propuesta tecnica con diagnostico, diseno, instalacion y soporte operativo.</p>
+        <p class="section-eyebrow">{{ 'servicios.eyebrow' | translate }}</p>
+        <h2>{{ 'servicios.heading' | translate }}</h2>
+        <p>{{ 'servicios.heading_desc' | translate }}</p>
       </div>
 
       <div class="feature-grid feature-grid--three">
@@ -96,10 +96,10 @@
         </div>
 
         <div class="stat-panel reveal reveal-delay-200">
-          <div><strong>15+</strong><span>{{ 'expansion.stat1_label' | translate }}</span></div>
-          <div><strong>5+</strong><span>{{ 'expansion.stat2_label' | translate }}</span></div>
-          <div><strong>50+</strong><span>{{ 'expansion.stat3_label' | translate }}</span></div>
-          <div><strong>20+</strong><span>{{ 'expansion.stat4_label' | translate }}</span></div>
+          <div><strong appCountUp="15+"></strong><span>{{ 'expansion.stat1_label' | translate }}</span></div>
+          <div><strong appCountUp="5+"></strong><span>{{ 'expansion.stat2_label' | translate }}</span></div>
+          <div><strong appCountUp="50+"></strong><span>{{ 'expansion.stat3_label' | translate }}</span></div>
+          <div><strong appCountUp="20+"></strong><span>{{ 'expansion.stat4_label' | translate }}</span></div>
         </div>
       </div>
 
@@ -140,7 +140,7 @@
   <section class="section-band section-band--map">
     <div class="section-shell">
       <div class="section-heading section-heading--center reveal">
-        <p class="section-eyebrow">Presencia</p>
+        <p class="section-eyebrow">{{ 'presencia.eyebrow' | translate }}</p>
         <h2>
           {{ 'presencia.title_pre' | translate }}
           <span>{{ 'presencia.title_accent' | translate }}</span>
@@ -152,10 +152,15 @@
       </div>
 
       <ul class="country-grid reveal reveal-delay-200">
-        <li><strong>[PAIS_1]</strong><span>{{ 'presencia.pais1_label' | translate }}</span></li>
-        <li><strong>[PAIS_2]</strong><span>{{ 'presencia.pais2_label' | translate }}</span></li>
-        <li><strong>[PAIS_3]</strong><span>{{ 'presencia.pais3_label' | translate }}</span></li>
-        <li><strong>[PAIS_4]</strong><span>{{ 'presencia.pais4_label' | translate }}</span></li>
+        @for (p of paisesPresencia; track p.id) {
+          <li>
+            <img
+              [src]="'https://flagcdn.com/w80/' + p.codigoISO + '.png'"
+              [alt]="'mapa.paises.' + p.id + '.nombre' | translate"
+              class="country-flag" />
+            <strong>{{ 'mapa.paises.' + p.id + '.nombre' | translate }}</strong>
+          </li>
+        }
       </ul>
     </div>
   </section>
@@ -170,16 +175,19 @@
 
       <div class="sector-grid">
         <article class="sector-card reveal reveal-delay-100">
+          <img src="https://picsum.photos/seed/sector-bancos/600/500" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
           <span></span>
           <h3>{{ 'sectores.card1_title' | translate }}</h3>
           <p>{{ 'sectores.card1_desc' | translate }}</p>
         </article>
         <article class="sector-card reveal reveal-delay-200">
+          <img src="https://picsum.photos/seed/sector-embajadas/600/500" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
           <span></span>
           <h3>{{ 'sectores.card2_title' | translate }}</h3>
           <p>{{ 'sectores.card2_desc' | translate }}</p>
         </article>
         <article class="sector-card reveal reveal-delay-300">
+          <img src="https://picsum.photos/seed/sector-gobierno/600/500" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
           <span></span>
           <h3>{{ 'sectores.card3_title' | translate }}</h3>
           <p>{{ 'sectores.card3_desc' | translate }}</p>
@@ -187,10 +195,10 @@
       </div>
 
       <div class="metric-row reveal">
-        <div><strong>200+</strong><span>{{ 'sectores.stat1_label' | translate }}</span></div>
-        <div><strong>50+</strong><span>{{ 'sectores.stat2_label' | translate }}</span></div>
-        <div><strong>15+</strong><span>{{ 'sectores.stat3_label' | translate }}</span></div>
-        <div><strong>98%</strong><span>{{ 'sectores.stat4_label' | translate }}</span></div>
+        <div><strong appCountUp="200+"></strong><span>{{ 'sectores.stat1_label' | translate }}</span></div>
+        <div><strong appCountUp="50+"></strong><span>{{ 'sectores.stat2_label' | translate }}</span></div>
+        <div><strong appCountUp="15+"></strong><span>{{ 'sectores.stat3_label' | translate }}</span></div>
+        <div><strong appCountUp="98%"></strong><span>{{ 'sectores.stat4_label' | translate }}</span></div>
       </div>
     </div>
   </section>
@@ -200,7 +208,7 @@
     <div class="section-shell">
       <div class="split-layout">
         <div class="section-heading reveal">
-          <p class="section-eyebrow">Equipo</p>
+          <p class="section-eyebrow">{{ 'equipo.eyebrow' | translate }}</p>
           <h2>
             {{ 'equipo.title_pre' | translate }}
             <span>{{ 'equipo.title_accent' | translate }}</span>
@@ -209,17 +217,35 @@
         </div>
 
         <div class="certification-panel reveal reveal-delay-200">
-          <div><strong>15+</strong><span>{{ 'equipo.stat1_label' | translate }}</span></div>
-          <div><strong>200+</strong><span>{{ 'equipo.stat2_label' | translate }}</span></div>
-          <div><strong>10+</strong><span>{{ 'equipo.stat3_label' | translate }}</span></div>
-          <div><strong>24/7</strong><span>{{ 'equipo.stat4_label' | translate }}</span></div>
+          <div><strong appCountUp="15+"></strong><span>{{ 'equipo.stat1_label' | translate }}</span></div>
+          <div><strong appCountUp="200+"></strong><span>{{ 'equipo.stat2_label' | translate }}</span></div>
+          <div><strong appCountUp="10+"></strong><span>{{ 'equipo.stat3_label' | translate }}</span></div>
+          <div><strong appCountUp="24/7"></strong><span>{{ 'equipo.stat4_label' | translate }}</span></div>
         </div>
       </div>
 
-      <ul class="badge-list reveal">
-        <li>{{ 'equipo.badge1' | translate }}</li>
-        <li>{{ 'equipo.badge2' | translate }}</li>
-        <li>{{ 'equipo.badge3' | translate }}</li>
+       <ul class="badge-list reveal">
+        <li>
+          <svg class="badge-seal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          {{ 'equipo.badge1' | translate }}
+        </li>
+        <li>
+          <svg class="badge-seal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          {{ 'equipo.badge2' | translate }}
+        </li>
+        <li>
+          <svg class="badge-seal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+          {{ 'equipo.badge3' | translate }}
+        </li>
       </ul>
     </div>
   </section>
@@ -234,23 +260,27 @@
 
       <div class="tech-grid">
         <article class="tech-card reveal reveal-delay-100">
+          <img src="https://picsum.photos/seed/cctv-camera/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
           <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
           <p>{{ 'tecnologias.card1_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
-        <article class="tech-card reveal reveal-delay-200">
-          <h3>{{ 'tecnologias.card2_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card2_desc' | translate }}</p>
+        <article class="tech-card reveal reveal-delay-100">
+          <img src="https://picsum.photos/seed/access-control/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+          <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card1_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
-        <article class="tech-card reveal reveal-delay-300">
-          <h3>{{ 'tecnologias.card3_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card3_desc' | translate }}</p>
+        <article class="tech-card reveal reveal-delay-100">
+          <img src="https://picsum.photos/seed/ alarm-panel/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+          <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card1_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
-        <article class="tech-card reveal reveal-delay-300">
-          <h3>{{ 'tecnologias.card4_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card4_desc' | translate }}</p>
+        <article class="tech-card reveal reveal-delay-100">
+          <img src="https://picsum.photos/seed/security-hub/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+          <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card1_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
       </div>
@@ -270,20 +300,23 @@
 
       <div class="project-grid">
         <article class="project-card reveal reveal-delay-100">
+          <img src="https://picsum.photos/seed/proyecto-1/600/300" class="project-card__image img-tinted" alt="" aria-hidden="true" />
           <span>{{ 'proyectos.confidential' | translate }}</span>
           <h3>[NOMBRE_PROYECTO_1]</h3>
           <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
           <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
         </article>
-        <article class="project-card reveal reveal-delay-200">
+        <article class="project-card reveal reveal-delay-100">
+          <img src="https://picsum.photos/seed/proyecto-2/600/300" class="project-card__image img-tinted" alt="" aria-hidden="true" />
           <span>{{ 'proyectos.confidential' | translate }}</span>
-          <h3>[NOMBRE_PROYECTO_2]</h3>
+          <h3>[NOMBRE_PROYECTO_1]</h3>
           <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
           <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
         </article>
-        <article class="project-card reveal reveal-delay-300">
+        <article class="project-card reveal reveal-delay-100">
+          <img src="https://picsum.photos/seed/proyecto-3/600/300" class="project-card__image img-tinted" alt="" aria-hidden="true" />
           <span>{{ 'proyectos.confidential' | translate }}</span>
-          <h3>[NOMBRE_PROYECTO_3]</h3>
+          <h3>[NOMBRE_PROYECTO_1]</h3>
           <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
           <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
         </article>
@@ -295,7 +328,7 @@
   <section class="section-band section-band--contact" id="contacto">
     <div class="section-shell contact-layout">
       <div class="section-heading reveal">
-        <p class="section-eyebrow">Contacto</p>
+        <p class="section-eyebrow">{{ 'contacto.eyebrow' | translate }}</p>
         <h2>
           {{ 'contacto.title_pre' | translate }}
           <span>{{ 'contacto.title_accent' | translate }}</span>

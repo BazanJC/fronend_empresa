@@ -169,7 +169,7 @@
 .btn-primary {
   border: 1px solid color-mix(in srgb, var(--color-primary-container) 65%, white 12%);
   color: var(--color-on-primary-container);
-  background: linear-gradient(135deg, var(--color-primary-container), color-mix(in srgb, var(--color-primary-container) 75%, white));
+  background: linear-gradient(135deg, var(--gradient-brand), color-mix(in srgb, var(--color-primary-container) 75%, white));
   box-shadow: 0 18px 44px color-mix(in srgb, var(--color-primary-container) 28%, transparent);
 }
 
@@ -790,3 +790,187 @@
     grid-template-columns: 1fr;
   }
 }
+
+// --- Brillo diagonal que atraviesa los botones al pasar el mouse ---
+.btn-primary,
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+}
+ 
+.btn-primary::after,
+.btn-secondary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 550ms ease;
+  pointer-events: none;
+}
+ 
+.btn-primary:hover::after,
+.btn-secondary:hover::after {
+  left: 130%;
+}
+ 
+// --- El botón de envío "respira" mientras está enviando ---
+.btn-primary:disabled {
+  animation: sendingPulse 1.2s ease-in-out infinite;
+  cursor: not-allowed;
+}
+ 
+@keyframes sendingPulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+ 
+// --- El número/índice de las tarjetas reacciona al hover de la tarjeta ---
+.feature-index {
+  display: inline-block;
+  transition: transform 260ms ease;
+}
+ 
+.feature-card:hover .feature-index {
+  transform: scale(1.15) translateY(-2px);
+}
+ 
+// --- El ícono decorativo de sector-card gira levemente al hover ---
+.sector-card span {
+  transition: transform 320ms ease;
+}
+ 
+.sector-card:hover span {
+  transform: rotate(8deg) scale(1.08);
+}
+ 
+// --- Los puntos de la línea de tiempo laten suavemente (sensación "en vivo") ---
+.timeline li::before {
+  animation: timelineDotPulse 2.6s ease-in-out infinite;
+}
+ 
+@keyframes timelineDotPulse {
+  0%, 100% { box-shadow: 0 0 0 0.45rem color-mix(in srgb, var(--color-primary-container) 14%, transparent); }
+  50%      { box-shadow: 0 0 0 0.7rem color-mix(in srgb, var(--color-primary-container) 22%, transparent); }
+}
+ 
+// --- El mensaje de éxito/error del formulario aparece con un pequeño "pop" ---
+.form-message {
+  animation: messagePopIn 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+ 
+@keyframes messagePopIn {
+  from { opacity: 0; transform: scale(0.9) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+// --- Bandera en la lista de países (Presencia Internacional) ---
+.country-grid li {
+  align-items: center;
+  text-align: center;
+}
+ 
+.country-flag {
+  width: 2.75rem;
+  height: auto;
+  border-radius: 0.4rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  margin: 0 auto 0.25rem;
+}
+ 
+// --- Foto de fondo en las tarjetas de Sectores ---
+.sector-card__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+ 
+// Overlay oscuro permanente para que el texto sea legible sobre la foto
+// (además del ::before que ya existe para el brillo del hover)
+.sector-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 8%,
+    rgba(0, 0, 0, 0.35) 55%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  z-index: 1;
+}
+ 
+.sector-card span {
+  z-index: 2; // por encima de la foto y el overlay
+}
+ 
+.sector-card h3,
+.sector-card p {
+  position: relative;
+  z-index: 2;
+}
+ 
+.sector-card h3 {
+  color: #ffffff;
+}
+ 
+.sector-card p {
+  color: rgba(255, 255, 255, 0.85);
+}
+ 
+// --- Miniatura en las tarjetas de Tecnologías ---
+.tech-card {
+  display: flex;
+  flex-direction: column;
+}
+ 
+.tech-card__image {
+  width: 100%;
+  height: 8rem;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+ 
+// --- Foto superior en las tarjetas de Proyectos ---
+.project-card {
+  padding-top: 8.5rem;
+}
+ 
+.project-card__image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 7.5rem;
+  object-fit: cover;
+  border-radius: 1.15rem 1.15rem 0 0;
+}
+ 
+// --- Filtro de las fotos de stock, para que combinen con el tema ---
+// (mismo tratamiento que ya usa el mapa, para mantener consistencia visual)
+.img-tinted {
+  filter: grayscale(0.35) brightness(0.72) saturate(0.85);
+}
+ 
+// --- Sello de certificación (ícono genérico) ---
+.badge-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+ 
+.badge-seal-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+.reveal-delay-hero { transition-delay: 2100ms; }
+.reveal-delay-hero-2 { transition-delay: 2300ms; }

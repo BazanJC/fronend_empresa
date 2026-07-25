@@ -16,6 +16,9 @@
     "cta_secondary": "Découvrir nos capacités"
   },
   "servicios": {
+    "eyebrow": "Services",
+    "heading": "Solutions intégrées pour la sécurité critique",
+    "heading_desc": "Une approche technique avec diagnostic, conception, installation et support opérationnel.",
     "card1_title": "Étude de Projet",
     "card1_desc": "Nous analysons votre infrastructure pour concevoir la meilleure stratégie de sécurité, avec visites techniques et analyse des risques.",
     "card2_title": "Design & Conception",
@@ -45,6 +48,7 @@
     "cta_button": "Contactez-nous"
   },
   "presencia": {
+    "eyebrow": "Présence",
     "title_pre": "Présence",
     "title_accent": "Internationale",
     "map_placeholder": "[ Carte interactive réelle — Module 5 ]",
@@ -68,6 +72,7 @@
     "stat4_label": "Taux de Satisfaction"
   },
   "equipo": {
+    "eyebrow": "Équipe",
     "title_pre": "Une Équipe de",
     "title_accent": "Professionnels Certifiés",
     "desc": "Nos techniciens sont des ingénieurs hautement qualifiés, formés à toutes les spécialités du secteur de la sécurité physique.",
@@ -101,6 +106,7 @@
     "view_project": "Voir le projet ↗"
   },
   "contacto": {
+    "eyebrow": "Contact",
     "title_pre": "Démarrons Votre",
     "title_accent": "Projet",
     "desc": "Parlez-nous de votre besoin en sécurité physique, nous vous répondrons avec la meilleure proposition sous 24 heures ouvrées.",
