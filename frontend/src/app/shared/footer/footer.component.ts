@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -7,7 +7,8 @@ import { TranslatePipe } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, TranslatePipe],
   templateUrl: './footer.component.html',
-  styleUrl: './footer.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './footer.component.scss',
 })
 export class FooterComponent {
   anioActual = new Date().getFullYear();

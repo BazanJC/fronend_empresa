@@ -6,6 +6,7 @@ import {
   OnDestroy,
   signal,
   PLATFORM_ID,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -19,6 +20,7 @@ import { CountUpDirective } from '../../shared/count_up.directive';
   standalone: true,
   imports: [CommonModule, FormsModule, TranslatePipe, MapaMundialComponent, CountUpDirective],
   templateUrl: './landing.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './landing.component.scss',
 })
 export class LandingComponent implements AfterViewInit, OnDestroy {
@@ -31,25 +33,29 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   slidesHero = [
     {
       id: 1,
-      imagen: 'https://images.pexels.com/photos/5650141/pexels-photo-5650141.jpeg?auto=compress&cs=tinysrgb&w=900&h=700&fit=crop',
+      imagen:
+        'https://images.pexels.com/photos/5650141/pexels-photo-5650141.jpeg?auto=compress&cs=tinysrgb&w=900&h=700&fit=crop',
       labelKey: 'hero.slide1_label',
       subKey: 'hero.slide1_sub',
     },
     {
       id: 2,
-      imagen: 'https://images.pexels.com/photos/7522609/pexels-photo-7522609.jpeg?auto=compress&cs=tinysrgb&w=900&h=700&fit=crop',
+      imagen:
+        'https://images.pexels.com/photos/7522609/pexels-photo-7522609.jpeg?auto=compress&cs=tinysrgb&w=900&h=700&fit=crop',
       labelKey: 'hero.slide2_label',
       subKey: 'hero.slide2_sub',
     },
     {
       id: 3,
-      imagen: 'https://images.pexels.com/photos/37564550/pexels-photo-37564550.jpeg?auto=compress&cs=tinysrgb&w=900&h=700&fit=crop',
+      imagen:
+        'https://images.pexels.com/photos/37564550/pexels-photo-37564550.jpeg?auto=compress&cs=tinysrgb&w=900&h=700&fit=crop',
       labelKey: 'hero.slide3_label',
       subKey: 'hero.slide3_sub',
     },
     {
       id: 4,
-      imagen: 'https://images.pexels.com/photos/30481728/pexels-photo-30481728.jpeg?auto=compress&cs=tinysrgb&w=900&h=700&fit=crop',
+      imagen:
+        'https://images.pexels.com/photos/30481728/pexels-photo-30481728.jpeg?auto=compress&cs=tinysrgb&w=900&h=700&fit=crop',
       labelKey: 'hero.slide4_label',
       subKey: 'hero.slide4_sub',
     },
@@ -70,20 +76,34 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     { id: 'honduras', codigoISO: 'hn', anio: 2009, proyectos: 34 },
     { id: 'usa', codigoISO: 'us', anio: 2015, proyectos: 8 },
     { id: 'francia', codigoISO: 'fr', anio: 2018, proyectos: 5 },
-    { id: 'elsalvador', codigoISO: 'sv', anio: 2022, proyectos: 6 }
+    { id: 'elsalvador', codigoISO: 'sv', anio: 2022, proyectos: 6 },
   ];
 
   proyectosIndices = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   nosotrosAreas = [
-    'nosotros.area1', 'nosotros.area2', 'nosotros.area3', 'nosotros.area4',
-    'nosotros.area5', 'nosotros.area6', 'nosotros.area7', 'nosotros.area8',
-    'nosotros.area9', 'nosotros.area10',
+    'nosotros.area1',
+    'nosotros.area2',
+    'nosotros.area3',
+    'nosotros.area4',
+    'nosotros.area5',
+    'nosotros.area6',
+    'nosotros.area7',
+    'nosotros.area8',
+    'nosotros.area9',
+    'nosotros.area10',
   ];
 
   aliados = [
-    'Genetec', 'Bosch', 'Axis Communications', 'HID Global',
-    'IDEMIA', 'Commend', 'Belden', 'APC', 'Ruijie Networks',
+    'Genetec',
+    'Bosch',
+    'Axis Communications',
+    'HID Global',
+    'IDEMIA',
+    'Commend',
+    'Belden',
+    'APC',
+    'Ruijie Networks',
   ];
 
   porqueItems = [

@@ -1,4 +1,17 @@
-import { Component, signal, inject, effect, AfterViewInit, OnDestroy, PLATFORM_ID, ViewChildren, QueryList, ElementRef,HostListener} from '@angular/core';
+import {
+  Component,
+  signal,
+  inject,
+  effect,
+  AfterViewInit,
+  OnDestroy,
+  PLATFORM_ID,
+  ViewChildren,
+  QueryList,
+  ElementRef,
+  HostListener,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -16,9 +29,27 @@ interface PlataformaOption {
 }
 
 const PLATAFORMA_OPTIONS: PlataformaOption[] = [
-  { numero: '1', tituloKey: 'plataforma.portal_titulo', descripcionKey: 'plataforma.portal_desc', ruta: 'portal.[dominio-empresa].com', tipoLogin: 'cliente' },
-  { numero: '2', tituloKey: 'plataforma.tecnico_titulo', descripcionKey: 'plataforma.tecnico_desc', ruta: 'tecnico.[dominio-empresa].com', tipoLogin: 'staff' },
-  { numero: '3', tituloKey: 'plataforma.admin_titulo', descripcionKey: 'plataforma.admin_desc', ruta: 'admin.[dominio-empresa].com', tipoLogin: 'staff' }
+  {
+    numero: '1',
+    tituloKey: 'plataforma.portal_titulo',
+    descripcionKey: 'plataforma.portal_desc',
+    ruta: 'portal.[dominio-empresa].com',
+    tipoLogin: 'cliente',
+  },
+  {
+    numero: '2',
+    tituloKey: 'plataforma.tecnico_titulo',
+    descripcionKey: 'plataforma.tecnico_desc',
+    ruta: 'tecnico.[dominio-empresa].com',
+    tipoLogin: 'staff',
+  },
+  {
+    numero: '3',
+    tituloKey: 'plataforma.admin_titulo',
+    descripcionKey: 'plataforma.admin_desc',
+    ruta: 'admin.[dominio-empresa].com',
+    tipoLogin: 'staff',
+  },
 ];
 
 const SECCIONES_OBSERVADAS = ['servicios', 'sectores', 'proyectos', 'contacto'];
@@ -28,7 +59,8 @@ const SECCIONES_OBSERVADAS = ['servicios', 'sectores', 'proyectos', 'contacto'];
   standalone: true,
   imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements AfterViewInit, OnDestroy {
   theme = inject(ThemeService);
@@ -86,7 +118,7 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
           }
         });
       },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
     );
 
     SECCIONES_OBSERVADAS.forEach((id) => {
@@ -121,11 +153,11 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
     this.language.cambiarIdioma(codigo);
     this.idiomaMenuAbierto.set(false);
   }
- 
+
   toggleIdiomaMenu(): void {
     this.idiomaMenuAbierto.set(!this.idiomaMenuAbierto());
   }
- 
+
   cerrarIdiomaMenu(): void {
     this.idiomaMenuAbierto.set(false);
   }

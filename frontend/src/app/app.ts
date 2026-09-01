@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject } from '@angular/core';
+import { Component, OnInit, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SeoService } from './core/seo.service';
 import { HeaderComponent } from './shared/header/header.component';
@@ -10,7 +10,8 @@ import { LanguageService } from './core/language.service';
   standalone: true,
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './app.scss',
 })
 export class App implements OnInit {
   loading = signal(true);
@@ -38,7 +39,7 @@ export class App implements OnInit {
     'Cargando módulos críticos',
     'Sincronizando infraestructura',
     'Calibrando sensores de radiación',
-    'Acceso concedido'
+    'Acceso concedido',
   ];
 
   ngOnInit(): void {

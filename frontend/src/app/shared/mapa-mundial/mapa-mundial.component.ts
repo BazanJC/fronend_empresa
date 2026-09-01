@@ -1,4 +1,14 @@
-import { Component, OnInit, AfterViewInit, HostListener, ElementRef, ViewChild, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  HostListener,
+  ElementRef,
+  ViewChild,
+  inject,
+  signal,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -30,11 +40,46 @@ interface Conexion {
 }
 
 const PAISES: PaisPresencia[] = [
-  { id: 'bolivia', lat: -16.5, lng: -68.15, anioIngreso: 2021, imagenSeed: 'oficina-bolivia', topoId: '068' },
-  { id: 'honduras', lat: 14.1, lng: -87.2, anioIngreso: 2009, imagenSeed: 'oficina-honduras', topoId: '340' },
-  { id: 'usa', lat: 38.9072, lng: -77.0369, anioIngreso: 2015, imagenSeed: 'oficina-usa', topoId: '840' },
-  { id: 'francia', lat: 48.8566, lng: 2.3522, anioIngreso: 2018, imagenSeed: 'oficina-francia', topoId: '250' },
-  { id: 'elsalvador', lat: 13.6929, lng: -89.2182, anioIngreso: 2022, imagenSeed: 'oficina-elsalvador', topoId: '222' }
+  {
+    id: 'bolivia',
+    lat: -16.5,
+    lng: -68.15,
+    anioIngreso: 2021,
+    imagenSeed: 'oficina-bolivia',
+    topoId: '068',
+  },
+  {
+    id: 'honduras',
+    lat: 14.1,
+    lng: -87.2,
+    anioIngreso: 2009,
+    imagenSeed: 'oficina-honduras',
+    topoId: '340',
+  },
+  {
+    id: 'usa',
+    lat: 38.9072,
+    lng: -77.0369,
+    anioIngreso: 2015,
+    imagenSeed: 'oficina-usa',
+    topoId: '840',
+  },
+  {
+    id: 'francia',
+    lat: 48.8566,
+    lng: 2.3522,
+    anioIngreso: 2018,
+    imagenSeed: 'oficina-francia',
+    topoId: '250',
+  },
+  {
+    id: 'elsalvador',
+    lat: 13.6929,
+    lng: -89.2182,
+    anioIngreso: 2022,
+    imagenSeed: 'oficina-elsalvador',
+    topoId: '222',
+  },
 ];
 
 const WORLD_ATLAS_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
@@ -47,7 +92,8 @@ const ZOOM_PASO = 0.4;
   standalone: true,
   imports: [CommonModule, TranslatePipe],
   templateUrl: './mapa-mundial.component.html',
-  styleUrl: './mapa-mundial.component.scss'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './mapa-mundial.component.scss',
 })
 export class MapaMundialComponent implements OnInit, AfterViewInit {
   private http = inject(HttpClient);
@@ -92,7 +138,7 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
         console.error('No se pudo cargar el mapa base:', err);
         this.errorCarga.set(true);
         this.cargando.set(false);
-      }
+      },
     });
   }
 
@@ -125,14 +171,16 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
     const featuresOtros = countries.features.filter((f: any) => !idsOficina.has(String(f.id)));
     const featuresOficina = countries.features.filter((f: any) => idsOficina.has(String(f.id)));
 
-    this.otrosPaisesPathD.set(path({ type: 'FeatureCollection', features: featuresOtros } as any) ?? '');
+    this.otrosPaisesPathD.set(
+      path({ type: 'FeatureCollection', features: featuresOtros } as any) ?? '',
+    );
 
     const topoIdAPaisId = new Map(this.paises.map((p) => [p.topoId, p.id]));
     this.paisesResaltados.set(
       featuresOficina.map((f: any) => ({
         id: topoIdAPaisId.get(String(f.id)) ?? '',
-        d: path(f) ?? ''
-      }))
+        d: path(f) ?? '',
+      })),
     );
 
     this.viewBox.set(`0 0 ${this.width} ${this.height}`);
@@ -149,7 +197,7 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
       for (let j = i + 1; j < nuevosMarcadores.length; j++) {
         rutas.push({
           d: this.generarArco(nuevosMarcadores[i], nuevosMarcadores[j]),
-          delay: (i + j) * 0.3
+          delay: (i + j) * 0.3,
         });
       }
     }
