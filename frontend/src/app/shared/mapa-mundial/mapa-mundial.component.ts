@@ -6,12 +6,12 @@ import { geoEquirectangular, geoPath, type GeoProjection, type GeoPath } from 'd
 import { feature } from 'topojson-client';
 
 export interface PaisPresencia {
-  id: string;           // clave de traducción: mapa.paises.<id>.*
+  id: string;
   lat: number;
   lng: number;
   anioIngreso: number;
   imagenSeed: string;
-  topoId: string;        // código ISO 3166-1 numérico usado por world-atlas (para resaltar su territorio)
+  topoId: string;
 }
 
 interface MarcadorPosicionado extends PaisPresencia {
@@ -24,18 +24,20 @@ interface PaisResaltadoPath {
   d: string;
 }
 
-// DEMO: coordenadas reales de ciudades. El nombre/descripción/proyectos
-// viven en los JSON de traducción (mapa.paises.<id>.*), no aquí.
-// topoId = código numérico ISO 3166-1 que usa world-atlas para identificar países.
+interface Conexion {
+  d: string;
+  delay: number;
+}
+
 const PAISES: PaisPresencia[] = [
   { id: 'bolivia', lat: -16.5, lng: -68.15, anioIngreso: 2021, imagenSeed: 'oficina-bolivia', topoId: '068' },
   { id: 'honduras', lat: 14.1, lng: -87.2, anioIngreso: 2009, imagenSeed: 'oficina-honduras', topoId: '340' },
   { id: 'usa', lat: 38.9072, lng: -77.0369, anioIngreso: 2015, imagenSeed: 'oficina-usa', topoId: '840' },
-  { id: 'francia', lat: 48.8566, lng: 2.3522, anioIngreso: 2018, imagenSeed: 'oficina-francia', topoId: '250' }
+  { id: 'francia', lat: 48.8566, lng: 2.3522, anioIngreso: 2018, imagenSeed: 'oficina-francia', topoId: '250' },
+  { id: 'elsalvador', lat: 13.6929, lng: -89.2182, anioIngreso: 2022, imagenSeed: 'oficina-elsalvador', topoId: '222' }
 ];
 
 const WORLD_ATLAS_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
-
 const ZOOM_MIN = 1;
 const ZOOM_MAX = 5;
 const ZOOM_PASO = 0.4;
@@ -59,18 +61,17 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
   otrosPaisesPathD = signal('');
   paisesResaltados = signal<PaisResaltadoPath[]>([]);
   marcadores = signal<MarcadorPosicionado[]>([]);
+  conexiones = signal<Conexion[]>([]);
   viewBox = signal('0 0 960 480');
   cargando = signal(true);
   errorCarga = signal(false);
 
-  // --- Zoom y arrastre ---
   zoom = signal(1);
   panX = signal(0);
   panY = signal(0);
   private arrastrando = false;
   private ultimoPunto = { x: 0, y: 0 };
 
-  // --- Tooltip al pasar el mouse sobre un marcador ---
   tooltipVisible = signal(false);
   tooltipTexto = signal('');
   tooltipX = signal(0);
@@ -120,7 +121,6 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
     this.projection = geoEquirectangular().fitSize([this.width, this.height], countries);
     const path: GeoPath = geoPath(this.projection);
 
-    // Separamos los países donde hay oficina (para resaltarlos) del resto.
     const idsOficina = new Set(this.paises.map((p) => p.topoId));
     const featuresOtros = countries.features.filter((f: any) => !idsOficina.has(String(f.id)));
     const featuresOficina = countries.features.filter((f: any) => idsOficina.has(String(f.id)));
@@ -143,6 +143,18 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
     });
     this.marcadores.set(nuevosMarcadores);
 
+    // Conexiones mesh: todos con todos
+    const rutas: Conexion[] = [];
+    for (let i = 0; i < nuevosMarcadores.length; i++) {
+      for (let j = i + 1; j < nuevosMarcadores.length; j++) {
+        rutas.push({
+          d: this.generarArco(nuevosMarcadores[i], nuevosMarcadores[j]),
+          delay: (i + j) * 0.3
+        });
+      }
+    }
+    this.conexiones.set(rutas);
+
     this.cargando.set(false);
   }
 
@@ -154,7 +166,6 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
     this.paisSeleccionado.set(null);
   }
 
-  // --- Tooltip ---
   onMarkerEnter(pais: PaisPresencia, event: MouseEvent): void {
     this.tooltipTexto.set(this.translate.instant('mapa.paises.' + pais.id + '.nombre'));
     this.tooltipVisible.set(true);
@@ -175,34 +186,27 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
     this.tooltipY.set(event.clientY - rect.top);
   }
 
-  // --- Zoom (con la rueda del mouse, anclado a la posición del cursor) ---
   onWheel(event: WheelEvent): void {
     event.preventDefault();
-
     const rect = this.mapContainer.nativeElement.getBoundingClientRect();
     const mouseX = event.clientX - rect.left;
     const mouseY = event.clientY - rect.top;
-
     const zoomAnterior = this.zoom();
     const delta = event.deltaY > 0 ? -ZOOM_PASO : ZOOM_PASO;
     const nuevoZoom = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, zoomAnterior + delta));
     if (nuevoZoom === zoomAnterior) return;
-
-    // Mantiene el punto bajo el cursor fijo mientras se hace zoom.
     const factor = nuevoZoom / zoomAnterior;
     this.panX.set(mouseX - (mouseX - this.panX()) * factor);
     this.panY.set(mouseY - (mouseY - this.panY()) * factor);
     this.zoom.set(nuevoZoom);
-
     if (nuevoZoom === ZOOM_MIN) {
       this.panX.set(0);
       this.panY.set(0);
     }
   }
 
-  // --- Arrastre (mouse y touch, vía Pointer Events) ---
   onPointerDown(event: PointerEvent): void {
-    if (this.zoom() === ZOOM_MIN) return; // no hace falta arrastrar sin zoom
+    if (this.zoom() === ZOOM_MIN) return;
     this.arrastrando = true;
     this.ultimoPunto = { x: event.clientX, y: event.clientY };
     (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
@@ -238,5 +242,13 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
     this.zoom.set(1);
     this.panX.set(0);
     this.panY.set(0);
+  }
+
+  private generarArco(a: { x: number; y: number }, b: { x: number; y: number }): string {
+    const mx = (a.x + b.x) / 2;
+    const my = (a.y + b.y) / 2;
+    const distancia = Math.hypot(b.x - a.x, b.y - a.y);
+    const alturaArco = Math.min(distancia * 0.25, 60);
+    return `M ${a.x} ${a.y} Q ${mx} ${my - alturaArco} ${b.x} ${b.y}`;
   }
 }

@@ -40,10 +40,26 @@
 
     <!-- Acciones -->
     <div class="hidden lg:flex items-center gap-3">
-      <div class="glass-card rounded-full flex overflow-hidden text-xs font-medium">
-        <button class="px-3 py-2 hover:bg-primary/20 transition-colors" (click)="cambiarIdioma('es')">ES</button>
-        <button class="px-3 py-2 hover:bg-primary/20 transition-colors" (click)="cambiarIdioma('en')">EN</button>
-        <button class="px-3 py-2 hover:bg-primary/20 transition-colors" (click)="cambiarIdioma('fr')">FR</button>
+      <div class="relative">
+        <button
+          class="glass-card rounded-full px-4 py-2 text-xs font-medium flex items-center gap-1.5"
+          (click)="toggleIdiomaMenu()">
+          {{ language.idiomaActual().codigo.toUpperCase() }}
+          <span class="text-[0.6rem] opacity-60">▾</span>
+        </button>
+        @if (idiomaMenuAbierto()) {
+          <div class="absolute top-full mt-2 rtl:right-auto rtl:left-0 right-0 glass-card rounded-xl overflow-hidden min-w-[170px] z-20 py-1">
+            @for (idioma of language.idiomas; track idioma.codigo) {
+              <button
+                class="w-full text-start px-4 py-2.5 text-sm hover:bg-primary/10 transition-colors"
+                [class.text-primary]="language.idiomaActual().codigo === idioma.codigo"
+                [class.font-semibold]="language.idiomaActual().codigo === idioma.codigo"
+                (click)="seleccionarIdioma(idioma.codigo)">
+                {{ idioma.nombreNativo }}
+              </button>
+            }
+          </div>
+        }
       </div>
       <button
         class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-base"
@@ -54,9 +70,9 @@
       <button class="border border-primary/40 text-primary px-4 py-2 text-sm font-medium hover:bg-primary/10 transition-all rounded flex items-center gap-2" (click)="openPlatformModal()">
         🔒 {{ 'nav.plataforma' | translate }}
       </button>
-      <button class="bg-primary-container text-on-primary-container px-5 py-2 text-sm font-medium hover:brightness-110 transition-all rounded">
+      <a href="#contacto" class="bg-primary-container text-on-primary-container px-5 py-2 text-sm font-medium hover:brightness-110 transition-all rounded">
         {{ 'nav.cta' | translate }}
-      </button>
+      </a>
     </div>
 
     <!-- Botón menú móvil -->
@@ -80,17 +96,26 @@
           {{ item.key | translate }}
         </a>
       }
-      <div class="flex items-center gap-2 pt-2 border-t border-outline-variant">
-        <button class="px-3 py-1 text-xs glass-card rounded-full" (click)="cambiarIdioma('es')">ES</button>
-        <button class="px-3 py-1 text-xs glass-card rounded-full" (click)="cambiarIdioma('en')">EN</button>
-        <button class="px-3 py-1 text-xs glass-card rounded-full" (click)="cambiarIdioma('fr')">FR</button>
-        <button class="ml-auto w-9 h-9 rounded-full glass-card flex items-center justify-center" (click)="theme.toggle()">
+      <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-outline-variant">
+        @for (idioma of language.idiomas; track idioma.codigo) {
+          <button
+            class="px-3 py-1 text-xs glass-card rounded-full"
+            [class.text-primary]="language.idiomaActual().codigo === idioma.codigo"
+            [class.font-semibold]="language.idiomaActual().codigo === idioma.codigo"
+            (click)="seleccionarIdioma(idioma.codigo)">
+            {{ idioma.codigo.toUpperCase() }}
+          </button>
+        }
+        <button class="ms-auto w-9 h-9 rounded-full glass-card flex items-center justify-center" (click)="theme.toggle()">
           {{ theme.isDark() ? '☀️' : '🌙' }}
         </button>
       </div>
       <button class="border border-primary/40 text-primary px-4 py-2 text-sm font-medium rounded" (click)="openPlatformModal(); cerrarMenuMovil()">
         🔒 {{ 'nav.plataforma' | translate }}
       </button>
+      <a href="#contacto" (click)="cerrarMenuMovil()" class="bg-primary-container text-on-primary-container px-4 py-2 text-sm font-medium text-center rounded">
+        {{ 'nav.cta' | translate }}
+      </a>
     </div>
   }
 </nav>

@@ -1,8 +1,9 @@
-import { Component, signal, inject, effect, AfterViewInit, OnDestroy, PLATFORM_ID, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Component, signal, inject, effect, AfterViewInit, OnDestroy, PLATFORM_ID, ViewChildren, QueryList, ElementRef,HostListener} from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { ThemeService } from '../../core/theme.service';
+import { LanguageService } from '../../core/language.service';
 
 type TipoLogin = 'cliente' | 'staff';
 
@@ -31,13 +32,23 @@ const SECCIONES_OBSERVADAS = ['servicios', 'sectores', 'proyectos', 'contacto'];
 })
 export class HeaderComponent implements AfterViewInit, OnDestroy {
   theme = inject(ThemeService);
-  private translate = inject(TranslateService);
+  language = inject(LanguageService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private observer?: IntersectionObserver;
+
+  @HostListener('document:click', ['$event'])
+  onClickFuera(event: MouseEvent): void {
+    if (!this.idiomaMenuAbierto()) return;
+    const target = event.target as HTMLElement;
+    if (!target.closest('.relative')) {
+      this.idiomaMenuAbierto.set(false);
+    }
+  }
 
   @ViewChildren('navLink') navLinks!: QueryList<ElementRef<HTMLAnchorElement>>;
 
   menuMovilAbierto = signal(false);
+  idiomaMenuAbierto = signal(false);
   platformOptions = PLATAFORMA_OPTIONS;
 
   seccionActiva = signal<string>('');
@@ -106,8 +117,17 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
     this.indicadorListo.set(true);
   }
 
-  cambiarIdioma(lang: string): void {
-    this.translate.use(lang);
+  seleccionarIdioma(codigo: string): void {
+    this.language.cambiarIdioma(codigo);
+    this.idiomaMenuAbierto.set(false);
+  }
+ 
+  toggleIdiomaMenu(): void {
+    this.idiomaMenuAbierto.set(!this.idiomaMenuAbierto());
+  }
+ 
+  cerrarIdiomaMenu(): void {
+    this.idiomaMenuAbierto.set(false);
   }
 
   toggleMenuMovil(): void {

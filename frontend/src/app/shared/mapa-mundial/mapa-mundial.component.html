@@ -1,6 +1,6 @@
 <div
   #mapContainer
-  class="relative w-full aspect-[2/1] rounded-xl overflow-hidden glass-card select-none"
+  class="mapa-container"
   [class.cursor-grab]="zoom() > 1"
   (wheel)="onWheel($event)"
   (pointerdown)="onPointerDown($event)"
@@ -9,29 +9,50 @@
   (pointerleave)="onPointerUp(); onMarkerLeave()">
 
   @if (cargando()) {
-    <div class="absolute inset-0 skeleton-shimmer"></div>
-  }
-
-  @if (errorCarga()) {
-    <div class="absolute inset-0 flex items-center justify-center text-sm opacity-60 text-center px-6">
-      {{ 'mapa.error_carga' | translate }}
+    <div class="mapa-skeleton">
+      <div class="mapa-skeleton__grid"></div>
+      <div class="mapa-skeleton__pulse"></div>
     </div>
   }
 
-  <svg [attr.viewBox]="viewBox()" class="w-full h-full block">
+  @if (errorCarga()) {
+    <div class="mapa-error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p>{{ 'mapa.error_carga' | translate }}</p>
+    </div>
+  }
+
+  <svg [attr.viewBox]="viewBox()" class="mapa-svg">
+    <defs>
+      <filter id="mapa-glow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <linearGradient id="conexionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="color-mix(in srgb, var(--color-primary) 0%, transparent)" />
+        <stop offset="50%" stop-color="color-mix(in srgb, var(--color-primary) 70%, transparent)" />
+        <stop offset="100%" stop-color="color-mix(in srgb, var(--color-primary) 0%, transparent)" />
+      </linearGradient>
+    </defs>
+
     <g [attr.transform]="'translate(' + panX() + ' ' + panY() + ') scale(' + zoom() + ')'">
       <!-- Resto del mundo -->
-      <path [attr.d]="otrosPaisesPathD()" class="country-shape"></path>
+      <path [attr.d]="otrosPaisesPathD()" class="mapa-pais-base" />
 
-      <!-- Países con oficina: territorio resaltado con el color de marca -->
+      <!-- Países resaltados -->
       @for (p of paisesResaltados(); track p.id) {
-        <path [attr.d]="p.d" class="country-shape-oficina"></path>
+        <path [attr.d]="p.d" class="mapa-pais-resaltado" />
       }
 
-      <!-- Marcadores (stopPropagation: evita que el clic aquí dispare el arrastre del mapa) -->
+      <!-- Conexiones mesh -->
+      @for (c of conexiones(); track $index) {
+        <path [attr.d]="c.d" class="mapa-conexion" [style.animation-delay]="c.delay + 's'" />
+      }
+
+      <!-- Marcadores -->
       @for (m of marcadores(); track m.id) {
         <g
-          class="cursor-pointer marker-group"
+          class="mapa-marcador"
           (pointerdown)="$event.stopPropagation()"
           (click)="seleccionarPais(m)"
           (mouseenter)="onMarkerEnter(m, $event)"
@@ -39,61 +60,62 @@
           (mouseleave)="onMarkerLeave()"
           role="button"
           [attr.aria-label]="'mapa.paises.' + m.id + '.nombre' | translate">
-          <circle [attr.cx]="m.x" [attr.cy]="m.y" r="6" class="marker-ring"></circle>
-          <circle [attr.cx]="m.x" [attr.cy]="m.y" r="4.5" fill="var(--color-primary-container)" stroke="var(--color-surface)" stroke-width="1"></circle>
+          <circle [attr.cx]="m.x" [attr.cy]="m.y" r="16" class="mapa-marcador__ring"></circle>
+          <circle [attr.cx]="m.x" [attr.cy]="m.y" r="8" class="mapa-marcador__core"></circle>
+          <circle [attr.cx]="m.x" [attr.cy]="m.y" r="4" class="mapa-marcador__dot"></circle>
         </g>
       }
     </g>
   </svg>
 
-  <!-- Tooltip con el nombre del país -->
+  <!-- Tooltip -->
   @if (tooltipVisible()) {
-    <div
-      class="absolute pointer-events-none glass-card px-3 py-1.5 rounded-lg text-xs font-semibold z-10 whitespace-nowrap"
-      [style.left.px]="tooltipX() + 14"
-      [style.top.px]="tooltipY() - 14">
+    <div class="mapa-tooltip" [style.left.px]="tooltipX() + 16" [style.top.px]="tooltipY() - 16">
       {{ tooltipTexto() }}
     </div>
   }
 
-  <!-- Controles de zoom (stopPropagation: evita que el clic aquí dispare el arrastre del mapa) -->
-  <div class="absolute bottom-3 right-3 flex flex-col gap-1 z-10" (pointerdown)="$event.stopPropagation()">
-    <button class="w-8 h-8 rounded-lg glass-card flex items-center justify-center hover:bg-primary/20 transition-colors font-bold" (click)="zoomIn()" aria-label="Acercar">+</button>
-    <button class="w-8 h-8 rounded-lg glass-card flex items-center justify-center hover:bg-primary/20 transition-colors font-bold" (click)="zoomOut()" aria-label="Alejar">−</button>
+  <!-- Controles de zoom -->
+  <div class="mapa-controles" (pointerdown)="$event.stopPropagation()">
+    <button (click)="zoomIn()" aria-label="Acercar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <button (click)="zoomOut()" aria-label="Alejar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
     @if (zoom() > 1) {
-      <button class="w-8 h-8 rounded-lg glass-card flex items-center justify-center hover:bg-primary/20 transition-colors text-sm" (click)="resetVista()" aria-label="Restablecer vista">⟲</button>
+      <button (click)="resetVista()" aria-label="Restablecer vista">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
     }
   </div>
-</div>
 
-<!-- Modal de detalle del país -->
+<!-- Modal de detalle -->
 @if (paisSeleccionado(); as pais) {
-<div class="tech-modal-overlay" (click)="cerrarModal()">
-  <div class="relative w-full max-w-lg glass-card p-8 modal-zoom rounded-xl overflow-y-auto max-h-[90vh]" (click)="$event.stopPropagation()">
-    <button class="absolute top-5 right-5 text-on-surface-variant hover:text-primary transition-colors text-xl" (click)="cerrarModal()">✕</button>
+  <div class="mapa-modal-overlay" (click)="cerrarModal()">
+    <div class="mapa-modal" (click)="$event.stopPropagation()">
+      <button class="mapa-modal__close" (click)="cerrarModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
 
-    <span class="text-sm font-medium text-primary mb-2 block uppercase tracking-widest">
-      {{ 'mapa.presencia_desde' | translate }} {{ pais.anioIngreso }}
-    </span>
-    <h3 class="text-2xl font-bold mb-4">{{ 'mapa.paises.' + pais.id + '.nombre' | translate }}</h3>
+      <span class="mapa-modal__eyebrow">
+        {{ 'mapa.presencia_desde' | translate }} {{ pais.anioIngreso }}
+      </span>
+      <h3 class="mapa-modal__title">{{ 'mapa.paises.' + pais.id + '.nombre' | translate }}</h3>
 
-    <img
-      [src]="'https://picsum.photos/seed/' + pais.imagenSeed + '/600/400'"
-      class="w-full h-40 object-cover rounded-lg mb-6 img-tinted"
-      [alt]="'mapa.paises.' + pais.id + '.nombre' | translate"
-    />
+      <img
+        [src]="'https://picsum.photos/seed/' + pais.imagenSeed + '/600/400'"
+        class="mapa-modal__image img-tinted"
+        [alt]="'mapa.paises.' + pais.id + '.nombre' | translate"
+      />
 
-    <p class="text-on-surface-variant mb-6">{{ 'mapa.paises.' + pais.id + '.descripcion' | translate }}</p>
+      <p class="mapa-modal__desc">{{ 'mapa.paises.' + pais.id + '.descripcion' | translate }}</p>
 
-    <h4 class="text-sm font-semibold mb-3 uppercase tracking-wide opacity-70">{{ 'mapa.proyectos_destacados' | translate }}</h4>
-    <ul class="space-y-2">
-      <li class="text-sm flex items-start gap-2">
-        <span class="text-primary">•</span> {{ 'mapa.paises.' + pais.id + '.proyecto1' | translate }}
-      </li>
-      <li class="text-sm flex items-start gap-2">
-        <span class="text-primary">•</span> {{ 'mapa.paises.' + pais.id + '.proyecto2' | translate }}
-      </li>
-    </ul>
+      <h4 class="mapa-modal__subheading">{{ 'mapa.proyectos_destacados' | translate }}</h4>
+      <ul class="mapa-modal__list">
+        <li><span>•</span> {{ 'mapa.paises.' + pais.id + '.proyecto1' | translate }}</li>
+        <li><span>•</span> {{ 'mapa.paises.' + pais.id + '.proyecto2' | translate }}</li>
+      </ul>
+    </div>
   </div>
-</div>
 }

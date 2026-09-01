@@ -12,45 +12,111 @@
 
   <!-- HERO -->
   <section class="hero-section section-shell" id="hero">
-    <div class="hero-copy reveal reveal-delay-hero">
-      <p class="section-eyebrow">{{ 'hero.eyebrow' | translate }}</p>
-      <h1 class="hero-title">
-        {{ 'hero.title_pre' | translate }}
-        <span>{{ 'hero.title_accent' | translate }}</span>
+    <div class="hero-copy">
+      <h1 class="hero-title reveal reveal-step-1">
+        {{ 'hero.title_brand' | translate }}
       </h1>
-      <p class="hero-subtitle">
+      <p class="hero-tagline reveal reveal-step-2">{{ 'hero.tagline' | translate }}</p>
+      <p class="hero-subtitle reveal reveal-step-2">
         {{ 'hero.subtitle' | translate }}
       </p>
-      <div class="hero-actions">
+      <div class="hero-actions reveal reveal-step-3">
         <a class="btn-primary" href="#servicios">{{ 'hero.cta_primary' | translate }}</a>
         <a class="btn-secondary" href="#proyectos">{{ 'hero.cta_secondary' | translate }}</a>
       </div>
     </div>
 
-    <div class="hero-visual reveal reveal-delay-200" aria-hidden="true">
-      <div class="security-radar">
-        <span class="radar-ring radar-ring--one"></span>
-        <span class="radar-ring radar-ring--two"></span>
-        <span class="radar-ring radar-ring--three"></span>
-        <span class="radar-sweep"></span>
-        <span class="radar-node radar-node--one"></span>
-        <span class="radar-node radar-node--two"></span>
-        <span class="radar-node radar-node--three"></span>
-        <div class="radar-core">
-          <img src="/logo-novaxis.png" alt="" />
-        </div>
+    <div class="hero-visual reveal reveal-step-2">
+      <div class="hero-brand-seal" aria-hidden="true">
+        <img src="/logo-novaxis.png" alt="" />
       </div>
 
-      <div class="hero-metric hero-metric--left">
-        <strong appCountUp="24/7"></strong>
-        <span>Monitoreo activo</span>
-      </div>
-      <div class="hero-metric hero-metric--right">
-        <strong appCountUp="98%"></strong>
-        <span>Respuesta validada</span>
+      <div
+        class="hero-carousel"
+        (mouseenter)="onCarouselMouseEnter()"
+        (mouseleave)="onCarouselMouseLeave()">
+        @for (slide of slidesHero; track slide.id; let i = $index) {
+          <div class="hero-carousel__slide" [class.hero-carousel__slide--active]="i === slideActual()">
+            <img [src]="slide.imagen" alt="" class="hero-carousel__image img-tinted" />
+            <div class="hero-carousel__caption-wrap">
+              <span class="hero-carousel__caption">{{ slide.labelKey | translate }}</span>
+              <span class="hero-carousel__caption-sub">{{ slide.subKey | translate }}</span>
+            </div>
+          </div>
+        }
+        <div class="hero-carousel__overlay" aria-hidden="true"></div>
+
+        <div class="hero-carousel__progress">
+          @for (slide of slidesHero; track slide.id; let i = $index) {
+            <button
+              class="hero-carousel__progress-track"
+              (click)="irASlide(i)"
+              [attr.aria-label]="'Ir a la imagen ' + (i + 1)"
+              [attr.aria-current]="i === slideActual() ? 'true' : null">
+              <span
+                class="hero-carousel__progress-fill"
+                [class.hero-carousel__progress-fill--active]="i === slideActual()"
+                [class.hero-carousel__progress-fill--done]="i < slideActual()">
+              </span>
+            </button>
+          }
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- STATS BAR -->
+  <section class="stats-bar" aria-label="Estadísticas principales">
+    <div class="section-shell">
+      <div class="stats-grid">
+        @for (stat of statsBar; track stat.icon; let i = $index) {
+          <div class="stat-item reveal" [class.reveal-delay-100]="i === 0" [class.reveal-delay-200]="i === 1" [class.reveal-delay-300]="i === 2" [class.reveal-delay-400]="i === 3">
+            <div class="stat-item__icon" [attr.data-icon]="stat.icon">
+              @switch (stat.icon) {
+                @case ('monitor') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                }
+                @case ('shield') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                }
+                @case ('globe') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                }
+                @case ('briefcase') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                }
+              }
+            </div>
+            <div class="stat-item__text">
+              <strong>{{ stat.value }}</strong>
+              <span>{{ stat.labelKey | translate }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIENES SOMOS -->
+<section class="section-band section-band--raised" id="nosotros">
+  <div class="section-shell">
+    <div class="split-layout">
+      <div class="section-heading reveal">
+        <p class="section-eyebrow">{{ 'nosotros.eyebrow' | translate }}</p>
+        <h2>{{ 'nosotros.title' | translate }}</h2>
+        <p>{{ 'nosotros.desc' | translate }}</p>
+      </div>
+      <div class="nosotros-info reveal reveal-delay-100">
+        <p>{{ 'nosotros.desc2' | translate }}</p>
+        <ul class="nosotros-list">
+          @for (area of nosotrosAreas; track area) {
+            <li>{{ area | translate }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
   <!-- SERVICIOS -->
   <section class="section-band section-band--raised" id="servicios">
@@ -89,7 +155,7 @@
           <p class="section-eyebrow">{{ 'expansion.eyebrow' | translate }}</p>
           <h2>
             {{ 'expansion.title_pre' | translate }}
-            <span>[CIUDAD_ORIGEN]</span>
+            <span>Gabès</span>
             {{ 'expansion.title_post' | translate }}
           </h2>
           <p>{{ 'expansion.intro' | translate }}</p>
@@ -105,22 +171,22 @@
 
       <ol class="timeline reveal reveal-delay-100">
         <li>
-          <span>[ANO_1]</span>
+          <span>2009</span>
           <h4>{{ 'expansion.item1_title' | translate }}</h4>
           <p>{{ 'expansion.item1_desc' | translate }}</p>
         </li>
         <li>
-          <span>[ANO_2]-[ANO_3]</span>
+          <span>2017-2019</span>
           <h4>{{ 'expansion.item2_title' | translate }}</h4>
           <p>{{ 'expansion.item2_desc' | translate }}</p>
         </li>
         <li>
-          <span>[ANO_4]-[ANO_5]</span>
+          <span>2021-2024</span>
           <h4>{{ 'expansion.item3_title' | translate }}</h4>
           <p>{{ 'expansion.item3_desc' | translate }}</p>
         </li>
         <li>
-          <span>[ANO_6]</span>
+          <span>2025-2026</span>
           <h4>{{ 'expansion.item4_title' | translate }}</h4>
           <p>{{ 'expansion.item4_desc' | translate }}</p>
         </li>
@@ -159,11 +225,31 @@
               [alt]="'mapa.paises.' + p.id + '.nombre' | translate"
               class="country-flag" />
             <strong>{{ 'mapa.paises.' + p.id + '.nombre' | translate }}</strong>
+            <span class="country-grid__meta">
+              <span [appCountUp]="p.proyectos + '+'"></span> {{ 'presencia.proyectos_label' | translate }}
+            </span>
+            <span class="country-grid__year">{{ 'mapa.presencia_desde' | translate }} {{ p.anio }}</span>
           </li>
         }
       </ul>
     </div>
   </section>
+
+  <!-- NOVAXIS LATAM -->
+<section class="section-band section-band--latam" id="latam">
+  <div class="section-shell">
+    <div class="section-heading section-heading--center reveal">
+      <p class="section-eyebrow">{{ 'latam.eyebrow' | translate }}</p>
+      <h2>{{ 'latam.title' | translate }}</h2>
+      <p>{{ 'latam.desc' | translate }}</p>
+    </div>
+    <ul class="latam-countries reveal reveal-delay-100">
+      @for (pais of latamPaises; track pais) {
+        <li>{{ pais | translate }}</li>
+      }
+    </ul>
+  </div>
+</section>
 
   <!-- SECTORES -->
   <section class="section-band" id="sectores">
@@ -267,23 +353,39 @@
         </article>
         <article class="tech-card reveal reveal-delay-100">
           <img src="https://picsum.photos/seed/access-control/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card1_desc' | translate }}</p>
+          <h3>{{ 'tecnologias.card2_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card2_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
         <article class="tech-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/ alarm-panel/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card1_desc' | translate }}</p>
+          <img src="https://picsum.photos/seed/alarm-panel/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+          <h3>{{ 'tecnologias.card3_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card3_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
         <article class="tech-card reveal reveal-delay-100">
           <img src="https://picsum.photos/seed/security-hub/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card1_desc' | translate }}</p>
+          <h3>{{ 'tecnologias.card4_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card4_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
       </div>
+    </div>
+  </section>
+
+  <!-- ALIADOS TECNOLÓGICOS -->
+  <section class="section-band section-band--allies" id="aliados">
+    <div class="section-shell">
+      <div class="section-heading section-heading--center reveal">
+        <p class="section-eyebrow">{{ 'aliados.eyebrow' | translate }}</p>
+        <h2>{{ 'aliados.title' | translate }}</h2>
+        <p>{{ 'aliados.desc' | translate }}</p>
+      </div>
+      <ul class="allies-strip reveal reveal-delay-100">
+        @for (aliado of aliados; track aliado) {
+          <li>{{ aliado }}</li>
+        }
+      </ul>
     </div>
   </section>
 
@@ -298,28 +400,43 @@
         </h2>
       </div>
 
-      <div class="project-grid">
-        <article class="project-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/proyecto-1/600/300" class="project-card__image img-tinted" alt="" aria-hidden="true" />
-          <span>{{ 'proyectos.confidential' | translate }}</span>
-          <h3>[NOMBRE_PROYECTO_1]</h3>
-          <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
-          <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
-        </article>
-        <article class="project-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/proyecto-2/600/300" class="project-card__image img-tinted" alt="" aria-hidden="true" />
-          <span>{{ 'proyectos.confidential' | translate }}</span>
-          <h3>[NOMBRE_PROYECTO_1]</h3>
-          <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
-          <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
-        </article>
-        <article class="project-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/proyecto-3/600/300" class="project-card__image img-tinted" alt="" aria-hidden="true" />
-          <span>{{ 'proyectos.confidential' | translate }}</span>
-          <h3>[NOMBRE_PROYECTO_1]</h3>
-          <p>{{ 'proyectos.desc_placeholder' | translate }}</p>
-          <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
-        </article>
+      <div class="projects-carousel reveal reveal-delay-100">
+        <button class="projects-carousel__btn" aria-label="Anterior"
+                (click)="proyectosScroller.scrollBy({ left: -340, behavior: 'smooth' })">←</button>
+      
+        <div class="projects-carousel__viewport" #proyectosScroller>
+          @for (n of proyectosIndices; track n) {
+            <article class="project-card">
+              <span class="project-card__year">{{ 'proyectos.p' + n + '_year' | translate }}</span>
+              <h3>{{ 'proyectos.p' + n + '_cliente' | translate }}</h3>
+              <p class="project-card__pais">{{ 'proyectos.p' + n + '_pais' | translate }}</p>
+              <span class="project-card__tag">{{ 'proyectos.p' + n + '_area' | translate }}</span>
+              <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
+            </article>
+          }
+        </div>
+      
+        <button class="projects-carousel__btn" aria-label="Siguiente"
+                (click)="proyectosScroller.scrollBy({ left: 340, behavior: 'smooth' })">→</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUE NOVAXIS -->
+  <section class="section-band section-band--raised" id="porque">
+    <div class="section-shell">
+      <div class="section-heading section-heading--center reveal">
+        <p class="section-eyebrow">{{ 'porque.eyebrow' | translate }}</p>
+        <h2>{{ 'porque.title' | translate }}</h2>
+      </div>
+      <div class="feature-grid feature-grid--two">
+        @for (razon of porqueItems; track razon.titulo; let i = $index) {
+          <article class="feature-card reveal" [class.reveal-delay-100]="i % 2 === 0" [class.reveal-delay-200]="i % 2 === 1">
+            <span class="feature-index">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</span>
+            <h3>{{ razon.titulo | translate }}</h3>
+            <p>{{ razon.desc | translate }}</p>
+          </article>
+        }
       </div>
     </div>
   </section>
@@ -366,6 +483,10 @@
             <option value="control-acceso">{{ 'contacto.option_acceso' | translate }}</option>
             <option value="alarmas">{{ 'contacto.option_alarmas' | translate }}</option>
             <option value="integracion">{{ 'contacto.option_integracion' | translate }}</option>
+            <option value="interfonia">{{ 'contacto.option_interfonia' | translate }}</option>
+            <option value="redes">{{ 'contacto.option_redes' | translate }}</option>
+            <option value="nuclear">{{ 'contacto.option_nuclear' | translate }}</option>
+            <option value="hvac">{{ 'contacto.option_hvac' | translate }}</option>
           </select>
         </label>
         <label class="contact-form__wide">

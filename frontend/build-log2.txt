@@ -1,0 +1,27 @@
+[33m>[39m Building...
+[32m√[39m Building...
+[35mBrowser bundles[39m     
+[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mmain.js[39m             [2m | [22m[2mmain[22m            [2m | [22m  [36m1.96 MB[39m[2m | [22m
+[32mstyles.css[39m          [2m | [22m[2mstyles[22m          [2m | [22m [36m52.79 kB[39m[2m | [22m
+
+[1m [22m                   [2m | [22m[1mInitial total[22m   [2m | [22m  [1m2.01 MB[22m
+
+
+[35mServer bundles[39m      
+[1mInitial chunk files[22m [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mmain.server.mjs[39m     [2m | [22m[2mmain.server[22m     [2m | [22m  [36m2.87 MB[39m[2m | [22m
+[32mserver.mjs[39m          [2m | [22m[2mserver[22m          [2m | [22m  [36m1.98 MB[39m[2m | [22m
+[32mpolyfills.server.mjs[39m[2m | [22m[2mpolyfills.server[22m[2m | [22m[36m494.27 kB[39m[2m | [22m
+[32mchunk-RADR4IU3.mjs[39m  [2m | [22m[2m-[22m               [2m | [22m  [36m2.89 kB[39m[2m | [22m
+[32mchunk-ETWQ2TQ6.mjs[39m  [2m | [22m[2m-[22m               [2m | [22m  [36m2.14 kB[39m[2m | [22m
+
+[1mLazy chunk files[22m    [2m | [22m[1mNames[22m           [2m | [22m [1mRaw size[22m
+[32mchunk-EQOEFI67.mjs[39m  [2m | [22m[2mxhr2[22m            [2m | [22m [36m40.13 kB[39m[2m | [22m
+[32mchunk-NTDSV4FC.mjs[39m  [2m | [22m[2mxhr2[22m            [2m | [22m [36m40.04 kB[39m[2m | [22m
+
+[35mPrerendered 1 static route.[39m
+Application bundle generation complete. [4.304 seconds] - 2026-08-14T16:07:40.378Z
+
+Output location: D:\Xampp\htdocs\Proyecto_trabajo\empresa_proyecto\frontend\dist\frontend
+
