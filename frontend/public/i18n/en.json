@@ -13,8 +13,8 @@
     "title_accent": "Physical Security",
     "tagline": "The Future Vision",
     "subtitle": "Strategic partner for the protection of critical infrastructure. From the initial study to final installation, we support every strategic security project with technical expertise and rigor.",
-    "cta_primary": "Request a Demo",
-    "cta_secondary": "Discover Our Capabilities",
+    "cta_primary": "Request Technical Consultation",
+    "cta_secondary": "View International Projects",
     "slide1_label": "Video Surveillance (CCTV)",
     "slide2_label": "Access Control & Intrusion Detection",
     "slide3_label": "Networks & Fiber Optics",
@@ -38,7 +38,7 @@
   },
   "expansion": {
     "eyebrow": "Our Journey",
-    "title_pre": "From Gabès",
+    "title_pre": "From",
     "title_post": "to the World",
     "intro": "NOVAXIS was founded in Gabès, Tunisia, in 2009 as a physical security engineering company. Since then, it has supported governments, international organizations and industrial complexes in more than 8 countries.",
     "item1_title": "Founding in Gabès (2009)",
@@ -114,14 +114,14 @@
     "card5_desc": "Secure, high-availability communication infrastructure.",
     "card6_title": "Control Centers",
     "card6_desc": "Unified supervision and monitoring rooms for comprehensive operations.",
-    "link_more": "Learn more →"
+    "link_more": "Request Information →"
   },
   "proyectos": {
     "eyebrow": "Portfolio",
     "title_pre": "International",
     "title_accent": "Projects",
     "confidential": "Confidential",
-    "view_project": "View project ↗",
+    "view_project": "Inquire About Project →",
     "p1_year": "2017",
     "p1_cliente": "United Nations (UNIOGBIS)",
     "p1_pais": "Guinea-Bissau",
@@ -257,10 +257,10 @@
     "derechos": "All rights reserved."
   },
   "stats": {
-    "monitoreo": "Active monitoring",
-    "efectividad": "Validated effectiveness",
-    "paises": "Countries of presence",
-    "proyectos": "Projects executed"
+    "anios": "Years of Experience",
+    "proyectos": "International Projects",
+    "fabricantes": "Partner Manufacturers",
+    "paises": "Countries with Projects"
   },
   "nosotros": {
     "eyebrow": "Who We Are",

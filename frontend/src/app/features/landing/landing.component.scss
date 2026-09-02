@@ -526,11 +526,11 @@
 
 .feature-grid--three,
 .sector-grid,
-.project-grid {
+.project-grid,
+.tech-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.tech-grid,
 .country-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
@@ -921,34 +921,11 @@
 }
 
 // ============================================================
-// REVEAL & ANIMACIONES
+// REVEAL & ANIMACIONES (Impulsadas por GSAP)
 // ============================================================
 .reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 700ms ease, transform 700ms cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform, opacity;
 }
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-// Entrada escalonada rápida para el hero
-.reveal-step-1 {
-  transition-delay: 200ms;
-}
-.reveal-step-2 {
-  transition-delay: 400ms;
-}
-.reveal-step-3 {
-  transition-delay: 600ms;
-}
-
-.reveal-delay-100 { transition-delay: 100ms; }
-.reveal-delay-200 { transition-delay: 200ms; }
-.reveal-delay-300 { transition-delay: 300ms; }
-.reveal-delay-400 { transition-delay: 400ms; }
 
 @keyframes driftBeam {
   to { transform: translate3d(3rem, -2rem, 0) scale(1.12); }

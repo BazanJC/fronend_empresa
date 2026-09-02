@@ -15,7 +15,6 @@ import { isPlatformBrowser } from '@angular/common';
  */
 @Directive({
   selector: '[appCountUp]',
-  standalone: true
 })
 export class CountUpDirective implements OnInit, OnDestroy {
   @Input('appCountUp') valorObjetivo = '';

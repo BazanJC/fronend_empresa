@@ -31,8 +31,8 @@ export class SeoService {
     this.metaService.updateTag({ property: 'og:title', content: titulo });
     this.metaService.updateTag({ property: 'og:description', content: descripcion });
     this.metaService.updateTag({ property: 'og:type', content: 'website' });
-    this.metaService.updateTag({ property: 'og:image', content: 'https://[dominio-empresa].com/og-image.jpg' });
-    this.metaService.updateTag({ property: 'og:url', content: 'https://[dominio-empresa].com' });
+    this.metaService.updateTag({ property: 'og:image', content: 'https://novaxis-international.com/og-image.jpg' });
+    this.metaService.updateTag({ property: 'og:url', content: 'https://novaxis-international.com' });
 
     // Twitter Card (mismo propósito, para X/Twitter)
     this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });

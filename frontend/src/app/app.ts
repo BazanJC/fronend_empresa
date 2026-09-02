@@ -7,7 +7,6 @@ import { LanguageService } from './core/language.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.Eager,

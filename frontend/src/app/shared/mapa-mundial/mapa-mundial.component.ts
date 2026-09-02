@@ -9,7 +9,6 @@ import {
   signal,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { geoEquirectangular, geoPath, type GeoProjection, type GeoPath } from 'd3-geo';
@@ -41,44 +40,36 @@ interface Conexion {
 
 const PAISES: PaisPresencia[] = [
   {
+    id: 'tunez',
+    lat: 33.8814,
+    lng: 10.0982,
+    anioIngreso: 2009,
+    imagenSeed: 'oficina-tunez',
+    topoId: '788',
+  },
+  {
     id: 'bolivia',
     lat: -16.5,
     lng: -68.15,
-    anioIngreso: 2021,
+    anioIngreso: 2025,
     imagenSeed: 'oficina-bolivia',
     topoId: '068',
+  },
+  {
+    id: 'panama',
+    lat: 8.9936,
+    lng: -79.5197,
+    anioIngreso: 2022,
+    imagenSeed: 'oficina-panama',
+    topoId: '591',
   },
   {
     id: 'honduras',
     lat: 14.1,
     lng: -87.2,
-    anioIngreso: 2009,
+    anioIngreso: 2026,
     imagenSeed: 'oficina-honduras',
     topoId: '340',
-  },
-  {
-    id: 'usa',
-    lat: 38.9072,
-    lng: -77.0369,
-    anioIngreso: 2015,
-    imagenSeed: 'oficina-usa',
-    topoId: '840',
-  },
-  {
-    id: 'francia',
-    lat: 48.8566,
-    lng: 2.3522,
-    anioIngreso: 2018,
-    imagenSeed: 'oficina-francia',
-    topoId: '250',
-  },
-  {
-    id: 'elsalvador',
-    lat: 13.6929,
-    lng: -89.2182,
-    anioIngreso: 2022,
-    imagenSeed: 'oficina-elsalvador',
-    topoId: '222',
   },
 ];
 
@@ -89,8 +80,7 @@ const ZOOM_PASO = 0.4;
 
 @Component({
   selector: 'app-mapa-mundial',
-  standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [TranslatePipe],
   templateUrl: './mapa-mundial.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './mapa-mundial.component.scss',

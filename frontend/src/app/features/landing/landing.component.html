@@ -21,7 +21,7 @@
         {{ 'hero.subtitle' | translate }}
       </p>
       <div class="hero-actions reveal reveal-step-3">
-        <a class="btn-primary" href="#servicios">{{ 'hero.cta_primary' | translate }}</a>
+        <a class="btn-primary" href="#contacto">{{ 'hero.cta_primary' | translate }}</a>
         <a class="btn-secondary" href="#proyectos">{{ 'hero.cta_secondary' | translate }}</a>
       </div>
     </div>
@@ -150,23 +150,14 @@
   <!-- LINEA DE TIEMPO / EXPANSION -->
   <section class="section-band" id="expansion">
     <div class="section-shell">
-      <div class="split-layout">
-        <div class="section-heading reveal">
-          <p class="section-eyebrow">{{ 'expansion.eyebrow' | translate }}</p>
-          <h2>
-            {{ 'expansion.title_pre' | translate }}
-            <span>Gabès</span>
-            {{ 'expansion.title_post' | translate }}
-          </h2>
-          <p>{{ 'expansion.intro' | translate }}</p>
-        </div>
-
-        <div class="stat-panel reveal reveal-delay-200">
-          <div><strong appCountUp="15+"></strong><span>{{ 'expansion.stat1_label' | translate }}</span></div>
-          <div><strong appCountUp="5+"></strong><span>{{ 'expansion.stat2_label' | translate }}</span></div>
-          <div><strong appCountUp="50+"></strong><span>{{ 'expansion.stat3_label' | translate }}</span></div>
-          <div><strong appCountUp="20+"></strong><span>{{ 'expansion.stat4_label' | translate }}</span></div>
-        </div>
+      <div class="section-heading reveal">
+        <p class="section-eyebrow">{{ 'expansion.eyebrow' | translate }}</p>
+        <h2>
+          {{ 'expansion.title_pre' | translate }}
+          <span>Gabès</span>
+          {{ 'expansion.title_post' | translate }}
+        </h2>
+        <p>{{ 'expansion.intro' | translate }}</p>
       </div>
 
       <ol class="timeline reveal reveal-delay-100">
@@ -261,30 +252,35 @@
 
       <div class="sector-grid">
         <article class="sector-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/sector-bancos/600/500" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
+          <img src="https://images.pexels.com/photos/2881232/pexels-photo-2881232.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
           <span></span>
           <h3>{{ 'sectores.card1_title' | translate }}</h3>
           <p>{{ 'sectores.card1_desc' | translate }}</p>
         </article>
         <article class="sector-card reveal reveal-delay-200">
-          <img src="https://picsum.photos/seed/sector-embajadas/600/500" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
+          <img src="https://images.pexels.com/photos/5668473/pexels-photo-5668473.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
           <span></span>
           <h3>{{ 'sectores.card2_title' | translate }}</h3>
           <p>{{ 'sectores.card2_desc' | translate }}</p>
         </article>
         <article class="sector-card reveal reveal-delay-300">
-          <img src="https://picsum.photos/seed/sector-gobierno/600/500" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
+          <img src="https://images.pexels.com/photos/3862601/pexels-photo-3862601.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
           <span></span>
           <h3>{{ 'sectores.card3_title' | translate }}</h3>
           <p>{{ 'sectores.card3_desc' | translate }}</p>
         </article>
-      </div>
-
-      <div class="metric-row reveal">
-        <div><strong appCountUp="200+"></strong><span>{{ 'sectores.stat1_label' | translate }}</span></div>
-        <div><strong appCountUp="50+"></strong><span>{{ 'sectores.stat2_label' | translate }}</span></div>
-        <div><strong appCountUp="15+"></strong><span>{{ 'sectores.stat3_label' | translate }}</span></div>
-        <div><strong appCountUp="98%"></strong><span>{{ 'sectores.stat4_label' | translate }}</span></div>
+        <article class="sector-card reveal reveal-delay-100">
+          <img src="https://images.pexels.com/photos/3913025/pexels-photo-3913025.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
+          <span></span>
+          <h3>{{ 'sectores.card4_title' | translate }}</h3>
+          <p>{{ 'sectores.card4_desc' | translate }}</p>
+        </article>
+        <article class="sector-card reveal reveal-delay-200">
+          <img src="https://images.pexels.com/photos/1572973/pexels-photo-1572973.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
+          <span></span>
+          <h3>{{ 'sectores.card5_title' | translate }}</h3>
+          <p>{{ 'sectores.card5_desc' | translate }}</p>
+        </article>
       </div>
     </div>
   </section>
@@ -292,25 +288,16 @@
   <!-- EQUIPO CERTIFICADO -->
   <section class="section-band section-band--raised" id="equipo">
     <div class="section-shell">
-      <div class="split-layout">
-        <div class="section-heading reveal">
-          <p class="section-eyebrow">{{ 'equipo.eyebrow' | translate }}</p>
-          <h2>
-            {{ 'equipo.title_pre' | translate }}
-            <span>{{ 'equipo.title_accent' | translate }}</span>
-          </h2>
-          <p>{{ 'equipo.desc' | translate }}</p>
-        </div>
-
-        <div class="certification-panel reveal reveal-delay-200">
-          <div><strong appCountUp="15+"></strong><span>{{ 'equipo.stat1_label' | translate }}</span></div>
-          <div><strong appCountUp="200+"></strong><span>{{ 'equipo.stat2_label' | translate }}</span></div>
-          <div><strong appCountUp="10+"></strong><span>{{ 'equipo.stat3_label' | translate }}</span></div>
-          <div><strong appCountUp="24/7"></strong><span>{{ 'equipo.stat4_label' | translate }}</span></div>
-        </div>
+      <div class="section-heading reveal">
+        <p class="section-eyebrow">{{ 'equipo.eyebrow' | translate }}</p>
+        <h2>
+          {{ 'equipo.title_pre' | translate }}
+          <span>{{ 'equipo.title_accent' | translate }}</span>
+        </h2>
+        <p>{{ 'equipo.desc' | translate }}</p>
       </div>
 
-       <ul class="badge-list reveal">
+      <ul class="badge-list reveal reveal-delay-100">
         <li>
           <svg class="badge-seal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/>
@@ -346,27 +333,39 @@
 
       <div class="tech-grid">
         <article class="tech-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/cctv-camera/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+          <img src="https://images.pexels.com/photos/5650141/pexels-photo-5650141.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
           <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
           <p>{{ 'tecnologias.card1_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
-        <article class="tech-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/access-control/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+        <article class="tech-card reveal reveal-delay-200">
+          <img src="https://images.pexels.com/photos/7522609/pexels-photo-7522609.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
           <h3>{{ 'tecnologias.card2_title' | translate }}</h3>
           <p>{{ 'tecnologias.card2_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
-        <article class="tech-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/alarm-panel/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+        <article class="tech-card reveal reveal-delay-300">
+          <img src="https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
           <h3>{{ 'tecnologias.card3_title' | translate }}</h3>
           <p>{{ 'tecnologias.card3_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
         <article class="tech-card reveal reveal-delay-100">
-          <img src="https://picsum.photos/seed/security-hub/500/300" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+          <img src="https://images.pexels.com/photos/427029/pexels-photo-427029.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
           <h3>{{ 'tecnologias.card4_title' | translate }}</h3>
           <p>{{ 'tecnologias.card4_desc' | translate }}</p>
+          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
+        </article>
+        <article class="tech-card reveal reveal-delay-200">
+          <img src="https://images.pexels.com/photos/37564550/pexels-photo-37564550.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+          <h3>{{ 'tecnologias.card5_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card5_desc' | translate }}</p>
+          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
+        </article>
+        <article class="tech-card reveal reveal-delay-300">
+          <img src="https://images.pexels.com/photos/30481728/pexels-photo-30481728.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
+          <h3>{{ 'tecnologias.card6_title' | translate }}</h3>
+          <p>{{ 'tecnologias.card6_desc' | translate }}</p>
           <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
         </article>
       </div>

@@ -67,9 +67,12 @@
         [attr.aria-label]="theme.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
         {{ theme.isDark() ? '☀️' : '🌙' }}
       </button>
+      <!-- Botón de Plataforma comentado para fase posterior -->
+      <!--
       <button class="border border-primary/40 text-primary px-4 py-2 text-sm font-medium hover:bg-primary/10 transition-all rounded flex items-center gap-2" (click)="openPlatformModal()">
         🔒 {{ 'nav.plataforma' | translate }}
       </button>
+      -->
       <a href="#contacto" class="bg-primary-container text-on-primary-container px-5 py-2 text-sm font-medium hover:brightness-110 transition-all rounded">
         {{ 'nav.cta' | translate }}
       </a>
@@ -110,9 +113,11 @@
           {{ theme.isDark() ? '☀️' : '🌙' }}
         </button>
       </div>
+      <!--
       <button class="border border-primary/40 text-primary px-4 py-2 text-sm font-medium rounded" (click)="openPlatformModal(); cerrarMenuMovil()">
         🔒 {{ 'nav.plataforma' | translate }}
       </button>
+      -->
       <a href="#contacto" (click)="cerrarMenuMovil()" class="bg-primary-container text-on-primary-container px-4 py-2 text-sm font-medium text-center rounded">
         {{ 'nav.cta' | translate }}
       </a>

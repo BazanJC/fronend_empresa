@@ -12,7 +12,7 @@ import {
   HostListener,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ThemeService } from '../../core/theme.service';
@@ -33,21 +33,21 @@ const PLATAFORMA_OPTIONS: PlataformaOption[] = [
     numero: '1',
     tituloKey: 'plataforma.portal_titulo',
     descripcionKey: 'plataforma.portal_desc',
-    ruta: 'portal.[dominio-empresa].com',
+    ruta: 'portal.novaxis-international.com',
     tipoLogin: 'cliente',
   },
   {
     numero: '2',
     tituloKey: 'plataforma.tecnico_titulo',
     descripcionKey: 'plataforma.tecnico_desc',
-    ruta: 'tecnico.[dominio-empresa].com',
+    ruta: 'tecnico.novaxis-international.com',
     tipoLogin: 'staff',
   },
   {
     numero: '3',
     tituloKey: 'plataforma.admin_titulo',
     descripcionKey: 'plataforma.admin_desc',
-    ruta: 'admin.[dominio-empresa].com',
+    ruta: 'admin.novaxis-international.com',
     tipoLogin: 'staff',
   },
 ];
@@ -56,8 +56,7 @@ const SECCIONES_OBSERVADAS = ['servicios', 'sectores', 'proyectos', 'contacto'];
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [CommonModule, FormsModule, TranslatePipe],
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.component.scss',

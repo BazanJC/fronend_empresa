@@ -13,8 +13,8 @@
     "title_accent": "Sécurité Physique",
     "tagline": "The Future Vision",
     "subtitle": "Partenaire stratégique pour la protection des infrastructures critiques. De l'étude initiale à l'installation finale, nous accompagnons vos projets stratégiques de sécurité avec expertise et rigueur technique.",
-    "cta_primary": "Demander une Démo",
-    "cta_secondary": "Découvrir nos capacités",
+    "cta_primary": "Demander un Conseil Technique",
+    "cta_secondary": "Voir les Projets Internationaux",
     "slide1_label": "Vidéosurveillance (CCTV)",
     "slide2_label": "Contrôle d'Accès et Anti-Intrusion",
     "slide3_label": "Réseaux et Fibre Optique",
@@ -38,7 +38,7 @@
   },
   "expansion": {
     "eyebrow": "Notre Parcours",
-    "title_pre": "De Gabès",
+    "title_pre": "De",
     "title_post": "au Monde",
     "intro": "NOVAXIS a été fondée à Gabès, en Tunisie, en 2009, en tant que société d'ingénierie en sécurité physique. Depuis, elle accompagne gouvernements, organisations internationales et complexes industriels dans plus de 8 pays.",
     "item1_title": "Fondation à Gabès (2009)",
@@ -114,14 +114,14 @@
     "card5_desc": "Infrastructure de communication sécurisée et haute disponibilité.",
     "card6_title": "Centres de Contrôle",
     "card6_desc": "Salles de supervision et de surveillance unifiées pour l'opération intégrale.",
-    "link_more": "En savoir plus →"
+    "link_more": "Demander des Informations →"
   },
   "proyectos": {
     "eyebrow": "Portfolio",
     "title_pre": "Projets",
     "title_accent": "Internationaux",
     "confidential": "Confidentiel",
-    "view_project": "Voir le projet ↗",
+    "view_project": "Consulter le Projet →",
     "p1_year": "2017",
     "p1_cliente": "Nations Unies (UNIOGBIS)",
     "p1_pais": "Guinée-Bissau",
@@ -257,10 +257,10 @@
     "derechos": "Tous droits réservés."
   },
   "stats": {
-    "monitoreo": "Surveillance active",
-    "efectividad": "Efficacité validée",
-    "paises": "Pays de présence",
-    "proyectos": "Projets réalisés"
+    "anios": "Années d'Expérience",
+    "proyectos": "Projets Internationaux",
+    "fabricantes": "Fabricants Partenaires",
+    "paises": "Pays avec Projets"
   },
   "nosotros": {
     "eyebrow": "Qui Nous Sommes",

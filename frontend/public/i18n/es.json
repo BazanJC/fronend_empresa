@@ -13,8 +13,8 @@
     "title_accent": "Seguridad Física",
     "tagline": "The Future Vision",
     "subtitle": "Socio estratégico para la protección de infraestructuras críticas. Desde el estudio inicial hasta la instalación final, acompañamos cada proyecto estratégico de seguridad con experiencia y rigor técnico.",
-    "cta_primary": "Solicitar una Demo",
-    "cta_secondary": "Descubrir nuestras capacidades",
+    "cta_primary": "Solicitar Asesoría Técnica",
+    "cta_secondary": "Ver Proyectos Internacionales",
     "slide1_label": "Videovigilancia CCTV",
     "slide2_label": "Control de Acceso e Intrusión",
     "slide3_label": "Redes y Fibra Óptica",
@@ -38,7 +38,7 @@
   },
   "expansion": {
     "eyebrow": "Nuestra Trayectoria",
-    "title_pre": "De Gabès",
+    "title_pre": "De",
     "title_post": "al Mundo",
     "intro": "NOVAXIS nació en Gabès, Túnez, en 2009 como empresa de ingeniería en seguridad física. Desde entonces acompaña a gobiernos, organizaciones internacionales y complejos industriales en más de 8 países.",
     "item1_title": "Fundación en Gabès (2009)",
@@ -113,14 +113,14 @@
     "card5_desc": "Infraestructura de comunicación segura y de alta disponibilidad.",
     "card6_title": "Centros de Control",
     "card6_desc": "Salas de supervisión y monitoreo unificadas para la operación integral.",
-    "link_more": "Saber más →"
+    "link_more": "Solicitar Información →"
   },
   "proyectos": {
     "eyebrow": "Portafolio",
     "title_pre": "Proyectos",
     "title_accent": "Internacionales",
     "confidential": "Confidencial",
-    "view_project": "Ver el proyecto ↗",
+    "view_project": "Consultar Proyecto →",
     "p1_year": "2017",
     "p1_cliente": "Naciones Unidas (UNIOGBIS)",
     "p1_pais": "Guinea-Bissau",
@@ -256,10 +256,10 @@
     "derechos": "Todos los derechos reservados."
   },
   "stats": {
-    "monitoreo": "Monitoreo activo",
-    "efectividad": "Efectividad validada",
-    "paises": "Países con presencia",
-    "proyectos": "Proyectos ejecutados"
+    "anios": "Años de Experiencia",
+    "proyectos": "Proyectos Internacionales",
+    "fabricantes": "Fabricantes Aliados",
+    "paises": "Países con Proyectos"
   },
   "nosotros": {
     "eyebrow": "¿Quiénes Somos?",
