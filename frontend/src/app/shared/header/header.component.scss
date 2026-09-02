@@ -1,1 +1,145 @@
-// Estilo vía Tailwind + clases globales (.glass-card, .tech-modal-overlay, .modal-zoom).
+// ============================================================
+// NAVBAR & HEADER EXECUTIVE STYLING
+// ============================================================
+
+// Badge del Logo de Marca: Garantiza nitidez y contraste 100% en modo claro y oscuro
+.header-brand-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.9rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1.5px solid color-mix(in srgb, var(--color-outline-variant) 80%, transparent);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+
+  img {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.08));
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow:
+      0 8px 24px color-mix(in srgb, var(--color-primary) 25%, transparent),
+      0 0 0 1px var(--color-primary);
+  }
+}
+
+:host-context(.dark) .header-brand-badge {
+  background: #ffffff;
+  border-color: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  box-shadow:
+    0 0 22px color-mix(in srgb, var(--color-primary-container) 40%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-primary) 40%, transparent);
+
+  &:hover {
+    box-shadow:
+      0 0 30px color-mix(in srgb, var(--color-primary-container) 70%, transparent),
+      0 0 0 2px var(--color-primary);
+  }
+}
+
+// Pista contenedora de navegación
+.nav-track-container {
+  background: color-mix(in srgb, var(--color-surface-container) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 45%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+:host-context(.dark) .nav-track-container {
+  background: color-mix(in srgb, var(--color-surface-container-highest) 35%, transparent);
+  border-color: color-mix(in srgb, var(--color-outline) 30%, transparent);
+}
+
+// Cápsula / Píldora Flotante Activa (Indicador suave)
+.nav-floating-pill {
+  position: absolute;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--color-primary-container) 25%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition:
+    left 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    width 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    top 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 250ms ease;
+  pointer-events: none;
+  z-index: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 28%;
+    right: 28%;
+    height: 2.5px;
+    border-radius: 9999px;
+    background: var(--color-primary);
+    box-shadow: 0 0 10px var(--color-primary);
+  }
+}
+
+:host-context(.dark) .nav-floating-pill {
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+  border-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
+  box-shadow:
+    0 0 24px color-mix(in srgb, var(--color-primary) 30%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-primary) 40%, transparent);
+}
+
+// Botón CTA de Navegación (Ultra Alto Contraste en Claro y Oscuro)
+.btn-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 9999px;
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #004499 0%, #0066e0 100%);
+  border: 1px solid rgba(0, 68, 153, 0.7);
+  box-shadow:
+    0 4px 18px rgba(0, 102, 224, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, filter 0.25s ease;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #003780 0%, #0077ff 100%);
+    box-shadow:
+      0 8px 26px rgba(0, 102, 224, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    filter: brightness(1.08);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+:host-context(.dark) .btn-nav-cta {
+  background: linear-gradient(135deg, #005ed1 0%, #1690ce 100%);
+  border: 1px solid rgba(79, 195, 247, 0.5);
+  box-shadow:
+    0 0 22px rgba(41, 174, 240, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  &:hover {
+    box-shadow:
+      0 0 32px rgba(79, 195, 247, 0.75),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}

@@ -84,10 +84,12 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
 
   seccionActiva = signal<string>('');
 
-  // Posición/ancho del indicador deslizante (el "subrayado" que se mueve)
+  // Posición/ancho/alto del indicador deslizante (la cápsula que se mueve)
   indicadorLeft = signal(0);
   indicadorWidth = signal(0);
-  indicadorListo = signal(false); // evita que el indicador "viaje" desde 0 en la primera carga
+  indicadorTop = signal(0);
+  indicadorHeight = signal(0);
+  indicadorListo = signal(false);
 
   platformModalOpen = signal(false);
   vistaModal = signal<'seleccion' | 'login'>('seleccion');
@@ -96,8 +98,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
   loginForm = { rx: '', codigoAcceso: '', usuario: '', password: '' };
 
   constructor() {
-    // Cada vez que cambia la sección activa, recalcula dónde debe ir el indicador.
-    // effect() se re-ejecuta automáticamente cuando seccionActiva() cambia.
     effect(() => {
       const activa = this.seccionActiva();
       if (activa) {
@@ -117,7 +117,7 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
           }
         });
       },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
+      { rootMargin: '-30% 0px -50% 0px', threshold: 0 },
     );
 
     SECCIONES_OBSERVADAS.forEach((id) => {
@@ -145,6 +145,8 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
     const el = enlace.nativeElement;
     this.indicadorLeft.set(el.offsetLeft);
     this.indicadorWidth.set(el.offsetWidth);
+    this.indicadorTop.set(el.offsetTop);
+    this.indicadorHeight.set(el.offsetHeight);
     this.indicadorListo.set(true);
   }
 

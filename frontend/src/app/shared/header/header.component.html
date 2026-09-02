@@ -1,59 +1,67 @@
-<nav class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant">
-  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface/85 backdrop-blur-2xl border-b border-outline-variant/60 shadow-lg shadow-black/5 transition-colors duration-300">
+  <div class="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between lg:grid lg:grid-cols-12 lg:gap-4">
 
-    <!-- Logo -->
-    <a href="#hero" class="flex items-center gap-2 shrink-0">
-      <img src="/logo-novaxis.png" alt="NOVAXIS International" class="h-14 w-auto" />
-    </a>
-
-     <!-- Navegación (desktop) — con indicador deslizante suave -->
-    <div class="relative hidden lg:flex items-center gap-8">
-      @for (item of [
-        { id: 'servicios', key: 'nav.servicios' },
-        { id: 'sectores', key: 'nav.sectores' },
-        { id: 'proyectos', key: 'nav.proyectos' },
-        { id: 'contacto', key: 'nav.contacto' }
-      ]; track item.id) {
-        <a
-          #navLink
-          [attr.data-id]="item.id"
-          [href]="'#' + item.id"
-          class="text-sm pb-1 transition-all duration-300"
-          [class.text-primary]="seccionActiva() === item.id"
-          [class.font-semibold]="seccionActiva() === item.id"
-          [class.cyan-glow]="seccionActiva() === item.id"
-          [class.text-on-surface-variant]="seccionActiva() !== item.id"
-          [class.font-medium]="seccionActiva() !== item.id"
-          [class.hover:text-primary]="seccionActiva() !== item.id">
-          {{ item.key | translate }}
-        </a>
-      }
- 
-      <!-- Indicador deslizante: se mueve suavemente bajo el link activo -->
-      <span
-        class="absolute bottom-0 h-0.5 bg-primary rounded-full transition-all duration-500 ease-out"
-        [class.opacity-0]="!indicadorListo()"
-        [style.left.px]="indicadorLeft()"
-        [style.width.px]="indicadorWidth()">
-      </span>
+    <!-- Izquierda: Logo (col-span-3) -->
+    <div class="lg:col-span-3 flex items-center justify-start">
+      <a href="#hero" class="brand-logo-link group" aria-label="NOVAXIS International Inicio">
+        <div class="header-brand-badge">
+          <img src="/logo-novaxis.png" alt="NOVAXIS International" class="h-10 md:h-11 w-auto object-contain" />
+        </div>
+      </a>
     </div>
 
-    <!-- Acciones -->
-    <div class="hidden lg:flex items-center gap-3">
+    <!-- Centro: Navegación Principal (col-span-6) perfectamente centrado en la pantalla -->
+    <div class="hidden lg:col-span-6 lg:flex items-center justify-center">
+      <div class="relative flex items-center gap-1.5 p-1.5 rounded-full nav-track-container">
+        <!-- Cápsula / Píldora Activa Flotante -->
+        <span
+          class="nav-floating-pill"
+          [class.opacity-0]="!indicadorListo()"
+          [style.left.px]="indicadorLeft()"
+          [style.width.px]="indicadorWidth()"
+          [style.top.px]="indicadorTop()"
+          [style.height.px]="indicadorHeight()">
+        </span>
+
+        @for (item of [
+          { id: 'servicios', key: 'nav.servicios' },
+          { id: 'sectores', key: 'nav.sectores' },
+          { id: 'proyectos', key: 'nav.proyectos' },
+          { id: 'contacto', key: 'nav.contacto' }
+        ]; track item.id) {
+          <a
+            #navLink
+            [attr.data-id]="item.id"
+            [href]="'#' + item.id"
+            class="relative z-10 px-5 py-2 text-[15px] tracking-wide rounded-full transition-all duration-300 select-none whitespace-nowrap"
+            [class.text-primary]="seccionActiva() === item.id"
+            [class.font-bold]="seccionActiva() === item.id"
+            [class.text-on-surface]="seccionActiva() !== item.id"
+            [class.font-semibold]="seccionActiva() !== item.id"
+            [class.hover:text-primary]="seccionActiva() !== item.id">
+            {{ item.key | translate }}
+          </a>
+        }
+      </div>
+    </div>
+
+    <!-- Derecha: Acciones (col-span-3) alineado simétricamente a la derecha -->
+    <div class="hidden lg:col-span-3 lg:flex items-center justify-end gap-3.5">
+      <!-- Selector de Idioma -->
       <div class="relative">
         <button
-          class="glass-card rounded-full px-4 py-2 text-xs font-medium flex items-center gap-1.5"
+          class="glass-card rounded-full px-4 py-2 text-xs font-semibold flex items-center gap-1.5 hover:border-primary/50 transition-all cursor-pointer"
           (click)="toggleIdiomaMenu()">
           {{ language.idiomaActual().codigo.toUpperCase() }}
-          <span class="text-[0.6rem] opacity-60">▾</span>
+          <span class="text-[0.65rem] opacity-60">▾</span>
         </button>
         @if (idiomaMenuAbierto()) {
-          <div class="absolute top-full mt-2 rtl:right-auto rtl:left-0 right-0 glass-card rounded-xl overflow-hidden min-w-[170px] z-20 py-1">
+          <div class="absolute top-full mt-2 rtl:right-auto rtl:left-0 right-0 glass-card rounded-2xl overflow-hidden min-w-[170px] z-20 py-1.5 shadow-2xl border border-outline-variant">
             @for (idioma of language.idiomas; track idioma.codigo) {
               <button
-                class="w-full text-start px-4 py-2.5 text-sm hover:bg-primary/10 transition-colors"
+                class="w-full text-start px-4 py-2.5 text-sm hover:bg-primary/10 transition-colors font-medium cursor-pointer"
                 [class.text-primary]="language.idiomaActual().codigo === idioma.codigo"
-                [class.font-semibold]="language.idiomaActual().codigo === idioma.codigo"
+                [class.font-bold]="language.idiomaActual().codigo === idioma.codigo"
                 (click)="seleccionarIdioma(idioma.codigo)">
                 {{ idioma.nombreNativo }}
               </button>
@@ -61,32 +69,30 @@
           </div>
         }
       </div>
+
+      <!-- Toggle Modo Claro / Oscuro -->
       <button
-        class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-base"
+        class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-base hover:scale-105 active:scale-95 transition-all cursor-pointer"
         (click)="theme.toggle()"
         [attr.aria-label]="theme.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
         {{ theme.isDark() ? '☀️' : '🌙' }}
       </button>
-      <!-- Botón de Plataforma comentado para fase posterior -->
-      <!--
-      <button class="border border-primary/40 text-primary px-4 py-2 text-sm font-medium hover:bg-primary/10 transition-all rounded flex items-center gap-2" (click)="openPlatformModal()">
-        🔒 {{ 'nav.plataforma' | translate }}
-      </button>
-      -->
-      <a href="#contacto" class="bg-primary-container text-on-primary-container px-5 py-2 text-sm font-medium hover:brightness-110 transition-all rounded">
+
+      <!-- Botón de Contacto Principal con Alto Contraste -->
+      <a href="#contacto" class="btn-nav-cta">
         {{ 'nav.cta' | translate }}
       </a>
     </div>
 
-    <!-- Botón menú móvil -->
-    <button class="lg:hidden w-10 h-10 flex items-center justify-center" (click)="toggleMenuMovil()" aria-label="Abrir menú">
+    <!-- Botón Menú Móvil -->
+    <button class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl glass-card text-lg cursor-pointer" (click)="toggleMenuMovil()" aria-label="Abrir menú">
       {{ menuMovilAbierto() ? '✕' : '☰' }}
     </button>
   </div>
 
-  <!-- Menú móvil -->
+  <!-- Menú Móvil Mejorado -->
   @if (menuMovilAbierto()) {
-    <div class="lg:hidden glass-card mx-4 mb-4 rounded-xl p-4 flex flex-col gap-3">
+    <div class="lg:hidden glass-card mx-4 mb-4 rounded-2xl p-5 flex flex-col gap-3.5 shadow-2xl border border-outline-variant/80">
       @for (item of [
         { id: 'servicios', key: 'nav.servicios' },
         { id: 'sectores', key: 'nav.sectores' },
@@ -94,39 +100,36 @@
         { id: 'contacto', key: 'nav.contacto' }
       ]; track item.id) {
         <a [href]="'#' + item.id" (click)="cerrarMenuMovil()"
-           class="text-sm font-medium py-2"
-           [class.text-primary]="seccionActiva() === item.id">
+           class="text-[16px] font-semibold py-2.5 px-3 rounded-xl transition-all"
+           [class.bg-primary/10]="seccionActiva() === item.id"
+           [class.text-primary]="seccionActiva() === item.id"
+           [class.text-on-surface]="seccionActiva() !== item.id">
           {{ item.key | translate }}
         </a>
       }
-      <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-outline-variant">
+      <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-outline-variant/60">
         @for (idioma of language.idiomas; track idioma.codigo) {
           <button
-            class="px-3 py-1 text-xs glass-card rounded-full"
+            class="px-3 py-1.5 text-xs glass-card rounded-full font-semibold"
             [class.text-primary]="language.idiomaActual().codigo === idioma.codigo"
-            [class.font-semibold]="language.idiomaActual().codigo === idioma.codigo"
+            [class.border-primary]="language.idiomaActual().codigo === idioma.codigo"
             (click)="seleccionarIdioma(idioma.codigo)">
             {{ idioma.codigo.toUpperCase() }}
           </button>
         }
-        <button class="ms-auto w-9 h-9 rounded-full glass-card flex items-center justify-center" (click)="theme.toggle()">
+        <button class="ms-auto w-10 h-10 rounded-full glass-card flex items-center justify-center" (click)="theme.toggle()">
           {{ theme.isDark() ? '☀️' : '🌙' }}
         </button>
       </div>
-      <!--
-      <button class="border border-primary/40 text-primary px-4 py-2 text-sm font-medium rounded" (click)="openPlatformModal(); cerrarMenuMovil()">
-        🔒 {{ 'nav.plataforma' | translate }}
-      </button>
-      -->
-      <a href="#contacto" (click)="cerrarMenuMovil()" class="bg-primary-container text-on-primary-container px-4 py-2 text-sm font-medium text-center rounded">
+      <a href="#contacto" (click)="cerrarMenuMovil()" class="btn-nav-cta w-full text-center mt-2">
         {{ 'nav.cta' | translate }}
       </a>
     </div>
   }
 </nav>
 
-<!-- Espaciador para que el contenido no quede tapado por la nav fija -->
-<div class="h-[88px]"></div>
+<!-- Espaciador -->
+<div class="h-[84px] md:h-[92px]"></div>
 
 <!-- ============================================================ -->
 <!-- Modal de plataforma: paso 1 = selección, paso 2 = login -->
