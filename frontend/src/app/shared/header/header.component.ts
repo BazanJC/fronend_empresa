@@ -5,11 +5,10 @@ import {
   effect,
   AfterViewInit,
   OnDestroy,
+  ElementRef,
   PLATFORM_ID,
   ViewChildren,
   QueryList,
-  ElementRef,
-  HostListener,
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
@@ -60,6 +59,9 @@ const SECCIONES_OBSERVADAS = ['servicios', 'sectores', 'proyectos', 'contacto'];
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.component.scss',
+  host: {
+    '(document:click)': 'onClickFuera($event)',
+  },
 })
 export class HeaderComponent implements AfterViewInit, OnDestroy {
   theme = inject(ThemeService);
@@ -67,11 +69,10 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private observer?: IntersectionObserver;
 
-  @HostListener('document:click', ['$event'])
   onClickFuera(event: MouseEvent): void {
     if (!this.idiomaMenuAbierto()) return;
-    const target = event.target as HTMLElement;
-    if (!target.closest('.relative')) {
+
+    if (!(event.target instanceof Element) || !event.target.closest('.header-language-control')) {
       this.idiomaMenuAbierto.set(false);
     }
   }

@@ -1,46 +1,62 @@
-<footer class="border-t border-outline-variant pt-16 pb-8 px-6">
-  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-    <div class="col-span-1">
-      <img src="/logo-novaxis.png" alt="NOVAXIS International" class="h-16 w-auto mb-4" />
-      <p class="text-sm text-on-surface-variant leading-relaxed">{{ 'footer.descripcion' | translate }}</p>
-      <div class="flex gap-3 mt-6">
-        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook"
-           class="w-9 h-9 rounded-full border border-outline-variant flex items-center justify-center hover:border-primary transition-all text-sm">f</a>
-        <a href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"
-           class="w-9 h-9 rounded-full border border-outline-variant flex items-center justify-center hover:border-primary transition-all text-sm">in</a>
-      </div>
+<footer class="site-footer">
+  <div class="footer-shell">
+    <div class="footer-main">
+      <section class="footer-brand" aria-label="NOVAXIS International">
+        <a class="footer-logo-link" href="#hero" [attr.aria-label]="'footer.inicio' | translate">
+          <span class="footer-logo-badge">
+            <img src="/logo-novaxis.png" alt="NOVAXIS International" />
+          </span>
+        </a>
+        <p class="footer-brand__description">{{ 'footer.descripcion' | translate }}</p>
+        <div class="footer-brand__entities">
+          <span>{{ 'footer.razon_social' | translate }}</span>
+          <span>{{ 'footer.filial' | translate }}</span>
+        </div>
+      </section>
+
+      <nav class="footer-column" [attr.aria-label]="'footer.navegacion' | translate">
+        <h2 class="footer-heading">{{ 'footer.navegacion' | translate }}</h2>
+        <ul class="footer-link-list">
+          <li><a href="#hero">{{ 'footer.inicio' | translate }}</a></li>
+          <li><a href="#nosotros">{{ 'nosotros.eyebrow' | translate }}</a></li>
+          <li><a href="#servicios">{{ 'nav.servicios' | translate }}</a></li>
+          <li><a href="#sectores">{{ 'nav.sectores' | translate }}</a></li>
+          <li><a href="#proyectos">{{ 'nav.proyectos' | translate }}</a></li>
+        </ul>
+      </nav>
+
+      <section class="footer-column">
+        <h2 class="footer-heading">{{ 'footer.servicios' | translate }}</h2>
+        <ul class="footer-link-list footer-link-list--services">
+          <li><a href="#servicios">{{ 'servicios.card1_title' | translate }}</a></li>
+          <li><a href="#servicios">{{ 'servicios.card2_title' | translate }}</a></li>
+          <li><a href="#servicios">{{ 'servicios.card3_title' | translate }}</a></li>
+          <li><a href="#nuclear">{{ 'nuclear.title' | translate }}</a></li>
+        </ul>
+      </section>
+
+      <section class="footer-column footer-contact">
+        <h2 class="footer-heading">{{ 'footer.contacto' | translate }}</h2>
+        <a class="footer-contact-link" [href]="'mailto:' + emailContacto">
+          <span class="footer-contact-link__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+          </span>
+          <span class="footer-contact-link__text">
+            <span>{{ 'footer.email' | translate }}</span>
+            <strong>{{ emailContacto }}</strong>
+          </span>
+        </a>
+        <p class="footer-presence">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          <span>{{ 'footer.presencia' | translate }}</span>
+        </p>
+        <a class="footer-contact-cta" href="#contacto">{{ 'nav.cta' | translate }}</a>
+      </section>
     </div>
 
-    <div>
-      <h4 class="text-sm font-medium text-primary mb-4">{{ 'footer.navegacion' | translate }}</h4>
-      <ul class="space-y-3 text-sm text-on-surface-variant">
-        <li><a href="#hero" class="hover:text-primary transition-colors">{{ 'footer.inicio' | translate }}</a></li>
-        <li><a href="#servicios" class="hover:text-primary transition-colors">{{ 'nav.servicios' | translate }}</a></li>
-        <li><a href="#sectores" class="hover:text-primary transition-colors">{{ 'nav.sectores' | translate }}</a></li>
-        <li><a href="#proyectos" class="hover:text-primary transition-colors">{{ 'nav.proyectos' | translate }}</a></li>
-      </ul>
+    <div class="footer-bottom">
+      <span>© {{ anioActual }} NOVAXIS International</span>
+      <span>{{ 'footer.derechos' | translate }}</span>
     </div>
-
-    <div>
-      <h4 class="text-sm font-medium text-primary mb-4">{{ 'footer.servicios' | translate }}</h4>
-      <ul class="space-y-3 text-sm text-on-surface-variant">
-        <li>{{ 'servicios.card1_title' | translate }}</li>
-        <li>{{ 'servicios.card2_title' | translate }}</li>
-        <li>{{ 'servicios.card3_title' | translate }}</li>
-      </ul>
-    </div>
-
-    <div>
-      <h4 class="text-sm font-medium text-primary mb-4">{{ 'nav.contacto' | translate }}</h4>
-      <ul class="space-y-3 text-sm text-on-surface-variant">
-        <li>contacto&#64;novaxis-international.com</li>
-        <li>+591 [TELÉFONO]</li>
-        <li>La Paz, Bolivia</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="max-w-6xl mx-auto pt-6 border-t border-outline-variant text-center">
-    <p class="text-sm text-on-surface-variant">© {{ anioActual }} NOVAXIS International. {{ 'footer.derechos' | translate }}</p>
   </div>
 </footer>

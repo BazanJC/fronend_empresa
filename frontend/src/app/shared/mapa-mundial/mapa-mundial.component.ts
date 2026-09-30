@@ -2,17 +2,23 @@ import {
   Component,
   OnInit,
   AfterViewInit,
+  OnDestroy,
   HostListener,
   ElementRef,
   ViewChild,
   inject,
   signal,
+  Output,
+  EventEmitter,
+  PLATFORM_ID,
   ChangeDetectionStrategy,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { geoEquirectangular, geoPath, type GeoProjection, type GeoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
+import { gsap } from 'gsap';
 
 export interface PaisPresencia {
   id: string;
@@ -85,7 +91,7 @@ const ZOOM_PASO = 0.4;
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './mapa-mundial.component.scss',
 })
-export class MapaMundialComponent implements OnInit, AfterViewInit {
+export class MapaMundialComponent implements OnInit, AfterViewInit, OnDestroy {
   private http = inject(HttpClient);
   private translate = inject(TranslateService);
 
@@ -113,6 +119,17 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
   tooltipX = signal(0);
   tooltipY = signal(0);
 
+  esVisible = signal(false);
+  paisDestacadoId = signal<string | null>(null);
+  @Output() paisDestacado = new EventEmitter<string | null>();
+
+  private observer?: IntersectionObserver;
+  private entradaJugada = false;
+  private prefiereMenosMovimiento = false;
+  private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+  private cicloTimer?: ReturnType<typeof setInterval>;
+  private indiceCiclo = 0;
+
   private width = 960;
   private height = 480;
   private projection: GeoProjection | null = null;
@@ -134,6 +151,23 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.actualizarDimensiones();
+    if (!this.isBrowser) return;
+
+    this.prefiereMenosMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    this.observer = new IntersectionObserver(
+      ([entry]) => {
+        this.esVisible.set(entry.isIntersecting);
+        if (entry.isIntersecting) this.intentarJugarEntrada();
+      },
+      { threshold: 0.25 },
+    );
+    this.observer.observe(this.mapContainer.nativeElement);
+  }
+
+  ngOnDestroy(): void {
+    this.observer?.disconnect();
+    if (this.cicloTimer) clearInterval(this.cicloTimer);
   }
 
   @HostListener('window:resize')
@@ -194,6 +228,7 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
     this.conexiones.set(rutas);
 
     this.cargando.set(false);
+    this.intentarJugarEntrada();
   }
 
   seleccionarPais(pais: PaisPresencia): void {
@@ -288,5 +323,84 @@ export class MapaMundialComponent implements OnInit, AfterViewInit {
     const distancia = Math.hypot(b.x - a.x, b.y - a.y);
     const alturaArco = Math.min(distancia * 0.25, 60);
     return `M ${a.x} ${a.y} Q ${mx} ${my - alturaArco} ${b.x} ${b.y}`;
+  }
+
+  // Espera a que el mapa esté visible en pantalla Y con los datos ya
+  // dibujados antes de jugar la entrada una sola vez — evita que se gaste
+  // la animación mientras el usuario todavía no llegó a esta sección.
+  private intentarJugarEntrada(): void {
+    if (!this.isBrowser || this.entradaJugada || this.cargando()) return;
+    this.entradaJugada = true;
+    // Un frame de margen para asegurarse de que el SVG ya esté en el DOM.
+    requestAnimationFrame(() => this.jugarEntradaMapa());
+  }
+
+  private jugarEntradaMapa(): void {
+    const host = this.mapContainer.nativeElement;
+    const paises = gsap.utils.toArray<SVGPathElement>(host.querySelectorAll('.mapa-pais-resaltado'));
+    const conexiones = gsap.utils.toArray<SVGPathElement>(host.querySelectorAll('.mapa-conexion'));
+    const marcadores = gsap.utils
+      .toArray<SVGGElement>(host.querySelectorAll('.mapa-marcador'))
+      // Orden cronológico real de expansión (2009 → 2026), no el orden del array
+      .sort((a, b) => Number(a.dataset['anio']) - Number(b.dataset['anio']));
+
+    if (this.prefiereMenosMovimiento) {
+      gsap.set([...paises, ...conexiones, ...marcadores], { opacity: 1, scale: 1 });
+      return;
+    }
+
+    const tl = gsap.timeline();
+
+    if (paises.length) {
+      tl.from(paises, {
+        opacity: 0,
+        scale: 0.92,
+        transformOrigin: '50% 50%',
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out',
+      }, 0);
+    }
+
+    if (conexiones.length) {
+      // Las conexiones ya tienen su propio flujo infinito en CSS; acá solo
+      // se les da una entrada progresiva en vez de aparecer todas de golpe.
+      tl.from(conexiones, { opacity: 0, duration: 0.5, stagger: 0.03, ease: 'none' }, 0.35);
+    }
+
+    if (marcadores.length) {
+      tl.from(marcadores, {
+        scale: 0,
+        opacity: 0,
+        transformOrigin: '50% 50%',
+        duration: 0.55,
+        stagger: 0.2,
+        ease: 'back.out(2)',
+      }, 0.55);
+    }
+
+    tl.call(() => this.iniciarCicloDestacado());
+  }
+
+  // Efecto "de tiempo a tiempo": cada 3.5s destaca un país distinto en el
+  // mapa (marcador con pulso propio) y se lo avisa al padre vía @Output()
+  // para que sincronice la tarjeta correspondiente en country-grid.
+  private iniciarCicloDestacado(): void {
+    if (!this.isBrowser || this.prefiereMenosMovimiento) return;
+    const lista = this.marcadores();
+    if (!lista.length) return;
+
+    const destacar = (indice: number) => {
+      const id = lista[indice].id;
+      this.paisDestacadoId.set(id);
+      this.paisDestacado.emit(id);
+    };
+
+    destacar(0);
+    this.cicloTimer = setInterval(() => {
+      if (!this.esVisible()) return;
+      this.indiceCiclo = (this.indiceCiclo + 1) % lista.length;
+      destacar(this.indiceCiclo);
+    }, 3500);
   }
 }

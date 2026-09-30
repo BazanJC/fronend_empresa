@@ -1,9 +1,9 @@
 <nav class="fixed top-0 left-0 right-0 z-50 bg-surface/85 backdrop-blur-2xl border-b border-outline-variant/60 shadow-lg shadow-black/5 transition-colors duration-300">
-  <div class="max-w-7xl mx-auto px-6 py-3.5 flex items-center justify-between lg:grid lg:grid-cols-12 lg:gap-4">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between lg:grid lg:grid-cols-12 lg:gap-4">
 
     <!-- Izquierda: Logo (col-span-3) -->
     <div class="lg:col-span-3 flex items-center justify-start">
-      <a href="#hero" class="brand-logo-link group" aria-label="NOVAXIS International Inicio">
+      <a href="#hero" class="brand-logo-link group" [attr.aria-label]="'footer.inicio' | translate">
         <div class="header-brand-badge">
           <img src="/logo-novaxis.png" alt="NOVAXIS International" class="h-10 md:h-11 w-auto object-contain" />
         </div>
@@ -12,7 +12,7 @@
 
     <!-- Centro: Navegación Principal (col-span-6) perfectamente centrado en la pantalla -->
     <div class="hidden lg:col-span-6 lg:flex items-center justify-center">
-      <div class="relative flex items-center gap-1.5 p-1.5 rounded-full nav-track-container">
+      <nav class="relative flex items-center gap-1.5 p-1.5 rounded-full nav-track-container" [attr.aria-label]="'footer.navegacion' | translate">
         <!-- Cápsula / Píldora Activa Flotante -->
         <span
           class="nav-floating-pill"
@@ -33,7 +33,8 @@
             #navLink
             [attr.data-id]="item.id"
             [href]="'#' + item.id"
-            class="relative z-10 px-5 py-2 text-[15px] tracking-wide rounded-full transition-all duration-300 select-none whitespace-nowrap"
+            class="relative z-10 px-2.5 2xl:px-4 py-2 text-[13px] 2xl:text-[15px] rounded-full transition-all duration-300 select-none whitespace-nowrap"
+            [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
             [class.text-primary]="seccionActiva() === item.id"
             [class.font-bold]="seccionActiva() === item.id"
             [class.text-on-surface]="seccionActiva() !== item.id"
@@ -42,21 +43,25 @@
             {{ item.key | translate }}
           </a>
         }
-      </div>
+      </nav>
     </div>
 
     <!-- Derecha: Acciones (col-span-3) alineado simétricamente a la derecha -->
-    <div class="hidden lg:col-span-3 lg:flex items-center justify-end gap-3.5">
+    <div class="hidden lg:col-span-3 lg:flex items-center justify-end gap-2 2xl:gap-3.5">
       <!-- Selector de Idioma -->
-      <div class="relative">
+      <div class="relative header-language-control">
         <button
-          class="glass-card rounded-full px-4 py-2 text-xs font-semibold flex items-center gap-1.5 hover:border-primary/50 transition-all cursor-pointer"
+          class="glass-card rounded-full px-3 2xl:px-4 py-2 text-xs font-semibold flex items-center gap-1.5 hover:border-primary/50 transition-all cursor-pointer"
+          type="button"
+          [attr.aria-expanded]="idiomaMenuAbierto()"
+          aria-controls="header-language-menu"
+          [attr.aria-label]="'nav.language' | translate"
           (click)="toggleIdiomaMenu()">
           {{ language.idiomaActual().codigo.toUpperCase() }}
           <span class="text-[0.65rem] opacity-60">▾</span>
         </button>
         @if (idiomaMenuAbierto()) {
-          <div class="absolute top-full mt-2 rtl:right-auto rtl:left-0 right-0 glass-card rounded-2xl overflow-hidden min-w-[170px] z-20 py-1.5 shadow-2xl border border-outline-variant">
+          <div id="header-language-menu" class="absolute top-full mt-2 rtl:right-auto rtl:left-0 right-0 glass-card rounded-xl overflow-hidden min-w-[170px] z-20 py-1.5 shadow-2xl border border-outline-variant">
             @for (idioma of language.idiomas; track idioma.codigo) {
               <button
                 class="w-full text-start px-4 py-2.5 text-sm hover:bg-primary/10 transition-colors font-medium cursor-pointer"
@@ -72,9 +77,11 @@
 
       <!-- Toggle Modo Claro / Oscuro -->
       <button
+        type="button"
         class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-base hover:scale-105 active:scale-95 transition-all cursor-pointer"
         (click)="theme.toggle()"
-        [attr.aria-label]="theme.isDark() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'">
+        [attr.aria-label]="(theme.isDark() ? 'nav.light_mode' : 'nav.dark_mode') | translate"
+        [attr.aria-pressed]="theme.isDark()">
         {{ theme.isDark() ? '☀️' : '🌙' }}
       </button>
 
@@ -85,14 +92,20 @@
     </div>
 
     <!-- Botón Menú Móvil -->
-    <button class="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl glass-card text-lg cursor-pointer" (click)="toggleMenuMovil()" aria-label="Abrir menú">
-      {{ menuMovilAbierto() ? '✕' : '☰' }}
+    <button class="lg:hidden w-11 h-11 flex items-center justify-center rounded-lg glass-card cursor-pointer" (click)="toggleMenuMovil()" type="button"
+      [attr.aria-label]="(menuMovilAbierto() ? 'nav.close_menu' : 'nav.open_menu') | translate"
+      [attr.aria-expanded]="menuMovilAbierto()" aria-controls="mobile-navigation">
+      @if (menuMovilAbierto()) {
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      } @else {
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      }
     </button>
   </div>
 
   <!-- Menú Móvil Mejorado -->
   @if (menuMovilAbierto()) {
-    <div class="lg:hidden glass-card mx-4 mb-4 rounded-2xl p-5 flex flex-col gap-3.5 shadow-2xl border border-outline-variant/80">
+    <div id="mobile-navigation" class="lg:hidden glass-card mx-4 mb-4 rounded-xl p-4 flex flex-col gap-2 shadow-2xl border border-outline-variant/80">
       @for (item of [
         { id: 'servicios', key: 'nav.servicios' },
         { id: 'sectores', key: 'nav.sectores' },
@@ -100,7 +113,8 @@
         { id: 'contacto', key: 'nav.contacto' }
       ]; track item.id) {
         <a [href]="'#' + item.id" (click)="cerrarMenuMovil()"
-           class="text-[16px] font-semibold py-2.5 px-3 rounded-xl transition-all"
+           class="text-base font-semibold py-3 px-3 rounded-lg transition-all"
+           [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
            [class.bg-primary/10]="seccionActiva() === item.id"
            [class.text-primary]="seccionActiva() === item.id"
            [class.text-on-surface]="seccionActiva() !== item.id">
@@ -117,8 +131,15 @@
             {{ idioma.codigo.toUpperCase() }}
           </button>
         }
-        <button class="ms-auto w-10 h-10 rounded-full glass-card flex items-center justify-center" (click)="theme.toggle()">
-          {{ theme.isDark() ? '☀️' : '🌙' }}
+        <button class="ms-auto w-11 h-11 rounded-full glass-card flex items-center justify-center" type="button"
+          (click)="theme.toggle()"
+          [attr.aria-label]="(theme.isDark() ? 'nav.light_mode' : 'nav.dark_mode') | translate"
+          [attr.aria-pressed]="theme.isDark()">
+          @if (theme.isDark()) {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+          } @else {
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg>
+          }
         </button>
       </div>
       <a href="#contacto" (click)="cerrarMenuMovil()" class="btn-nav-cta w-full text-center mt-2">

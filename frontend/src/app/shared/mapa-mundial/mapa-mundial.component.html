@@ -2,6 +2,7 @@
   #mapContainer
   class="mapa-container"
   [class.cursor-grab]="zoom() > 1"
+  [class.mapa-container--activo]="esVisible()"
   (wheel)="onWheel($event)"
   (pointerdown)="onPointerDown($event)"
   (pointermove)="onPointerMove($event)"
@@ -53,6 +54,8 @@
       @for (m of marcadores(); track m.id) {
         <g
           class="mapa-marcador"
+          [class.is-destacado]="paisDestacadoId() === m.id"
+          [attr.data-anio]="m.anioIngreso"
           (pointerdown)="$event.stopPropagation()"
           (click)="seleccionarPais(m)"
           (mouseenter)="onMarkerEnter(m, $event)"
@@ -89,6 +92,7 @@
       </button>
     }
   </div>
+</div>
 
 <!-- Modal de detalle -->
 @if (paisSeleccionado(); as pais) {

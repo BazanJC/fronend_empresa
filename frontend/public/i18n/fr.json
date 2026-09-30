@@ -5,7 +5,12 @@
     "proyectos": "Projets",
     "contacto": "Contact",
     "cta": "Contactez-nous",
-    "plataforma": "Plateforme"
+    "plataforma": "Plateforme",
+    "language": "Choisir la langue",
+    "open_menu": "Ouvrir le menu de navigation",
+    "close_menu": "Fermer le menu de navigation",
+    "light_mode": "Passer au thème clair",
+    "dark_mode": "Passer au thème sombre"
   },
   "hero": {
     "eyebrow": "NOVAXIS INTERNATIONAL",
@@ -86,6 +91,20 @@
     "stat3_label": "Pays",
     "stat4_label": "Taux de Satisfaction"
   },
+  "nuclear": {
+    "eyebrow": "Nucléaire et Science",
+    "title": "Sécurité physique pour installations nucléaires et d'irradiation",
+    "desc": "Nous concevons et intégrons des systèmes de sécurité physique pour les centrales nucléaires, les installations d'irradiation et les centres de recherche scientifique, selon les normes de contrôle d'accès, de vidéosurveillance et de supervision les plus exigeantes propres à ce type d'infrastructure critique.",
+    "item1_title": "Contrôle d'accès multiniveau",
+    "item1_desc": "Systèmes biométriques et par identifiants restreignant l'accès aux zones sensibles, avec traçabilité complète de chaque passage.",
+    "item2_title": "Vidéosurveillance périmétrique",
+    "item2_desc": "Couverture continue des périmètres et points critiques, avec analyse vidéo pour la détection précoce des intrusions.",
+    "item3_title": "Supervision et détection 24/7",
+    "item3_desc": "Capteurs d'intrusion et centres de contrôle centralisés permettant une réponse immédiate à toute anomalie.",
+    "item4_title": "Conformité réglementaire",
+    "item4_desc": "Mises en œuvre alignées sur les protocoles de sécurité exigés pour les infrastructures nucléaires et d'irradiation.",
+    "cta": "Demander un Conseil pour ce Projet"
+  },
   "equipo": {
     "eyebrow": "Équipe",
     "title_pre": "Une Équipe de",
@@ -114,6 +133,12 @@
     "card5_desc": "Infrastructure de communication sécurisée et haute disponibilité.",
     "card6_title": "Centres de Contrôle",
     "card6_desc": "Salles de supervision et de surveillance unifiées pour l'opération intégrale.",
+    "card7_title": "Sécurité Électronique",
+    "card7_desc": "Conception et intégration de systèmes électroniques de sécurité adaptés à chaque installation.",
+    "card8_title": "Maintenances Spécialisées",
+    "card8_desc": "Service technique CVC et maintenance préventive des systèmes critiques.",
+    "card9_title": "Équipements Scientifiques",
+    "card9_desc": "Fourniture et installation d'équipements scientifiques et de laboratoire spécialisés.",
     "link_more": "Demander des Informations →"
   },
   "proyectos": {
@@ -122,6 +147,13 @@
     "title_accent": "Internationaux",
     "confidential": "Confidentiel",
     "view_project": "Consulter le Projet →",
+    "timeline_label": "Chronologie des projets",
+    "project_label": "Projet",
+    "previous": "Projet précédent",
+    "next": "Projet suivant",
+    "carousel_label": "Projets réalisés",
+    "pause": "Mettre en pause le défilement automatique",
+    "play": "Reprendre le défilement automatique",
     "p1_year": "2017",
     "p1_cliente": "Nations Unies (UNIOGBIS)",
     "p1_pais": "Guinée-Bissau",
@@ -164,6 +196,15 @@
     "title_pre": "Démarrons Votre",
     "title_accent": "Projet",
     "desc": "Parlez-nous de votre besoin en sécurité physique, nous vous répondrons avec la meilleure proposition sous 24 heures ouvrées.",
+    "security_eyebrow": "Adresse de contact",
+    "security_title": "Vérifiez avant l'envoi",
+    "security_desc": "Un message sera préparé pour l'adresse de contact publiée par Novaxis.",
+    "security_item1": "Votre appareil ouvrira l'application de messagerie configurée.",
+    "security_item2": "Vous pourrez vérifier et modifier le message avant l'envoi.",
+    "security_item3": "L'envoi final est confirmé depuis votre propre messagerie.",
+    "privacy_note": "Cette page prépare le message ; vous confirmez son envoi depuis votre messagerie.",
+    "preparado": "Votre message est prêt. Vérifiez-le puis cliquez sur Envoyer dans votre messagerie.",
+    "open_mail": "Ouvrir le message",
     "label_telefono": "Téléphone",
     "label_tipo_proyecto": "Type de projet",
     "option_select": "Sélectionnez une option",
@@ -183,7 +224,7 @@
     "option_nuclear": "Technologies Nucléaires",
     "option_hvac": "Mantenances Spécialisées",
     "label_mensaje": "Message",
-    "submit": "Envoyer la Demande",
+    "submit": "Préparer l'e-mail",
     "enviando": "Envoi en cours…",
     "exito": "Merci ! Nous avons bien reçu votre demande, nous vous répondrons bientôt.",
     "error": "Un problème est survenu lors de l'envoi. Veuillez réessayer."
@@ -244,7 +285,7 @@
     "ingresar": "Se connecter"
   },
   "footer": {
-    "descripcion": "The Future Vision. Conception, fourniture, intégration, installation et maintenance de solutions de sécurité physique pour infrastructures critiques et projets stratégiques.",
+    "descripcion": "Nous concevons, intégrons, installons et entretenons des solutions de sécurité physique pour les infrastructures critiques et les projets stratégiques.",
     "navegacion": "Navigation",
     "inicio": "Accueil",
     "servicios": "Services",
@@ -252,7 +293,8 @@
     "filial": "NOVAXIS LATAM ENGINEERING — Bolivie",
     "contacto": "Contact",
     "telefono": "[À DÉFINIR téléphone]",
-    "email": "[À DÉFINIR email]",
+    "email": "Adresse e-mail",
+    "presencia": "Présence opérationnelle en Tunisie et en Bolivie",
     "direccion": "[À DÉFINIR adresse, Bolivie]",
     "derechos": "Tous droits réservés."
   },
@@ -303,8 +345,11 @@
     "eyebrow": "NOVAXIS LATAM ENGINEERING",
     "title": "Présence régionale en Amérique latine",
     "desc": "En 2026, NOVAXIS a établi sa filiale régionale en Bolivie pour renforcer sa présence en Amérique latine, avec des équipes professionnelles, certifiées et opérationnelles sur le terrain.",
-    "pais1": "Bolivie — Filiale régionale",
-    "pais2": "Panama — Opérations actives",
-    "pais3": "Honduras — Opérations actives"
+    "pais1_nombre": "Bolivie",
+    "pais1_estado": "Siège régional",
+    "pais2_nombre": "Panama",
+    "pais2_estado": "Opérations actives",
+    "pais3_nombre": "Honduras",
+    "pais3_estado": "Opérations actives"
   }
 }

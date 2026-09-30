@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
+import { CONTACT_EMAIL } from '../../core/contact.service';
 
 @Component({
   selector: 'app-footer',
@@ -10,4 +11,5 @@ import { TranslatePipe } from '@ngx-translate/core';
 })
 export class FooterComponent {
   anioActual = new Date().getFullYear();
+  readonly emailContacto = CONTACT_EMAIL;
 }

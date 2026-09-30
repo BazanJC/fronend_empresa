@@ -1,13 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
+import { vi } from 'vitest';
 import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
+    vi.stubGlobal('IntersectionObserver', class {
+      observe(): void {}
+      disconnect(): void {}
+    });
+
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([]), provideTranslateService({ defaultLanguage: 'es' })],
+      providers: [provideRouter([]), provideTranslateService({ lang: 'es', fallbackLang: 'es' })],
     }).compileComponents();
   });
 

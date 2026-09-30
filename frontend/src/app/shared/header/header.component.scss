@@ -51,6 +51,49 @@
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
+.nav-track-container a:focus-visible,
+.header-language-control button:focus-visible,
+.xl\:hidden:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.nav-track-container a[aria-current='location'] {
+  color: var(--color-primary);
+}
+
+.nav-track-container a[aria-current='location']::after {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.2rem;
+  left: 1rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-primary);
+  content: '';
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .nav-track-container {
+    gap: 0.2rem;
+    padding: 0.3rem;
+  }
+
+  .nav-track-container a {
+    padding-inline: 0.55rem;
+    font-size: 0.8rem;
+  }
+
+  .header-language-control > button {
+    padding-inline: 0.65rem;
+  }
+
+  .btn-nav-cta {
+    padding-inline: 0.85rem;
+    font-size: 0.82rem;
+  }
+}
+
 :host-context(.dark) .nav-track-container {
   background: color-mix(in srgb, var(--color-surface-container-highest) 35%, transparent);
   border-color: color-mix(in srgb, var(--color-outline) 30%, transparent);
@@ -141,5 +184,19 @@
     box-shadow:
       0 0 32px rgba(79, 195, 247, 0.75),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+}
+
+.lg\:hidden svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-brand-badge,
+  .header-brand-badge img,
+  .nav-floating-pill,
+  .btn-nav-cta {
+    transition: none;
   }
 }

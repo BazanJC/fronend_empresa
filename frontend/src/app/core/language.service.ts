@@ -12,8 +12,8 @@ export const IDIOMAS_DISPONIBLES: IdiomaInfo[] = [
   { codigo: 'es', nombreNativo: 'Español', rtl: false },
   { codigo: 'en', nombreNativo: 'English', rtl: false },
   { codigo: 'fr', nombreNativo: 'Français', rtl: false },
-  { codigo: 'ar', nombreNativo: 'العربية', rtl: true },
-  { codigo: 'ru', nombreNativo: 'Русский', rtl: false }
+  // { codigo: 'ar', nombreNativo: 'العربية', rtl: true },
+  // { codigo: 'ru', nombreNativo: 'Русский', rtl: false }
 ];
 
 const STORAGE_KEY = 'idioma-preferencia';

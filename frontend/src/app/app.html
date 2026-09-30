@@ -1,8 +1,10 @@
 @if (loading()) {
   <div
-    class="fixed inset-0 z-[100] bg-surface flex items-center justify-center preloader-overlay"
-    [class.preloader-overlay--closing]="cerrando()">
-    <div class="flex flex-col items-center preloader-content" [class.preloader-content--closing]="cerrando()">
+    class="fixed inset-0 z-[100] flex items-center justify-center preloader-overlay">
+    <div class="preloader-backdrop" aria-hidden="true">
+      <img [src]="heroCoverImage()" alt="" fetchpriority="high" />
+    </div>
+    <div class="flex flex-col items-center preloader-content">
   
       <!-- ===== ÁREA VISUAL: Proporcional al logo grande ===== -->
       <div class="preloader-visual" [class]="'phase-' + fase()">
@@ -48,50 +50,70 @@
   
           <!-- Aura de impacto SVG -->
           <circle cx="300" cy="300" r="0" class="impact-aura" fill="url(#impact-glow)" />
+
+          <!-- Halo detrás de las conexiones para que los trazos no queden ocultos -->
+          <circle cx="300" cy="300" r="165" class="logo-bg-circle" />
   
           <!-- Líneas de conexión (desde nodos hacia el centro del logo) -->
           <g class="connection-lines">
-            <line x1="300" y1="80" x2="300" y2="210" class="conn-line conn-1" />
-            <line x1="520" y1="300" x2="390" y2="300" class="conn-line conn-2" />
-            <line x1="300" y1="520" x2="300" y2="390" class="conn-line conn-3" />
-            <line x1="80" y1="300" x2="210" y2="300" class="conn-line conn-4" />
-            <line x1="145" y1="145" x2="225" y2="225" class="conn-line conn-5" />
+            <line x1="300" y1="85" x2="300" y2="135" class="conn-line conn-1" />
+            <line x1="515" y1="300" x2="465" y2="300" class="conn-line conn-2" />
+            <line x1="300" y1="515" x2="300" y2="465" class="conn-line conn-3" />
+            <line x1="85" y1="300" x2="135" y2="300" class="conn-line conn-4" />
+            <line x1="126" y1="126" x2="183" y2="183" class="conn-line conn-5" />
           </g>
   
           <!-- Nodos: 5 pilares — reescalados para viewBox 600 -->
           <g class="system-node node-1">
-            <circle cx="300" cy="55" r="28" class="node-ring" />
-            <circle cx="300" cy="55" r="22" class="node-fill" />
-            <text x="300" y="62" text-anchor="middle" class="node-icon">🔒</text>
+            <circle cx="300" cy="55" r="30" class="node-ring" />
+            <circle cx="300" cy="55" r="24" class="node-fill" />
+            <g class="node-icon" transform="translate(288 43)">
+              <rect x="3" y="10" width="18" height="14" rx="3" />
+              <path d="M7 10V7a5 5 0 0 1 10 0v3" />
+              <circle cx="12" cy="17" r="1.2" class="node-icon__solid" />
+            </g>
             <text x="300" y="22" text-anchor="middle" class="node-label">SEGURIDAD</text>
           </g>
   
           <g class="system-node node-2">
-            <circle cx="545" cy="300" r="28" class="node-ring" />
-            <circle cx="545" cy="300" r="22" class="node-fill" />
-            <text x="545" y="307" text-anchor="middle" class="node-icon">⚡</text>
-            <text x="545" y="350" text-anchor="middle" class="node-label">ENERGÍA</text>
+            <circle cx="545" cy="300" r="30" class="node-ring" />
+            <circle cx="545" cy="300" r="24" class="node-fill" />
+            <g class="node-icon" transform="translate(533 288)">
+              <path d="M14 1 5 13h6l-1 10 9-13h-6l1-9Z" />
+            </g>
+            <text x="545" y="348" text-anchor="middle" class="node-label">ENERGÍA</text>
           </g>
   
           <g class="system-node node-3">
-            <circle cx="300" cy="545" r="28" class="node-ring" />
-            <circle cx="300" cy="545" r="22" class="node-fill" />
-            <text x="300" y="552" text-anchor="middle" class="node-icon">🌡️</text>
-            <text x="300" y="595" text-anchor="middle" class="node-label">HVAC</text>
+            <circle cx="300" cy="545" r="30" class="node-ring" />
+            <circle cx="300" cy="545" r="24" class="node-fill" />
+            <g class="node-icon" transform="translate(288 533)">
+              <path d="M4 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+              <path d="M4 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
+            </g>
+            <text x="300" y="588" text-anchor="middle" class="node-label">HVAC</text>
           </g>
   
           <g class="system-node node-4 node-highlight">
-            <circle cx="55" cy="300" r="32" class="node-ring node-ring-accent" />
+            <circle cx="55" cy="300" r="30" class="node-ring node-ring-accent" />
             <circle cx="55" cy="300" r="24" class="node-fill" />
-            <text x="55" y="308" text-anchor="middle" class="node-icon">☢️</text>
-            <text x="55" y="350" text-anchor="middle" class="node-label">RADIACIÓN</text>
+            <g class="node-icon" transform="translate(43 288)">
+              <circle cx="12" cy="12" r="2" class="node-icon__solid" />
+              <path d="M12 8.5a4 4 0 0 0-3.5-5.8 9 9 0 0 0-3.7 6.4 4 4 0 0 0 7.2-.6Z" />
+              <path d="M15 10a4 4 0 0 0 5.8 3.5 9 9 0 0 0-3.1-6.7A4 4 0 0 0 15 10Z" />
+              <path d="M10 15a4 4 0 0 0-2.3 6.4 9 9 0 0 0 7.4.3A4 4 0 0 0 10 15Z" />
+            </g>
+            <text x="55" y="348" text-anchor="middle" class="node-label">RADIACIÓN</text>
           </g>
   
           <g class="system-node node-5">
-            <circle cx="145" cy="145" r="28" class="node-ring" />
-            <circle cx="145" cy="145" r="22" class="node-fill" />
-            <text x="145" y="152" text-anchor="middle" class="node-icon">📋</text>
-            <text x="145" y="112" text-anchor="middle" class="node-label">ISO</text>
+            <circle cx="105" cy="105" r="30" class="node-ring" />
+            <circle cx="105" cy="105" r="24" class="node-fill" />
+            <g class="node-icon" transform="translate(93 93)">
+              <path d="M8 3h8l3 3v16H5V3h3Z" />
+              <path d="M8 3v5h8V3M9 13h6m-6 4h6" />
+            </g>
+            <text x="105" y="63" text-anchor="middle" class="node-label">ISO</text>
           </g>
   
           <!-- Centro: Logo con fondo adaptativo + anillos nucleares -->
@@ -100,9 +122,6 @@
             <circle cx="300" cy="300" r="90" class="nuclear-ring ring-1" />
             <circle cx="300" cy="300" r="78" class="nuclear-ring ring-2" />
             <circle cx="300" cy="300" r="68" class="nuclear-ring ring-3" />
-  
-            <!-- Fondo adaptativo del logo: blur + color del tema -->
-            <circle cx="300" cy="300" r="165" class="logo-bg-circle" />
   
             <!-- Logo — AHORA SÍ VISIBLE EN AMBOS TEMAS -->
             <g class="preloader-logo-wrap">
@@ -120,7 +139,7 @@
   
       <!-- ===== BARRA DE PROGRESO ===== -->
       <div class="mt-8 w-80 max-w-[85vw] h-1.5 bg-on-surface/10 overflow-hidden rounded-full relative">
-        <div class="h-full bg-primary-container transition-all duration-[2800ms] ease-out rounded-full"
+        <div class="h-full bg-primary-container transition-all duration-1000 ease-out rounded-full"
              [style.width]="progressWidth()"></div>
       </div>
   

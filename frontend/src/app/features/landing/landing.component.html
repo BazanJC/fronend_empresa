@@ -33,11 +33,24 @@
 
       <div
         class="hero-carousel"
-        (mouseenter)="onCarouselMouseEnter()"
-        (mouseleave)="onCarouselMouseLeave()">
+        role="region"
+        aria-label="Imágenes destacadas"
+        (mouseenter)="pausarCarrusel()"
+        (mouseleave)="reanudarCarrusel()"
+        (focusin)="pausarCarrusel()"
+        (focusout)="reanudarCarrusel()">
         @for (slide of slidesHero; track slide.id; let i = $index) {
           <div class="hero-carousel__slide" [class.hero-carousel__slide--active]="i === slideActual()">
-            <img [src]="slide.imagen" alt="" class="hero-carousel__image img-tinted" />
+            <img
+              [src]="slide.imagen"
+              alt=""
+              class="hero-carousel__image img-tinted"
+              [class.is-loaded]="heroImagesLoaded().has(i)"
+              [class.is-failed]="heroImagesError().has(i)"
+              (load)="marcarImagenHeroLista(i)"
+              (error)="marcarImagenHeroError(i)"
+              [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+              [attr.fetchpriority]="i === 0 ? 'high' : null" />
             <div class="hero-carousel__caption-wrap">
               <span class="hero-carousel__caption">{{ slide.labelKey | translate }}</span>
               <span class="hero-carousel__caption-sub">{{ slide.subKey | translate }}</span>
@@ -71,24 +84,27 @@
       <div class="stats-grid">
         @for (stat of statsBar; track stat.icon; let i = $index) {
           <div class="stat-item reveal" [class.reveal-delay-100]="i === 0" [class.reveal-delay-200]="i === 1" [class.reveal-delay-300]="i === 2" [class.reveal-delay-400]="i === 3">
-            <div class="stat-item__icon" [attr.data-icon]="stat.icon">
+            <div
+              [class]="'stat-item__icon stat-item__icon--' + stat.icon"
+              [style.animation-delay.s]="i * 0.4"
+              [attr.data-icon]="stat.icon">
               @switch (stat.icon) {
                 @case ('monitor') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                 }
                 @case ('shield') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 }
                 @case ('globe') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 }
                 @case ('briefcase') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                 }
               }
             </div>
             <div class="stat-item__text">
-              <strong>{{ stat.value }}</strong>
+              <strong [appCountUp]="stat.value"></strong>
               <span>{{ stat.labelKey | translate }}</span>
             </div>
           </div>
@@ -98,21 +114,27 @@
   </section>
 
   <!-- QUIENES SOMOS -->
-<section class="section-band section-band--raised" id="nosotros">
+<section class="section-band section-band--raised section-band--nosotros" id="nosotros">
+  <div class="nosotros-atmosphere" aria-hidden="true">
+    <span class="nosotros-atmosphere__blob nosotros-atmosphere__blob--one"></span>
+    <span class="nosotros-atmosphere__blob nosotros-atmosphere__blob--two"></span>
+  </div>
   <div class="section-shell">
-    <div class="split-layout">
-      <div class="section-heading reveal">
-        <p class="section-eyebrow">{{ 'nosotros.eyebrow' | translate }}</p>
-        <h2>{{ 'nosotros.title' | translate }}</h2>
-        <p>{{ 'nosotros.desc' | translate }}</p>
-      </div>
-      <div class="nosotros-info reveal reveal-delay-100">
-        <p>{{ 'nosotros.desc2' | translate }}</p>
-        <ul class="nosotros-list">
-          @for (area of nosotrosAreas; track area) {
-            <li>{{ area | translate }}</li>
-          }
-        </ul>
+    <div class="section-heading section-heading--center reveal">
+      <p class="section-eyebrow">{{ 'nosotros.eyebrow' | translate }}</p>
+      <h2>{{ 'nosotros.title' | translate }}</h2>
+      <p>{{ 'nosotros.desc' | translate }}</p>
+    </div>
+
+    <div class="tech-carousel">
+      <div class="tech-carousel__track">
+        @for (item of tecnologiasCardsLoop; track $index) {
+          <article class="tech-carousel__card" tabindex="0">
+            <img [src]="item.img" class="tech-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+            <h3>{{ item.tituloKey | translate }}</h3>
+            <p class="tech-carousel__desc">{{ item.descKey | translate }}</p>
+          </article>
+        }
       </div>
     </div>
   </div>
@@ -148,41 +170,57 @@
   </section>
 
   <!-- LINEA DE TIEMPO / EXPANSION -->
-  <section class="section-band" id="expansion">
-    <div class="section-shell">
-      <div class="section-heading reveal">
-        <p class="section-eyebrow">{{ 'expansion.eyebrow' | translate }}</p>
-        <h2>
-          {{ 'expansion.title_pre' | translate }}
-          <span>Gabès</span>
-          {{ 'expansion.title_post' | translate }}
-        </h2>
-        <p>{{ 'expansion.intro' | translate }}</p>
+  <section class="section-band section-band--expansion" id="expansion">
+    <!-- Todo esto se pinea junto (título + ruta + track) — así, mientras
+         el scroll recorre la historia, se sigue viendo el resto de la
+         sección en vez de que ya haya quedado scrolleada fuera de vista.
+         Ver iniciarLineaDeTiempo() en el .ts. En mobile/reduced-motion se
+         apila verticalmente sin pin (ver .scss, clase .no-pin). -->
+    <div class="expansion-pin">
+      <div class="expansion-route" aria-hidden="true">
+        <svg viewBox="0 0 420 260" class="expansion-route__svg">
+          <defs>
+            <mask id="expansionRouteMask">
+              <rect class="expansion-route__mask-rect" x="0" y="0" width="0" height="260" fill="#ffffff" />
+            </mask>
+          </defs>
+          <g mask="url(#expansionRouteMask)">
+            <path class="expansion-route__path" d="M20 220 C 120 40, 260 240, 400 30" fill="none" stroke-width="2.5" stroke-linecap="round" />
+          </g>
+          <circle class="expansion-route__origin" cx="20" cy="220" r="5" />
+          <circle class="expansion-route__pin" cx="400" cy="30" r="7" />
+        </svg>
       </div>
 
-      <ol class="timeline reveal reveal-delay-100">
-        <li>
-          <span>2009</span>
-          <h4>{{ 'expansion.item1_title' | translate }}</h4>
-          <p>{{ 'expansion.item1_desc' | translate }}</p>
-        </li>
-        <li>
-          <span>2017-2019</span>
-          <h4>{{ 'expansion.item2_title' | translate }}</h4>
-          <p>{{ 'expansion.item2_desc' | translate }}</p>
-        </li>
-        <li>
-          <span>2021-2024</span>
-          <h4>{{ 'expansion.item3_title' | translate }}</h4>
-          <p>{{ 'expansion.item3_desc' | translate }}</p>
-        </li>
-        <li>
-          <span>2025-2026</span>
-          <h4>{{ 'expansion.item4_title' | translate }}</h4>
-          <p>{{ 'expansion.item4_desc' | translate }}</p>
-        </li>
-      </ol>
+      <div class="section-shell expansion-pin__heading">
+        <div class="section-heading reveal">
+          <p class="section-eyebrow">{{ 'expansion.eyebrow' | translate }}</p>
+          <h2>
+            {{ 'expansion.title_pre' | translate }}
+            <span>Gabès</span>
+            {{ 'expansion.title_post' | translate }}
+          </h2>
+          <p>{{ 'expansion.intro' | translate }}</p>
+        </div>
+      </div>
 
+      <div class="timeline-track">
+        @for (hito of expansionHitos; track hito.anio) {
+          <article class="timeline-panel">
+            <span class="timeline-panel__year">{{ hito.anio }}</span>
+            <h4>{{ hito.tituloKey | translate }}</h4>
+            <p>{{ hito.descKey | translate }}</p>
+          </article>
+        }
+      </div>
+      <div class="timeline-dots" aria-hidden="true">
+        @for (hito of expansionHitos; track hito.anio) {
+          <span class="timeline-dots__dot"></span>
+        }
+      </div>
+    </div>
+
+    <div class="section-shell">
       <div class="cta-strip reveal">
         <div>
           <h3>{{ 'expansion.cta_title' | translate }}</h3>
@@ -205,16 +243,18 @@
       </div>
 
       <div class="map-frame reveal reveal-delay-100">
-        <app-mapa-mundial></app-mapa-mundial>
+        <app-mapa-mundial (paisDestacado)="paisDestacado.set($event)"></app-mapa-mundial>
       </div>
 
       <ul class="country-grid reveal reveal-delay-200">
         @for (p of paisesPresencia; track p.id) {
-          <li>
+          <li [class.is-destacado]="paisDestacado() === p.id">
             <img
               [src]="'https://flagcdn.com/w80/' + p.codigoISO + '.png'"
               [alt]="'mapa.paises.' + p.id + '.nombre' | translate"
-              class="country-flag" />
+              class="country-flag"
+              loading="lazy"
+              decoding="async" />
             <strong>{{ 'mapa.paises.' + p.id + '.nombre' | translate }}</strong>
             <span class="country-grid__meta">
               <span [appCountUp]="p.proyectos + '+'"></span> {{ 'presencia.proyectos_label' | translate }}
@@ -234,16 +274,25 @@
       <h2>{{ 'latam.title' | translate }}</h2>
       <p>{{ 'latam.desc' | translate }}</p>
     </div>
-    <ul class="latam-countries reveal reveal-delay-100">
-      @for (pais of latamPaises; track pais) {
-        <li>{{ pais | translate }}</li>
+    <ul class="latam-countries">
+      @for (pais of latamPaises; track pais.id) {
+        <li [class.is-sede]="pais.esSede">
+          <img
+            [src]="'https://flagcdn.com/w80/' + pais.codigoISO + '.png'"
+            [alt]="pais.nombreKey | translate"
+            class="latam-countries__flag"
+            loading="lazy"
+            decoding="async" />
+          <span class="latam-countries__nombre">{{ pais.nombreKey | translate }}</span>
+          <span class="latam-countries__badge">{{ pais.estadoKey | translate }}</span>
+        </li>
       }
     </ul>
   </div>
 </section>
 
   <!-- SECTORES -->
-  <section class="section-band" id="sectores">
+  <section class="section-band section-band--sectores" id="sectores">
     <div class="section-shell">
       <div class="section-heading reveal">
         <p class="section-eyebrow">{{ 'sectores.eyebrow' | translate }}</p>
@@ -251,36 +300,167 @@
       </div>
 
       <div class="sector-grid">
-        <article class="sector-card reveal reveal-delay-100">
-          <img src="https://images.pexels.com/photos/2881232/pexels-photo-2881232.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
-          <span></span>
-          <h3>{{ 'sectores.card1_title' | translate }}</h3>
-          <p>{{ 'sectores.card1_desc' | translate }}</p>
+        <article class="sector-card reveal reveal-delay-100" tabindex="0">
+          <div class="sector-card__inner">
+            <div class="sector-card__front">
+              <img src="https://images.pexels.com/photos/12809142/pexels-photo-12809142.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <h3>{{ 'sectores.card1_title' | translate }}</h3>
+            </div>
+            <div class="sector-card__back">
+              <img src="https://images.pexels.com/photos/12809142/pexels-photo-12809142.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <div class="sector-card__back-glass"></div>
+              <div class="sector-card__back-content">
+                <div class="sector-card__back-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+                </div>
+                <h3>{{ 'sectores.card1_title' | translate }}</h3>
+                <p>{{ 'sectores.card1_desc' | translate }}</p>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="sector-card reveal reveal-delay-200">
-          <img src="https://images.pexels.com/photos/5668473/pexels-photo-5668473.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
-          <span></span>
-          <h3>{{ 'sectores.card2_title' | translate }}</h3>
-          <p>{{ 'sectores.card2_desc' | translate }}</p>
+        <article class="sector-card reveal reveal-delay-200" tabindex="0">
+          <div class="sector-card__inner">
+            <div class="sector-card__front">
+              <img src="https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <h3>{{ 'sectores.card2_title' | translate }}</h3>
+            </div>
+            <div class="sector-card__back">
+              <img src="https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <div class="sector-card__back-glass"></div>
+              <div class="sector-card__back-content">
+                <div class="sector-card__back-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+                </div>
+                <h3>{{ 'sectores.card2_title' | translate }}</h3>
+                <p>{{ 'sectores.card2_desc' | translate }}</p>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="sector-card reveal reveal-delay-300">
-          <img src="https://images.pexels.com/photos/3862601/pexels-photo-3862601.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
-          <span></span>
-          <h3>{{ 'sectores.card3_title' | translate }}</h3>
-          <p>{{ 'sectores.card3_desc' | translate }}</p>
+        <article class="sector-card reveal reveal-delay-300" tabindex="0">
+          <div class="sector-card__inner">
+            <div class="sector-card__front">
+              <img src="https://images.pexels.com/photos/5953729/pexels-photo-5953729.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <h3>{{ 'sectores.card3_title' | translate }}</h3>
+            </div>
+            <div class="sector-card__back">
+              <img src="https://images.pexels.com/photos/5953729/pexels-photo-5953729.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <div class="sector-card__back-glass"></div>
+              <div class="sector-card__back-content">
+                <div class="sector-card__back-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l5 3V9l5 3V6l5 3v12H3z"/><line x1="7" y1="21" x2="7" y2="17"/></svg>
+                </div>
+                <h3>{{ 'sectores.card3_title' | translate }}</h3>
+                <p>{{ 'sectores.card3_desc' | translate }}</p>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="sector-card reveal reveal-delay-100">
-          <img src="https://images.pexels.com/photos/3913025/pexels-photo-3913025.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
-          <span></span>
-          <h3>{{ 'sectores.card4_title' | translate }}</h3>
-          <p>{{ 'sectores.card4_desc' | translate }}</p>
+        <article class="sector-card reveal reveal-delay-100" tabindex="0">
+          <div class="sector-card__inner">
+            <div class="sector-card__front">
+              <img src="https://images.pexels.com/photos/8442110/pexels-photo-8442110.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <h3>{{ 'sectores.card4_title' | translate }}</h3>
+            </div>
+            <div class="sector-card__back">
+              <img src="https://images.pexels.com/photos/8442110/pexels-photo-8442110.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <div class="sector-card__back-glass"></div>
+              <div class="sector-card__back-content">
+                <div class="sector-card__back-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>
+                </div>
+                <h3>{{ 'sectores.card4_title' | translate }}</h3>
+                <p>{{ 'sectores.card4_desc' | translate }}</p>
+              </div>
+            </div>
+          </div>
         </article>
-        <article class="sector-card reveal reveal-delay-200">
-          <img src="https://images.pexels.com/photos/1572973/pexels-photo-1572973.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" aria-hidden="true" />
-          <span></span>
-          <h3>{{ 'sectores.card5_title' | translate }}</h3>
-          <p>{{ 'sectores.card5_desc' | translate }}</p>
+        <article class="sector-card reveal reveal-delay-200" tabindex="0">
+          <div class="sector-card__inner">
+            <div class="sector-card__front">
+              <img src="https://images.pexels.com/photos/18959229/pexels-photo-18959229.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <h3>{{ 'sectores.card5_title' | translate }}</h3>
+            </div>
+            <div class="sector-card__back">
+              <img src="https://images.pexels.com/photos/18959229/pexels-photo-18959229.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <div class="sector-card__back-glass"></div>
+              <div class="sector-card__back-content">
+                <div class="sector-card__back-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
+                </div>
+                <h3>{{ 'sectores.card5_title' | translate }}</h3>
+                <p>{{ 'sectores.card5_desc' | translate }}</p>
+              </div>
+            </div>
+          </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGURIDAD EN INSTALACIONES NUCLEARES -->
+  <section class="nuclear-band" id="nuclear">
+    <div class="nuclear-band__media" aria-hidden="true">
+      <img
+        src="https://images.pexels.com/photos/18334961/pexels-photo-18334961.jpeg?auto=compress&cs=tinysrgb&w=1600&h=1100&fit=crop"
+        alt=""
+        class="nuclear-band__image"
+        loading="lazy"
+        decoding="async" />
+      <div class="nuclear-band__scanline"></div>
+    </div>
+
+    <!-- Marca de agua: refuerza visualmente el tema nuclear sin depender
+         de texto ni de colores "radiactivos" ajenos a la paleta del sitio. -->
+    <svg class="nuclear-band__atom" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.6" aria-hidden="true" focusable="false">
+      <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/>
+      <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-60 12 12)"/>
+      <ellipse cx="12" cy="12" rx="10" ry="4.5"/>
+      <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/>
+    </svg>
+
+    <div class="section-shell nuclear-band__content">
+      <div class="section-heading section-heading--center reveal">
+        <p class="section-eyebrow">{{ 'nuclear.eyebrow' | translate }}</p>
+        <h2>{{ 'nuclear.title' | translate }}</h2>
+        <p>{{ 'nuclear.desc' | translate }}</p>
+      </div>
+
+      <div class="nuclear-grid">
+        @for (item of nuclearHighlights; track item.icon) {
+          <div class="nuclear-item reveal">
+            <span class="nuclear-item__corner nuclear-item__corner--tl" aria-hidden="true"></span>
+            <span class="nuclear-item__corner nuclear-item__corner--tr" aria-hidden="true"></span>
+            <span class="nuclear-item__corner nuclear-item__corner--bl" aria-hidden="true"></span>
+            <span class="nuclear-item__corner nuclear-item__corner--br" aria-hidden="true"></span>
+            <div class="nuclear-item__icon" [attr.data-icon]="item.icon">
+              @switch (item.icon) {
+                @case ('lock') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                }
+                @case ('camera') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                }
+                @case ('radar') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="2"/><path d="M12 2a10 10 0 0 1 10 10M12 6a6 6 0 0 1 6 6M12 22a10 10 0 0 1-10-10M12 18a6 6 0 0 1-6-6"/></svg>
+                }
+                @case ('doc') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2l8 3v6c0 5-3.4 8.5-8 11-4.6-2.5-8-6-8-11V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+                }
+              }
+            </div>
+            <h3>{{ item.tituloKey | translate }}</h3>
+            <p>{{ item.descKey | translate }}</p>
+          </div>
+        }
+      </div>
+
+      <div class="nuclear-cta">
+        <a class="btn-primary nuclear-cta__button" href="#contacto" (click)="seleccionarProyectoNuclear()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          {{ 'nuclear.cta' | translate }}
+        </a>
       </div>
     </div>
   </section>
@@ -289,89 +469,27 @@
   <section class="section-band section-band--raised" id="equipo">
     <div class="section-shell">
       <div class="section-heading reveal">
-        <p class="section-eyebrow">{{ 'equipo.eyebrow' | translate }}</p>
         <h2>
           {{ 'equipo.title_pre' | translate }}
           <span>{{ 'equipo.title_accent' | translate }}</span>
         </h2>
-        <p>{{ 'equipo.desc' | translate }}</p>
+        <p class="section-heading__lead">{{ 'equipo.desc' | translate }}</p>
       </div>
 
-      <ul class="badge-list reveal reveal-delay-100">
-        <li>
-          <svg class="badge-seal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/>
-            <path d="M9 12l2 2 4-4"/>
-          </svg>
-          {{ 'equipo.badge1' | translate }}
+      <ul class="badge-list badge-list--dos reveal reveal-delay-200">
+        <li class="badge-list__item badge-list__item--seal">
+          <img src="/assets/images/iso-9001-seeklogo.png" alt="ISO 9001" class="badge-list__logo" loading="lazy" decoding="async" />
+          <span class="badge-list__label">{{ 'equipo.badge1' | translate }}</span>
         </li>
-        <li>
-          <svg class="badge-seal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/>
-            <path d="M9 12l2 2 4-4"/>
-          </svg>
-          {{ 'equipo.badge2' | translate }}
-        </li>
-        <li>
-          <svg class="badge-seal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/>
-            <path d="M9 12l2 2 4-4"/>
-          </svg>
-          {{ 'equipo.badge3' | translate }}
+        <li class="badge-list__item badge-list__item--seal">
+          <img src="/assets/images/engineer-certified.png" alt="Engineer Certified" class="badge-list__logo badge-list__logo--chip" loading="lazy" decoding="async" />
+          <span class="badge-list__label">{{ 'equipo.badge2' | translate }}</span>
         </li>
       </ul>
     </div>
   </section>
 
   <!-- TECNOLOGIAS -->
-  <section class="section-band" id="tecnologias">
-    <div class="section-shell">
-      <div class="section-heading reveal">
-        <p class="section-eyebrow">{{ 'tecnologias.eyebrow' | translate }}</p>
-        <h2>{{ 'tecnologias.title' | translate }}</h2>
-      </div>
-
-      <div class="tech-grid">
-        <article class="tech-card reveal reveal-delay-100">
-          <img src="https://images.pexels.com/photos/5650141/pexels-photo-5650141.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card1_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card1_desc' | translate }}</p>
-          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
-        </article>
-        <article class="tech-card reveal reveal-delay-200">
-          <img src="https://images.pexels.com/photos/7522609/pexels-photo-7522609.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card2_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card2_desc' | translate }}</p>
-          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
-        </article>
-        <article class="tech-card reveal reveal-delay-300">
-          <img src="https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card3_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card3_desc' | translate }}</p>
-          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
-        </article>
-        <article class="tech-card reveal reveal-delay-100">
-          <img src="https://images.pexels.com/photos/427029/pexels-photo-427029.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card4_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card4_desc' | translate }}</p>
-          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
-        </article>
-        <article class="tech-card reveal reveal-delay-200">
-          <img src="https://images.pexels.com/photos/37564550/pexels-photo-37564550.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card5_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card5_desc' | translate }}</p>
-          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
-        </article>
-        <article class="tech-card reveal reveal-delay-300">
-          <img src="https://images.pexels.com/photos/30481728/pexels-photo-30481728.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop" class="tech-card__image img-tinted" alt="" aria-hidden="true" />
-          <h3>{{ 'tecnologias.card6_title' | translate }}</h3>
-          <p>{{ 'tecnologias.card6_desc' | translate }}</p>
-          <a href="#contacto">{{ 'tecnologias.link_more' | translate }}</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
   <!-- ALIADOS TECNOLÓGICOS -->
   <section class="section-band section-band--allies" id="aliados">
     <div class="section-shell">
@@ -380,17 +498,33 @@
         <h2>{{ 'aliados.title' | translate }}</h2>
         <p>{{ 'aliados.desc' | translate }}</p>
       </div>
-      <ul class="allies-strip reveal reveal-delay-100">
-        @for (aliado of aliados; track aliado) {
-          <li>{{ aliado }}</li>
-        }
-      </ul>
+      <div class="allies-carousel reveal reveal-delay-100">
+        <div class="allies-carousel__track">
+          @for (aliado of aliadosLoop; track $index) {
+            <div class="allies-carousel__card" tabindex="0">
+              <div class="allies-carousel__inner">
+                <div class="allies-carousel__front">
+                  <img [src]="'/assets/images/aliados/' + aliado.logo" [alt]="aliado.nombre" class="allies-carousel__logo" loading="lazy" decoding="async" />
+                </div>
+                <div class="allies-carousel__back">
+                  <strong>{{ aliado.nombre }}</strong>
+                  <span>{{ aliado.especialidad }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- PROYECTOS -->
   <section class="section-band section-band--projects" id="proyectos">
-    <div class="section-shell">
+    <div class="section-shell projects-shell"
+         (mouseenter)="pausarProyectos()"
+         (mouseleave)="reanudarProyectos()"
+         (focusin)="enfocarProyectos()"
+         (focusout)="salirEnfoqueProyectos($event)">
       <div class="section-heading reveal">
         <p class="section-eyebrow">{{ 'proyectos.eyebrow' | translate }}</p>
         <h2>
@@ -399,44 +533,126 @@
         </h2>
       </div>
 
+       <div class="projects-timeline reveal reveal-delay-100"
+         [attr.aria-label]="'proyectos.timeline_label' | translate">
+        @for (n of proyectosIndices; track n) {
+          <button
+            class="projects-timeline__step"
+            [class.is-active]="proyectoActivo() === n"
+            [attr.data-indice]="n"
+            [attr.aria-current]="proyectoActivo() === n ? 'step' : null"
+            [attr.aria-label]="('proyectos.project_label' | translate) + ' ' + n + ', ' + (('proyectos.p' + n + '_year') | translate)"
+            (click)="irAProyecto(n)">
+            <span class="projects-timeline__year">{{ 'proyectos.p' + n + '_year' | translate }}</span>
+            <span class="projects-timeline__track" aria-hidden="true">
+              <span class="projects-timeline__progress" [attr.data-indice]="n"></span>
+            </span>
+          </button>
+        }
+      </div>
+
       <div class="projects-carousel reveal reveal-delay-100">
-        <button class="projects-carousel__btn" aria-label="Anterior"
-                (click)="proyectosScroller.scrollBy({ left: -340, behavior: 'smooth' })">←</button>
-      
-        <div class="projects-carousel__viewport" #proyectosScroller>
+        <button class="projects-carousel__btn" [attr.aria-label]="'proyectos.previous' | translate"
+                (click)="moverProyecto(-1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+
+        <div class="projects-carousel__viewport" #proyectosScroller role="region" [attr.aria-label]="'proyectos.carousel_label' | translate">
           @for (n of proyectosIndices; track n) {
-            <article class="project-card">
-              <span class="project-card__year">{{ 'proyectos.p' + n + '_year' | translate }}</span>
-              <h3>{{ 'proyectos.p' + n + '_cliente' | translate }}</h3>
-              <p class="project-card__pais">{{ 'proyectos.p' + n + '_pais' | translate }}</p>
-              <span class="project-card__tag">{{ 'proyectos.p' + n + '_area' | translate }}</span>
-              <a href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
+            <article class="project-card" [class.is-active]="proyectoActivo() === n" [attr.data-indice]="n">
+              <div class="project-card__media">
+                <img [src]="proyectosImagenes[n - 1]" class="project-card__image" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+                <span class="project-card__year">{{ 'proyectos.p' + n + '_year' | translate }}</span>
+                <span class="project-card__number">{{ 'proyectos.project_label' | translate }} {{ n.toString().padStart(2, '0') }}</span>
+              </div>
+              <div class="project-card__content">
+                <h3>{{ 'proyectos.p' + n + '_cliente' | translate }}</h3>
+                <p class="project-card__pais">{{ 'proyectos.p' + n + '_pais' | translate }}</p>
+                <span class="project-card__tag">{{ 'proyectos.p' + n + '_area' | translate }}</span>
+              </div>
             </article>
           }
         </div>
       
-        <button class="projects-carousel__btn" aria-label="Siguiente"
-                (click)="proyectosScroller.scrollBy({ left: 340, behavior: 'smooth' })">→</button>
+        <button class="projects-carousel__btn" [attr.aria-label]="'proyectos.next' | translate"
+                (click)="moverProyecto(1)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+
+      <div class="projects-carousel__footer">
+        <span class="projects-carousel__counter">{{ proyectoActivo().toString().padStart(2, '0') }} / {{ proyectosIndices.length.toString().padStart(2, '0') }}</span>
+        <button class="projects-carousel__autoplay" [attr.aria-label]="(proyectosPausados() ? 'proyectos.play' : 'proyectos.pause') | translate"
+                [attr.aria-pressed]="proyectosPausados()" (click)="alternarPausaProyectos()">
+          @if (proyectosPausados()) {
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg>
+          } @else {
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>
+          }
+          <span>{{ (proyectosPausados() ? 'proyectos.play' : 'proyectos.pause') | translate }}</span>
+        </button>
       </div>
     </div>
   </section>
 
   <!-- POR QUE NOVAXIS -->
-  <section class="section-band section-band--raised" id="porque">
-    <div class="section-shell">
-      <div class="section-heading section-heading--center reveal">
+  <section class="section-band section-band--raised section-band--porque" id="porque">
+    <div class="section-shell porque-layout">
+      <div class="section-heading porque-layout__intro reveal">
         <p class="section-eyebrow">{{ 'porque.eyebrow' | translate }}</p>
         <h2>{{ 'porque.title' | translate }}</h2>
       </div>
-      <div class="feature-grid feature-grid--two">
+
+      <ul class="porque-list">
         @for (razon of porqueItems; track razon.titulo; let i = $index) {
-          <article class="feature-card reveal" [class.reveal-delay-100]="i % 2 === 0" [class.reveal-delay-200]="i % 2 === 1">
-            <span class="feature-index">{{ (i + 1) < 10 ? '0' + (i + 1) : (i + 1) }}</span>
-            <h3>{{ razon.titulo | translate }}</h3>
-            <p>{{ razon.desc | translate }}</p>
-          </article>
+          <li class="porque-list__item"
+              [class.is-expanded]="razonActiva() === i"
+              (mouseenter)="seleccionarRazon(i)"
+              (focusin)="seleccionarRazon(i)">
+            <button class="porque-list__trigger" type="button"
+                    [id]="'porque-trigger-' + i"
+                    [attr.aria-expanded]="razonActiva() === i"
+                    [attr.aria-controls]="'porque-detail-' + i"
+                    (click)="alternarRazon(i)">
+            <span class="porque-list__icon" aria-hidden="true">
+              @switch (razon.icon) {
+                @case ('clock') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                }
+                @case ('award') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                }
+                @case ('link') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                }
+                @case ('atom') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>
+                }
+                @case ('key') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                }
+                @case ('trend') {
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                }
+              }
+            </span>
+            <span class="porque-list__title" role="heading" aria-level="3">{{ razon.titulo | translate }}</span>
+            <span class="porque-list__indicator" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m6 9 6 6 6-6"/></svg>
+            </span>
+            </button>
+            <div class="porque-list__details"
+                 [class.is-open]="razonActiva() === i"
+                 [id]="'porque-detail-' + i"
+                 [attr.aria-labelledby]="'porque-trigger-' + i"
+                 [attr.aria-hidden]="razonActiva() !== i">
+              <div class="porque-list__details-inner">
+                <p>{{ razon.desc | translate }}</p>
+              </div>
+            </div>
+          </li>
         }
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -452,14 +668,33 @@
         <p>{{ 'contacto.desc' | translate }}</p>
       </div>
 
-      <form class="contact-form reveal reveal-delay-100" (ngSubmit)="enviarContacto()">
+      <aside class="contact-trust reveal reveal-delay-100" [attr.aria-label]="'contacto.security_title' | translate">
+        <div class="contact-trust__heading">
+          <span class="contact-trust__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <div>
+            <p class="section-eyebrow">{{ 'contacto.security_eyebrow' | translate }}</p>
+            <h3>{{ 'contacto.security_title' | translate }}</h3>
+          </div>
+        </div>
+        <p class="contact-trust__copy">{{ 'contacto.security_desc' | translate }}</p>
+        <a class="contact-trust__email" [href]="'mailto:' + emailContacto">{{ emailContacto }}</a>
+        <ul class="contact-trust__list">
+          <li>{{ 'contacto.security_item1' | translate }}</li>
+          <li>{{ 'contacto.security_item2' | translate }}</li>
+          <li>{{ 'contacto.security_item3' | translate }}</li>
+        </ul>
+      </aside>
+
+      <form class="contact-form reveal reveal-delay-200" (ngSubmit)="enviarContacto()">
         <label>
           {{ 'contacto.label_telefono' | translate }}
-          <input type="tel" name="telefono" [(ngModel)]="contactoForm.telefono" placeholder="+591 700 00000" />
+          <input type="tel" name="telefono" [(ngModel)]="contactoForm.telefono" placeholder="+591 700 00000" autocomplete="tel" maxlength="40" />
         </label>
         <label>
           {{ 'contacto.label_tipo_proyecto' | translate }}
-          <select name="tipoProyecto" [(ngModel)]="contactoForm.tipoProyecto">
+          <select name="tipoProyecto" [(ngModel)]="contactoForm.tipoProyecto" required>
             <option value="">{{ 'contacto.option_select' | translate }}</option>
             <option value="nuevo">{{ 'contacto.option_nuevo' | translate }}</option>
             <option value="mantenimiento">{{ 'contacto.option_mantenimiento' | translate }}</option>
@@ -468,15 +703,15 @@
         </label>
         <label>
           {{ 'contacto.label_nombre' | translate }}
-          <input type="text" name="nombre" [(ngModel)]="contactoForm.nombre" />
+          <input type="text" name="nombre" [(ngModel)]="contactoForm.nombre" autocomplete="name" maxlength="120" required />
         </label>
         <label>
           {{ 'contacto.label_email' | translate }}
-          <input type="email" name="email" [(ngModel)]="contactoForm.email" />
+          <input type="email" name="email" [(ngModel)]="contactoForm.email" autocomplete="email" maxlength="254" required />
         </label>
         <label class="contact-form__wide">
           {{ 'contacto.label_servicio' | translate }}
-          <select name="servicio" [(ngModel)]="contactoForm.servicio">
+          <select name="servicio" [(ngModel)]="contactoForm.servicio" required>
             <option value="">{{ 'contacto.option_select_servicio' | translate }}</option>
             <option value="videovigilancia">{{ 'contacto.option_video' | translate }}</option>
             <option value="control-acceso">{{ 'contacto.option_acceso' | translate }}</option>
@@ -490,28 +725,25 @@
         </label>
         <label class="contact-form__wide">
           {{ 'contacto.label_mensaje' | translate }}
-          <textarea rows="4" name="mensaje" [(ngModel)]="contactoForm.mensaje"></textarea>
+          <textarea rows="5" name="mensaje" [(ngModel)]="contactoForm.mensaje" minlength="10" maxlength="900" required></textarea>
         </label>
 
-        <label class="honeypot" aria-hidden="true">
-          No llenar este campo
-          <input type="text" name="_hp" tabindex="-1" autocomplete="off" [(ngModel)]="contactoForm._hp" />
-        </label>
+        <p class="contact-form__privacy">{{ 'contacto.privacy_note' | translate }}</p>
 
-        <button type="submit" [disabled]="estadoEnvio() === 'enviando'" class="contact-form__wide btn-primary">
-          @if (estadoEnvio() === 'enviando') {
-            {{ 'contacto.enviando' | translate }}
-          } @else {
-            {{ 'contacto.submit' | translate }}
-          }
+        <button
+          type="submit"
+          class="contact-form__wide btn-primary">
+          {{ 'contacto.submit' | translate }}
         </button>
 
-        @if (estadoEnvio() === 'exito') {
-          <p class="contact-form__wide form-message form-message--success">{{ 'contacto.exito' | translate }}</p>
-        }
-        @if (estadoEnvio() === 'error') {
-          <p class="contact-form__wide form-message form-message--error">{{ 'contacto.error' | translate }}</p>
-        }
+        <div class="contact-form__wide" aria-live="polite">
+          @if (estadoEnvio() === 'preparado') {
+            <p class="form-message form-message--success" role="status">{{ 'contacto.preparado' | translate }}</p>
+            @if (correoPreparado()) {
+              <a class="contact-form__fallback" [href]="correoPreparado()">{{ 'contacto.open_mail' | translate }}</a>
+            }
+          }
+        </div>
       </form>
     </div>
   </section>

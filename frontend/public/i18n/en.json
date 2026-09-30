@@ -5,7 +5,12 @@
     "proyectos": "Projects",
     "contacto": "Contact",
     "cta": "Contact Us",
-    "plataforma": "Platform"
+    "plataforma": "Platform",
+    "language": "Select language",
+    "open_menu": "Open navigation menu",
+    "close_menu": "Close navigation menu",
+    "light_mode": "Switch to light mode",
+    "dark_mode": "Switch to dark mode"
   },
   "hero": {
     "eyebrow": "NOVAXIS INTERNATIONAL",
@@ -86,6 +91,20 @@
     "stat3_label": "Countries",
     "stat4_label": "Satisfaction Rate"
   },
+  "nuclear": {
+    "eyebrow": "Nuclear & Science",
+    "title": "Physical security for nuclear and irradiation facilities",
+    "desc": "We design and integrate physical security systems for nuclear power plants, irradiation facilities and scientific research centers, meeting the highest access control, surveillance and monitoring standards this type of critical infrastructure demands.",
+    "item1_title": "Multi-level access control",
+    "item1_desc": "Biometric and credential-based systems restricting entry to high-sensitivity areas, with full traceability of every access.",
+    "item2_title": "Perimeter video surveillance",
+    "item2_desc": "Continuous coverage of perimeters and critical points, with video analytics for early intrusion detection.",
+    "item3_title": "24/7 monitoring & detection",
+    "item3_desc": "Intrusion sensors and centralized control centers enabling an immediate response to any anomaly.",
+    "item4_title": "Regulatory compliance",
+    "item4_desc": "Implementations aligned with the security protocols required for nuclear and irradiation infrastructure.",
+    "cta": "Request Consultation for this Project"
+  },
   "equipo": {
     "title_pre": "A Team of",
     "title_accent": "Certified Professionals",
@@ -114,6 +133,12 @@
     "card5_desc": "Secure, high-availability communication infrastructure.",
     "card6_title": "Control Centers",
     "card6_desc": "Unified supervision and monitoring rooms for comprehensive operations.",
+    "card7_title": "Electronic Security",
+    "card7_desc": "Design and integration of electronic security systems tailored to each facility.",
+    "card8_title": "Specialized Maintenance",
+    "card8_desc": "HVAC technical service and preventive maintenance for critical systems.",
+    "card9_title": "Scientific Equipment",
+    "card9_desc": "Supply and installation of specialized scientific and laboratory equipment.",
     "link_more": "Request Information →"
   },
   "proyectos": {
@@ -122,6 +147,13 @@
     "title_accent": "Projects",
     "confidential": "Confidential",
     "view_project": "Inquire About Project →",
+    "timeline_label": "Project timeline",
+    "project_label": "Project",
+    "previous": "Previous project",
+    "next": "Next project",
+    "carousel_label": "Completed projects",
+    "pause": "Pause automatic playback",
+    "play": "Resume automatic playback",
     "p1_year": "2017",
     "p1_cliente": "United Nations (UNIOGBIS)",
     "p1_pais": "Guinea-Bissau",
@@ -164,6 +196,15 @@
     "title_pre": "Let's Start Your",
     "title_accent": "Project",
     "desc": "Tell us about your physical security needs and we'll get back to you with the best proposal within 24 business hours.",
+    "security_eyebrow": "Contact email",
+    "security_title": "Review before sending",
+    "security_desc": "A message will be prepared for the contact address published by Novaxis.",
+    "security_item1": "Your device will open its configured email application.",
+    "security_item2": "You can review and edit the message before sending it.",
+    "security_item3": "Final delivery is confirmed from your own email application.",
+    "privacy_note": "This page prepares the message; you confirm sending it from your email application.",
+    "preparado": "Your message is ready. Review it and press Send in your email application.",
+    "open_mail": "Open the email message",
     "label_telefono": "Phone",
     "label_tipo_proyecto": "Project type",
     "option_select": "Select an option",
@@ -183,7 +224,7 @@
     "option_nuclear": "Nuclear Technologies",
     "option_hvac": "Specialized Maintenance",
     "label_mensaje": "Message",
-    "submit": "Send Request",
+    "submit": "Prepare email",
     "enviando": "Sending…",
     "exito": "Thank you! We received your request and will respond soon.",
     "error": "There was a problem sending your message. Please try again."
@@ -244,7 +285,7 @@
     "ingresar": "Log In"
   },
   "footer": {
-    "descripcion": "The Future Vision. Design, supply, integration, installation and maintenance of physical security solutions for critical infrastructure and strategic projects.",
+    "descripcion": "We design, integrate, install and maintain physical security solutions for critical infrastructure and strategic projects.",
     "navegacion": "Navigation",
     "inicio": "Home",
     "servicios": "Services",
@@ -252,7 +293,8 @@
     "filial": "NOVAXIS LATAM ENGINEERING — Bolivia",
     "contacto": "Contact",
     "telefono": "[PENDING phone]",
-    "email": "[PENDING email]",
+    "email": "Email address",
+    "presencia": "Operations in Tunisia and Bolivia",
     "direccion": "[PENDING address, Bolivia]",
     "derechos": "All rights reserved."
   },
@@ -303,8 +345,11 @@
     "eyebrow": "NOVAXIS LATAM ENGINEERING",
     "title": "Regional presence in Latin America",
     "desc": "In 2026, NOVAXIS established its regional subsidiary in Bolivia to strengthen its presence in Latin America, with professional, certified teams operating in the field.",
-    "pais1": "Bolivia — Regional subsidiary",
-    "pais2": "Panama — Active operations",
-    "pais3": "Honduras — Active operations"
+    "pais1_nombre": "Bolivia",
+    "pais1_estado": "Regional headquarters",
+    "pais2_nombre": "Panama",
+    "pais2_estado": "Active operations",
+    "pais3_nombre": "Honduras",
+    "pais3_estado": "Active operations"
   }
 }

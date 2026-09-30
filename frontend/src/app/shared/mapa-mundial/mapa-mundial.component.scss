@@ -7,8 +7,16 @@
   aspect-ratio: 2 / 1;
   border-radius: 1.25rem;
   overflow: hidden;
+  // Antes 92% --color-surface-container-lowest (casi blanco puro en modo
+  // claro), se sentía demasiado brillante. Ahora se apoya más en
+  // --color-surface-container-low, el mismo tono suave con tinte azul que
+  // usa el resto del sitio.
   background:
-    linear-gradient(145deg, color-mix(in srgb, var(--color-surface-container-lowest) 92%, transparent), color-mix(in srgb, var(--color-primary-container) 6%, transparent));
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, color-mix(in srgb, var(--color-surface-container-low) 55%, var(--color-surface-container-lowest)) 92%, transparent),
+      color-mix(in srgb, var(--color-primary-container) 8%, transparent)
+    );
   border: 1px solid color-mix(in srgb, var(--color-outline-variant) 50%, transparent);
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(18px);
@@ -119,7 +127,15 @@
   stroke-linecap: round;
   stroke-dasharray: 8 12;
   animation: conexionFlow 2.5s linear infinite;
+  animation-play-state: paused;
   pointer-events: none;
+}
+
+// Solo corren mientras el mapa está visible en pantalla — antes se
+// animaban siempre, gastando CPU/batería incluso con la sección
+// scrolleada fuera de vista.
+.mapa-container--activo .mapa-conexion {
+  animation-play-state: running;
 }
 
 @keyframes conexionFlow {
@@ -138,6 +154,11 @@
   stroke: color-mix(in srgb, var(--color-primary) 50%, transparent);
   stroke-width: 1.5;
   animation: markerPulse 2.4s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.mapa-container--activo .mapa-marcador__ring {
+  animation-play-state: running;
 }
 
 .mapa-marcador__core {
@@ -160,6 +181,37 @@
 @keyframes markerPulse {
   0%, 100% { r: 12; opacity: 0.6; }
   50% { r: 18; opacity: 0.15; }
+}
+
+// Marcador destacado por el ciclo "de tiempo a tiempo" (ver
+// iniciarCicloDestacado en el .ts) — un pulso propio, más notorio que el
+// resto, para dirigir la atención cada 3.5s a un país distinto.
+.mapa-marcador.is-destacado .mapa-marcador__core {
+  fill: var(--color-primary);
+  animation: spotlightPulse 1.8s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.mapa-container--activo .mapa-marcador.is-destacado .mapa-marcador__core {
+  animation-play-state: running;
+}
+
+@keyframes spotlightPulse {
+  0%, 100% { r: 8; }
+  50% { r: 11; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa-marcador.is-destacado .mapa-marcador__core {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa-conexion,
+  .mapa-marcador__ring {
+    animation: none;
+  }
 }
 
 // ============================================================

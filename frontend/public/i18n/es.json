@@ -5,7 +5,12 @@
     "proyectos": "Proyectos",
     "contacto": "Contacto",
     "cta": "Contáctenos",
-    "plataforma": "Plataforma"
+    "plataforma": "Plataforma",
+    "language": "Seleccionar idioma",
+    "open_menu": "Abrir menú de navegación",
+    "close_menu": "Cerrar menú de navegación",
+    "light_mode": "Cambiar a modo claro",
+    "dark_mode": "Cambiar a modo oscuro"
   },
   "hero": {
     "eyebrow": "NOVAXIS INTERNATIONAL",
@@ -77,13 +82,27 @@
     "card3_title": "Complejos Industriales",
     "card3_desc": "Seguridad perimetral, control de accesos y supervisión para plantas industriales y operaciones de gran escala.",
     "card4_title": "Nuclear y Ciencia",
-    "card4_desc": "Tecnologías nucleares, instalaciones de irradiación y suministro de equipos científicos especializados.",
+    "card4_desc": "Capacitación, mantenimiento y suministro de equipos científicos especializados de tecnologías nucleares.",
     "card5_title": "Defensa y Marina",
     "card5_desc": "Proyectos de seguridad electrónica para fuerzas de defensa y operaciones navales.",
     "stat1_label": "Proyectos Estratégicos",
     "stat2_label": "Clientes Institucionales",
     "stat3_label": "Países",
     "stat4_label": "Tasa de Satisfacción"
+  },
+  "nuclear": {
+    "eyebrow": "Nuclear y Ciencia",
+    "title": "Seguridad física para instalaciones nucleares y de irradiación",
+    "desc": "Diseñamos e integramos sistemas de seguridad física para centrales nucleares, instalaciones de irradiación y centros de investigación científica, bajo los más altos estándares de control de acceso, vigilancia y monitoreo que exige este tipo de infraestructura crítica.",
+    "item1_title": "Control de acceso multinivel",
+    "item1_desc": "Sistemas biométricos y de credenciales que restringen el ingreso a zonas de alta sensibilidad, con trazabilidad completa de cada acceso.",
+    "item2_title": "Videovigilancia perimetral",
+    "item2_desc": "Cobertura continua de perímetros y puntos críticos, con analítica de video para la detección temprana de intrusiones.",
+    "item3_title": "Monitoreo y detección 24/7",
+    "item3_desc": "Sensores de intrusión y centros de control centralizados que permiten una respuesta inmediata ante cualquier anomalía.",
+    "item4_title": "Cumplimiento normativo",
+    "item4_desc": "Implementaciones alineadas con los protocolos de seguridad exigidos para infraestructura nuclear y de irradiación.",
+    "cta": "Solicitar Asesoría para este Proyecto"
   },
   "equipo": {
     "eyebrow": "Equipo",
@@ -113,6 +132,12 @@
     "card5_desc": "Infraestructura de comunicación segura y de alta disponibilidad.",
     "card6_title": "Centros de Control",
     "card6_desc": "Salas de supervisión y monitoreo unificadas para la operación integral.",
+    "card7_title": "Seguridad Electrónica",
+    "card7_desc": "Diseño e integración de sistemas electrónicos de seguridad adaptados a cada instalación.",
+    "card8_title": "Mantenimientos Especializados",
+    "card8_desc": "Servicio técnico HVAC y mantenimiento preventivo de sistemas críticos.",
+    "card9_title": "Equipos Científicos",
+    "card9_desc": "Suministro e instalación de equipamiento científico y de laboratorio especializado.",
     "link_more": "Solicitar Información →"
   },
   "proyectos": {
@@ -121,6 +146,13 @@
     "title_accent": "Internacionales",
     "confidential": "Confidencial",
     "view_project": "Consultar Proyecto →",
+    "timeline_label": "Línea temporal de proyectos",
+    "project_label": "Proyecto",
+    "previous": "Proyecto anterior",
+    "next": "Proyecto siguiente",
+    "carousel_label": "Proyectos realizados",
+    "pause": "Pausar avance automático",
+    "play": "Reanudar avance automático",
     "p1_year": "2017",
     "p1_cliente": "Naciones Unidas (UNIOGBIS)",
     "p1_pais": "Guinea-Bissau",
@@ -163,6 +195,15 @@
     "title_pre": "Comencemos Su",
     "title_accent": "Proyecto",
     "desc": "Cuéntenos sobre su necesidad de seguridad física y le responderemos con la mejor propuesta en las próximas 24 horas hábiles.",
+    "security_eyebrow": "Correo de contacto",
+    "security_title": "Revise antes de enviar",
+    "security_desc": "Se preparará un mensaje dirigido al correo de contacto publicado por Novaxis.",
+    "security_item1": "El correo se abrirá en la aplicación configurada en su dispositivo.",
+    "security_item2": "Podrá revisar y editar el mensaje antes de enviarlo.",
+    "security_item3": "El envío final se confirma desde su propia aplicación de correo.",
+    "privacy_note": "La página prepara el mensaje; usted confirma su envío desde el cliente de correo.",
+    "preparado": "Se preparó el mensaje. Revíselo y pulse Enviar en su aplicación de correo.",
+    "open_mail": "Abrir el mensaje de correo",
     "label_telefono": "Teléfono",
     "label_tipo_proyecto": "Tipo de proyecto",
     "option_select": "Seleccione una opción",
@@ -182,7 +223,7 @@
     "option_nuclear": "Tecnologías Nucleares",
     "option_hvac": "Mantenimientos Especializados",
     "label_mensaje": "Mensaje",
-    "submit": "Enviar la Solicitud",
+    "submit": "Preparar correo",
     "enviando": "Enviando…",
     "exito": "¡Gracias! Recibimos su solicitud, le responderemos pronto.",
     "error": "Hubo un problema al enviar. Por favor intente de nuevo."
@@ -243,7 +284,7 @@
     "ingresar": "Ingresar"
   },
   "footer": {
-    "descripcion": "The Future Vision. Diseño, suministro, integración, instalación y mantenimiento de soluciones de seguridad física para infraestructuras críticas y proyectos estratégicos.",
+    "descripcion": "Diseñamos, integramos, instalamos y mantenemos soluciones de seguridad física para infraestructuras críticas y proyectos estratégicos.",
     "navegacion": "Navegación",
     "inicio": "Inicio",
     "servicios": "Servicios",
@@ -251,7 +292,8 @@
     "filial": "NOVAXIS LATAM ENGINEERING — Bolivia",
     "contacto": "Contacto",
     "telefono": "[PENDIENTE teléfono]",
-    "email": "[PENDIENTE email]",
+    "email": "Correo electrónico",
+    "presencia": "Presencia operativa en Túnez y Bolivia",
     "direccion": "[PENDIENTE dirección, Bolivia]",
     "derechos": "Todos los derechos reservados."
   },
@@ -302,8 +344,11 @@
     "eyebrow": "NOVAXIS LATAM ENGINEERING",
     "title": "Presencia regional en América Latina",
     "desc": "En 2026, NOVAXIS estableció su filial regional en Bolivia para fortalecer su presencia en América Latina, con equipos profesionales, certificados y operativos en campo.",
-    "pais1": "Bolivia — Filial regional",
-    "pais2": "Panamá — Operaciones activas",
-    "pais3": "Honduras — Operaciones activas"
+    "pais1_nombre": "Bolivia",
+    "pais1_estado": "Sede regional",
+    "pais2_nombre": "Panamá",
+    "pais2_estado": "Operaciones activas",
+    "pais3_nombre": "Honduras",
+    "pais3_estado": "Operaciones activas"
   }
 }
