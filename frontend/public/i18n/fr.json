@@ -83,7 +83,7 @@
     "card3_title": "Complexes Industriels",
     "card3_desc": "Sécurité périmétrique, contrôle d'accès et supervision pour les sites industriels et opérations à grande échelle.",
     "card4_title": "Nucléaire et Science",
-    "card4_desc": "Technologies nucléaires, installations d'irradiation et fourniture d'équipements scientifiques spécialisés.",
+    "card4_desc": "Maintenance spécialisée, formation technique et distribution de composants et de consommables pour les applications nucléaires et scientifiques.",
     "card5_title": "Défense et Marine",
     "card5_desc": "Projets de sécurité électronique pour les forces de défense et les opérations navales.",
     "stat1_label": "Projets Stratégiques",
@@ -92,18 +92,18 @@
     "stat4_label": "Taux de Satisfaction"
   },
   "nuclear": {
-    "eyebrow": "Nucléaire et Science",
-    "title": "Sécurité physique pour installations nucléaires et d'irradiation",
-    "desc": "Nous concevons et intégrons des systèmes de sécurité physique pour les centrales nucléaires, les installations d'irradiation et les centres de recherche scientifique, selon les normes de contrôle d'accès, de vidéosurveillance et de supervision les plus exigeantes propres à ce type d'infrastructure critique.",
-    "item1_title": "Contrôle d'accès multiniveau",
-    "item1_desc": "Systèmes biométriques et par identifiants restreignant l'accès aux zones sensibles, avec traçabilité complète de chaque passage.",
-    "item2_title": "Vidéosurveillance périmétrique",
-    "item2_desc": "Couverture continue des périmètres et points critiques, avec analyse vidéo pour la détection précoce des intrusions.",
-    "item3_title": "Supervision et détection 24/7",
-    "item3_desc": "Capteurs d'intrusion et centres de contrôle centralisés permettant une réponse immédiate à toute anomalie.",
-    "item4_title": "Conformité réglementaire",
-    "item4_desc": "Mises en œuvre alignées sur les protocoles de sécurité exigés pour les infrastructures nucléaires et d'irradiation.",
-    "cta": "Demander un Conseil pour ce Projet"
+    "eyebrow": "Technologies nucléaires et scientifiques",
+    "title": "Maintenance et assistance technique des technologies nucléaires",
+    "desc": "Nous accompagnons les installations nucléaires et les centres de recherche grâce à une maintenance spécialisée, à la formation technique et à la fourniture de composants et consommables scientifiques.",
+    "item1_title": "Maintenance spécialisée",
+    "item1_desc": "Maintenance préventive et corrective des équipements et systèmes scientifiques afin de contribuer à leur bon fonctionnement.",
+    "item2_title": "Formation technique",
+    "item2_desc": "Formation pratique des équipes techniques à l'utilisation et à la maintenance des équipements et systèmes fournis.",
+    "item3_title": "Composants et consommables",
+    "item3_desc": "Distribution de composants, de pièces de rechange et de consommables pour les technologies nucléaires, l'irradiation et la recherche scientifique.",
+    "item4_title": "Équipements scientifiques",
+    "item4_desc": "Fourniture d'équipements et de matériel spécialisés pour les laboratoires, la recherche et les applications nucléaires.",
+    "cta": "Découvrir nos services nucléaires"
   },
   "equipo": {
     "eyebrow": "Équipe",
@@ -135,10 +135,10 @@
     "card6_desc": "Salles de supervision et de surveillance unifiées pour l'opération intégrale.",
     "card7_title": "Sécurité Électronique",
     "card7_desc": "Conception et intégration de systèmes électroniques de sécurité adaptés à chaque installation.",
-    "card8_title": "Maintenances Spécialisées",
+    "card8_title": "Maintenance spécialisée",
     "card8_desc": "Service technique CVC et maintenance préventive des systèmes critiques.",
     "card9_title": "Équipements Scientifiques",
-    "card9_desc": "Fourniture et installation d'équipements scientifiques et de laboratoire spécialisés.",
+    "card9_desc": "Fourniture et maintenance d'équipements scientifiques et de laboratoire, avec distribution de composants et consommables spécialisés.",
     "link_more": "Demander des Informations →"
   },
   "proyectos": {
@@ -222,7 +222,7 @@
     "option_interfonia": "Interphonie IP",
     "option_redes": "Réseaux et Fibre Optique",
     "option_nuclear": "Technologies Nucléaires",
-    "option_hvac": "Mantenances Spécialisées",
+    "option_hvac": "Maintenance spécialisée",
     "label_mensaje": "Message",
     "submit": "Préparer l'e-mail",
     "enviando": "Envoi en cours…",
@@ -303,6 +303,10 @@
     "proyectos": "Projets Internationaux",
     "fabricantes": "Fabricants Partenaires",
     "paises": "Pays avec Projets"
+  },
+  "seo": {
+    "title": "NOVAXIS INTERNATIONAL | Sécurité physique et technologies nucléaires",
+    "description": "Maintenance spécialisée, formation technique et fourniture de composants et consommables pour les technologies nucléaires, l'irradiation et la recherche scientifique, ainsi que des services de sécurité physique."
   },
   "nosotros": {
     "eyebrow": "Qui Nous Sommes",

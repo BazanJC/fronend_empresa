@@ -34,6 +34,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private prefersReducedMotion = false;
   private heroLoopTweens: gsap.core.Tween[] = [];
+  private cardTiltCleanups: Array<() => void> = [];
   estadoEnvio = signal<'idle' | 'preparado'>('idle');
   correoPreparado = signal<string | null>(null);
   carruselPausado = signal(false);
@@ -178,7 +179,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   }
 
   alternarRazon(indice: number): void {
-    this.razonActiva.set(indice);
+    this.razonActiva.set(this.razonActiva() === indice ? -1 : indice);
   }
 
   latamPaises = [
@@ -237,6 +238,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
       if (this.proyectosScrollFrame) cancelAnimationFrame(this.proyectosScrollFrame);
     }
     this.proyectoProgressTween?.kill();
+      this.cardTiltCleanups.forEach((cleanup) => cleanup());
   }
 
   private iniciarAnimacionesGsap(): void {
@@ -884,7 +886,11 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
     cards.forEach((element: Element) => {
       const card = element as HTMLElement;
-      card.addEventListener('mousemove', (e: MouseEvent) => {
+      const rotateXTo = gsap.quickTo(card, 'rotationX', { duration: 0.35, ease: 'power1.out' });
+      const rotateYTo = gsap.quickTo(card, 'rotationY', { duration: 0.35, ease: 'power1.out' });
+      gsap.set(card, { transformPerspective: 1000 });
+
+      const onMouseMove = (e: MouseEvent): void => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -893,22 +899,21 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
         const rotateX = ((y - centerY) / centerY) * -5;
         const rotateY = ((x - centerX) / centerX) * 5;
 
-        gsap.to(card, {
-          rotationX: rotateX,
-          rotationY: rotateY,
-          transformPerspective: 1000,
-          duration: 0.35,
-          ease: 'power1.out',
-        });
-      });
+        rotateXTo(rotateX);
+        rotateYTo(rotateY);
+      };
 
-      card.addEventListener('mouseleave', () => {
-        gsap.to(card, {
-          rotationX: 0,
-          rotationY: 0,
-          duration: 0.65,
-          ease: 'elastic.out(1, 0.6)',
-        });
+      const onMouseLeave = (): void => {
+        rotateXTo(0);
+        rotateYTo(0);
+      };
+
+      card.addEventListener('mousemove', onMouseMove);
+      card.addEventListener('mouseleave', onMouseLeave);
+      this.cardTiltCleanups.push(() => {
+        card.removeEventListener('mousemove', onMouseMove);
+        card.removeEventListener('mouseleave', onMouseLeave);
+        gsap.killTweensOf(card);
       });
     });
   }

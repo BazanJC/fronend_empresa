@@ -63,6 +63,7 @@
     "cta_button": "Contáctenos"
   },
   "presencia": {
+    "eyebrow": "Presencia",
     "title_pre": "Presencia",
     "title_accent": "Internacional",
     "map_placeholder": "[ Mapa interactivo real — Módulo 5 ]",
@@ -82,7 +83,7 @@
     "card3_title": "Complejos Industriales",
     "card3_desc": "Seguridad perimetral, control de accesos y supervisión para plantas industriales y operaciones de gran escala.",
     "card4_title": "Nuclear y Ciencia",
-    "card4_desc": "Capacitación, mantenimiento y suministro de equipos científicos especializados de tecnologías nucleares.",
+    "card4_desc": "Mantenimiento especializado, capacitación técnica y distribución de componentes e insumos para aplicaciones nucleares y científicas.",
     "card5_title": "Defensa y Marina",
     "card5_desc": "Proyectos de seguridad electrónica para fuerzas de defensa y operaciones navales.",
     "stat1_label": "Proyectos Estratégicos",
@@ -91,18 +92,18 @@
     "stat4_label": "Tasa de Satisfacción"
   },
   "nuclear": {
-    "eyebrow": "Nuclear y Ciencia",
-    "title": "Seguridad física para instalaciones nucleares y de irradiación",
-    "desc": "Diseñamos e integramos sistemas de seguridad física para centrales nucleares, instalaciones de irradiación y centros de investigación científica, bajo los más altos estándares de control de acceso, vigilancia y monitoreo que exige este tipo de infraestructura crítica.",
-    "item1_title": "Control de acceso multinivel",
-    "item1_desc": "Sistemas biométricos y de credenciales que restringen el ingreso a zonas de alta sensibilidad, con trazabilidad completa de cada acceso.",
-    "item2_title": "Videovigilancia perimetral",
-    "item2_desc": "Cobertura continua de perímetros y puntos críticos, con analítica de video para la detección temprana de intrusiones.",
-    "item3_title": "Monitoreo y detección 24/7",
-    "item3_desc": "Sensores de intrusión y centros de control centralizados que permiten una respuesta inmediata ante cualquier anomalía.",
-    "item4_title": "Cumplimiento normativo",
-    "item4_desc": "Implementaciones alineadas con los protocolos de seguridad exigidos para infraestructura nuclear y de irradiación.",
-    "cta": "Solicitar Asesoría para este Proyecto"
+    "eyebrow": "Tecnologías nucleares y científicas",
+    "title": "Mantenimiento y apoyo técnico para tecnologías nucleares",
+    "desc": "Apoyamos a instalaciones nucleares y centros de investigación mediante mantenimiento especializado, capacitación técnica y suministro de componentes e insumos científicos.",
+    "item1_title": "Mantenimiento especializado",
+    "item1_desc": "Mantenimiento preventivo y correctivo de equipos y sistemas científicos para contribuir a su funcionamiento confiable.",
+    "item2_title": "Capacitación técnica",
+    "item2_desc": "Formación práctica para que los equipos técnicos operen y mantengan correctamente los equipos y sistemas suministrados.",
+    "item3_title": "Componentes e insumos",
+    "item3_desc": "Distribución de componentes, repuestos e insumos para tecnologías nucleares, irradiación e investigación científica.",
+    "item4_title": "Equipamiento científico",
+    "item4_desc": "Suministro de equipos y materiales especializados para laboratorios, investigación y aplicaciones nucleares.",
+    "cta": "Consultar servicios nucleares"
   },
   "equipo": {
     "eyebrow": "Equipo",
@@ -137,7 +138,7 @@
     "card8_title": "Mantenimientos Especializados",
     "card8_desc": "Servicio técnico HVAC y mantenimiento preventivo de sistemas críticos.",
     "card9_title": "Equipos Científicos",
-    "card9_desc": "Suministro e instalación de equipamiento científico y de laboratorio especializado.",
+    "card9_desc": "Suministro y mantenimiento de equipos científicos y de laboratorio, con distribución de componentes e insumos especializados.",
     "link_more": "Solicitar Información →"
   },
   "proyectos": {
@@ -302,6 +303,10 @@
     "proyectos": "Proyectos Internacionales",
     "fabricantes": "Fabricantes Aliados",
     "paises": "Países con Proyectos"
+  },
+  "seo": {
+    "title": "NOVAXIS INTERNATIONAL | Seguridad física y tecnologías nucleares",
+    "description": "Mantenimiento, capacitación técnica y suministro de componentes e insumos para tecnologías nucleares, irradiación e investigación científica, además de servicios de seguridad física."
   },
   "nosotros": {
     "eyebrow": "¿Quiénes Somos?",

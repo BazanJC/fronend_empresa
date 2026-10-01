@@ -83,7 +83,7 @@
     "card3_title": "Industrial Complexes",
     "card3_desc": "Perimeter security, access control and supervision for industrial plants and large-scale operations.",
     "card4_title": "Nuclear & Science",
-    "card4_desc": "Nuclear technologies, irradiation facilities and specialized scientific equipment supply.",
+    "card4_desc": "Specialized maintenance, technical training, and distribution of components and consumables for nuclear and scientific applications.",
     "card5_title": "Defense & Navy",
     "card5_desc": "Electronic security projects for defense forces and naval operations.",
     "stat1_label": "Strategic Projects",
@@ -92,18 +92,18 @@
     "stat4_label": "Satisfaction Rate"
   },
   "nuclear": {
-    "eyebrow": "Nuclear & Science",
-    "title": "Physical security for nuclear and irradiation facilities",
-    "desc": "We design and integrate physical security systems for nuclear power plants, irradiation facilities and scientific research centers, meeting the highest access control, surveillance and monitoring standards this type of critical infrastructure demands.",
-    "item1_title": "Multi-level access control",
-    "item1_desc": "Biometric and credential-based systems restricting entry to high-sensitivity areas, with full traceability of every access.",
-    "item2_title": "Perimeter video surveillance",
-    "item2_desc": "Continuous coverage of perimeters and critical points, with video analytics for early intrusion detection.",
-    "item3_title": "24/7 monitoring & detection",
-    "item3_desc": "Intrusion sensors and centralized control centers enabling an immediate response to any anomaly.",
-    "item4_title": "Regulatory compliance",
-    "item4_desc": "Implementations aligned with the security protocols required for nuclear and irradiation infrastructure.",
-    "cta": "Request Consultation for this Project"
+    "eyebrow": "Nuclear Technologies & Science",
+    "title": "Maintenance and technical support for nuclear technologies",
+    "desc": "We support nuclear facilities and research centers through specialized maintenance, technical training, and the supply of scientific components and consumables.",
+    "item1_title": "Specialized maintenance",
+    "item1_desc": "Preventive and corrective maintenance for scientific equipment and systems to help ensure reliable operation.",
+    "item2_title": "Technical training",
+    "item2_desc": "Practical training to help technical teams operate and maintain the equipment and systems supplied.",
+    "item3_title": "Components & consumables",
+    "item3_desc": "Distribution of components, spare parts, and consumables for nuclear technologies, irradiation, and scientific research.",
+    "item4_title": "Scientific equipment",
+    "item4_desc": "Supply of specialized equipment and materials for laboratories, research, and nuclear applications.",
+    "cta": "Explore Nuclear Services"
   },
   "equipo": {
     "title_pre": "A Team of",
@@ -138,7 +138,7 @@
     "card8_title": "Specialized Maintenance",
     "card8_desc": "HVAC technical service and preventive maintenance for critical systems.",
     "card9_title": "Scientific Equipment",
-    "card9_desc": "Supply and installation of specialized scientific and laboratory equipment.",
+    "card9_desc": "Supply and maintenance of scientific and laboratory equipment, with distribution of specialized components and consumables.",
     "link_more": "Request Information →"
   },
   "proyectos": {
@@ -303,6 +303,10 @@
     "proyectos": "International Projects",
     "fabricantes": "Partner Manufacturers",
     "paises": "Countries with Projects"
+  },
+  "seo": {
+    "title": "NOVAXIS INTERNATIONAL | Physical Security & Nuclear Technologies",
+    "description": "Specialized maintenance, technical training, and supply of components and consumables for nuclear technologies, irradiation, and scientific research, alongside physical security services."
   },
   "nosotros": {
     "eyebrow": "Who We Are",

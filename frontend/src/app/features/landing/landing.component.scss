@@ -48,7 +48,6 @@ $accent-blue-strong: #38bdf8;
   border-radius: 999px;
   filter: blur(90px);
   opacity: 0.22;
-  animation: driftBeam 14s ease-in-out infinite alternate;
 }
 
 .atmosphere-beam--one {
@@ -373,16 +372,6 @@ $accent-blue-strong: #38bdf8;
 // Micro-interacción propia por tipo de ícono, en vez de un hover genérico.
 .nuclear-item:hover .nuclear-item__icon[data-icon='camera'] svg {
   transform: rotate(-18deg);
-}
-
-.nuclear-item:hover .nuclear-item__icon[data-icon='lock'] svg {
-  animation: nuclearLockClick 380ms ease;
-}
-
-@keyframes nuclearLockClick {
-  0% { transform: scale(1); }
-  40% { transform: scale(0.86); }
-  100% { transform: scale(1); }
 }
 
 .nuclear-item__icon[data-icon='radar'] svg circle:first-child {
@@ -2012,10 +2001,6 @@ $accent-blue-strong: #38bdf8;
 // ============================================================
 .reveal {
   will-change: transform, opacity;
-}
-
-@keyframes driftBeam {
-  to { transform: translate3d(3rem, -2rem, 0) scale(1.12); }
 }
 
 @keyframes messagePopIn {
