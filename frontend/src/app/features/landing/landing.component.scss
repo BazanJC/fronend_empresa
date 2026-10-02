@@ -467,13 +467,14 @@ $accent-blue-strong: #38bdf8;
 }
 
 .hero-copy {
+  min-width: 0;
   max-width: 700px;
 }
 
 .hero-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 5.2vw, 4.8rem);  /* ligeramente más pequeño para que quepa */
+  font-size: clamp(2.4rem, 4.3vw, 4rem);
   font-weight: 800;
   letter-spacing: 0;
   line-height: 1;
@@ -506,38 +507,38 @@ $accent-blue-strong: #38bdf8;
   place-items: center;
 }
 
-// Sello del logo: esquina superior derecha del carrusel
+// Insignia circular de marca, superpuesta a la esquina del carrusel.
 .hero-brand-seal {
   position: absolute;
-  top: -2.2rem;
-  right: -1.2rem;
-  z-index: 10;
-  width: clamp(7rem, 10vw, 10rem);
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  width: clamp(8rem, 10vw, 9rem);
   aspect-ratio: 1;
-  border-radius: 999px;
+  border-radius: 50%;
   display: grid;
   place-items: center;
-  padding: 0.35rem;          // menos padding para aprovechar espacio
-  overflow: hidden;          // oculta lo que sobresale
+  padding: 0.4rem;
+  overflow: hidden;
   background: #ffffff;
   border: 3px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
   box-shadow:
-    0 25px 60px color-mix(in srgb, var(--color-brand-950) 40%, transparent),
-    0 0 0 8px color-mix(in srgb, var(--color-surface) 55%, transparent);
-  transition: transform 400ms ease;
+    0 20px 48px color-mix(in srgb, var(--color-brand-950) 36%, transparent),
+    0 0 0 6px color-mix(in srgb, var(--color-surface) 55%, transparent);
+  transition: box-shadow 300ms ease;
 }
 
 .hero-brand-seal img {
   width: 100%;
   height: 100%;
-  object-fit: cover;         // recorta la imagen
-  object-position: 50% 30%;  // centra horizontal, sube el ojo
-  transform: scale(1.3);    // agranda para que el ojo llene el círculo
+  object-fit: contain;
   pointer-events: none;
 }
 
 .hero-brand-seal:hover {
-  transform: scale(1.05) rotate(3deg);
+  box-shadow:
+    0 24px 54px color-mix(in srgb, var(--color-brand-950) 42%, transparent),
+    0 0 0 7px color-mix(in srgb, var(--color-surface) 65%, transparent);
 }
 
 // Carrusel con glow sutil
@@ -2074,9 +2075,9 @@ $accent-blue-strong: #38bdf8;
   }
 
   .hero-brand-seal {
-    top: -1.5rem;
-    right: -0.5rem;
-    width: clamp(5.5rem, 14vw, 7.5rem);
+    top: 0.75rem;
+    right: 0.75rem;
+    width: clamp(7rem, 16vw, 8.5rem);
   }
 
   .stats-grid {
@@ -2120,6 +2121,10 @@ $accent-blue-strong: #38bdf8;
   .hero-visual {
     gap: 1rem;
     min-height: 340px;
+  }
+
+  .hero-brand-seal {
+    width: min(7.5rem, 30vw);
   }
 
   .hero-carousel__caption-wrap {

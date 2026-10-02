@@ -27,10 +27,6 @@
     </div>
 
     <div class="hero-visual reveal reveal-step-2">
-      <div class="hero-brand-seal" aria-hidden="true">
-        <img src="/logo-novaxis.png" alt="" />
-      </div>
-
       <div
         class="hero-carousel"
         role="region"
@@ -39,6 +35,10 @@
         (mouseleave)="reanudarCarrusel()"
         (focusin)="pausarCarrusel()"
         (focusout)="reanudarCarrusel()">
+        <div class="hero-brand-seal" aria-hidden="true">
+          <img src="/assets/images/logo-novaxis.png" alt="" />
+        </div>
+
         @for (slide of slidesHero; track slide.id; let i = $index) {
           <div class="hero-carousel__slide" [class.hero-carousel__slide--active]="i === slideActual()">
             <img

@@ -1,7 +1,8 @@
 import {
+  ApplicationRef,
   Component,
+  DestroyRef,
   inject,
-  AfterViewInit,
   ElementRef,
   OnDestroy,
   signal,
@@ -15,6 +16,8 @@ import { MapaMundialComponent } from '../../shared/mapa-mundial/mapa-mundial.com
 import { CountUpDirective } from '../../shared/count_up.directive';
 import { ContactService } from '../../core/contact.service';
 import { HERO_COVER_IMAGES } from '../../core/site-media';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter, take } from 'rxjs';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -25,8 +28,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './landing.component.scss',
 })
-export class LandingComponent implements AfterViewInit, OnDestroy {
+export class LandingComponent implements OnDestroy {
   private el = inject(ElementRef<HTMLElement>);
+  private applicationRef = inject(ApplicationRef);
+  private destroyRef = inject(DestroyRef);
   private contactService = inject(ContactService);
   readonly emailContacto = this.contactService.recipient;
   private observer: IntersectionObserver | null = null;
@@ -203,7 +208,22 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
   private ctx?: gsap.Context;
 
-  ngAfterViewInit(): void {
+  constructor() {
+    this.applicationRef.isStable
+      .pipe(
+        filter((isStable): isStable is true => isStable),
+        take(1),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe(() => {
+        if (!this.isBrowser) return;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (this.el.nativeElement.isConnected) this.iniciarEfectosNavegador();
+        }));
+      });
+  }
+
+  private iniciarEfectosNavegador(): void {
     if (!this.isBrowser) return;
 
     gsap.registerPlugin(ScrollTrigger);
@@ -277,7 +297,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
             ease: 'back.out(1.4)',
           }, '-=0.5')
           .from('.hero-visual', { scale: 0.94, opacity: 0, duration: 1.2, ease: 'expo.out' }, '-=0.9')
-          .from('.hero-brand-seal', { scale: 0, rotation: -15, duration: 1, ease: 'back.out(1.8)' }, '-=0.6');
+          .from('.hero-brand-seal', { opacity: 0, duration: 1, ease: 'power3.out' }, '-=0.6');
       }
 
       // 2. Micro-animaciones continuas y orgánicas (Atmósfera & Sello)
@@ -287,6 +307,7 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
         this.heroLoopTweens.push(
           gsap.to('.hero-brand-seal', {
             y: -6,
+            scale: 1.04,
             duration: 3.5,
             repeat: -1,
             yoyo: true,
@@ -722,12 +743,18 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
     const heroSection = this.el.nativeElement.querySelector('#hero');
     if (!heroSection) return;
 
-    this.observer = new IntersectionObserver(
-      ([entry]) => {
-        this.heroLoopTweens.forEach((tween) => (entry.isIntersecting ? tween.play() : tween.pause()));
-      },
-      { threshold: 0.1 },
-    );
+    const syncHeroAnimations = () => {
+      const bounds = heroSection.getBoundingClientRect();
+      const visibleWidth = Math.max(0, Math.min(bounds.right, window.innerWidth) - Math.max(bounds.left, 0));
+      const visibleHeight = Math.max(0, Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0));
+      const visibleRatio = bounds.width * bounds.height > 0
+        ? (visibleWidth * visibleHeight) / (bounds.width * bounds.height)
+        : 0;
+      this.heroLoopTweens.forEach((tween) => (visibleRatio >= 0.1 ? tween.play() : tween.pause()));
+    };
+
+    this.observer = new IntersectionObserver(syncHeroAnimations, { threshold: 0.1 });
+    syncHeroAnimations();
     this.observer.observe(heroSection);
   }
 
