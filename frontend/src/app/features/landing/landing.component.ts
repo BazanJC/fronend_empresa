@@ -15,7 +15,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MapaMundialComponent } from '../../shared/mapa-mundial/mapa-mundial.component';
 import { CountUpDirective } from '../../shared/count_up.directive';
 import { ContactService } from '../../core/contact.service';
-import { HERO_COVER_IMAGES } from '../../core/site-media';
+import { CLIENT_HERO_IMAGES } from '../../core/site-media';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { filter, take } from 'rxjs';
 import { gsap } from 'gsap';
@@ -45,32 +45,11 @@ export class LandingComponent implements OnDestroy {
   carruselPausado = signal(false);
   paisDestacado = signal<string | null>(null);
 
-  slidesHero = [
-    {
-      id: 1,
-      imagen: HERO_COVER_IMAGES[0],
-      labelKey: 'hero.slide1_label',
-      subKey: 'hero.slide1_sub',
-    },
-    {
-      id: 2,
-      imagen: HERO_COVER_IMAGES[1],
-      labelKey: 'hero.slide2_label',
-      subKey: 'hero.slide2_sub',
-    },
-    {
-      id: 3,
-      imagen: HERO_COVER_IMAGES[2],
-      labelKey: 'hero.slide3_label',
-      subKey: 'hero.slide3_sub',
-    },
-    {
-      id: 4,
-      imagen: HERO_COVER_IMAGES[3],
-      labelKey: 'hero.slide4_label',
-      subKey: 'hero.slide4_sub',
-    },
-  ];
+  slidesHero = CLIENT_HERO_IMAGES.map((image, index) => ({
+    id: index + 1,
+    imagen: image.src,
+    alt: image.alt,
+  }));
 
   slideActual = signal(0);
   private carruselTimer?: ReturnType<typeof setInterval>;

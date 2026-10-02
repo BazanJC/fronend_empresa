@@ -43,18 +43,14 @@
           <div class="hero-carousel__slide" [class.hero-carousel__slide--active]="i === slideActual()">
             <img
               [src]="slide.imagen"
-              alt=""
-              class="hero-carousel__image img-tinted"
+              [attr.alt]="slide.alt"
+              class="hero-carousel__image"
               [class.is-loaded]="heroImagesLoaded().has(i)"
               [class.is-failed]="heroImagesError().has(i)"
               (load)="marcarImagenHeroLista(i)"
               (error)="marcarImagenHeroError(i)"
               [attr.loading]="i === 0 ? 'eager' : 'lazy'"
               [attr.fetchpriority]="i === 0 ? 'high' : null" />
-            <div class="hero-carousel__caption-wrap">
-              <span class="hero-carousel__caption">{{ slide.labelKey | translate }}</span>
-              <span class="hero-carousel__caption-sub">{{ slide.subKey | translate }}</span>
-            </div>
           </div>
         }
         <div class="hero-carousel__overlay" aria-hidden="true"></div>
