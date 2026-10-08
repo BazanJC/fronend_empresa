@@ -51,7 +51,11 @@ const PLATAFORMA_OPTIONS: PlataformaOption[] = [
   },
 ];
 
-const SECCIONES_OBSERVADAS = ['servicios', 'sectores', 'proyectos', 'contacto'];
+const SECCIONES_OBSERVADAS = [
+  'nosotros', 'servicios', 'expansion', 'presencia', 'latam', 'sectores',
+  'nuclear', 'equipo', 'aliados', 'proyectos', 'porque', 'contacto',
+];
+const SECCIONES_MENU_MAS = new Set(['nosotros', 'expansion', 'latam', 'nuclear', 'equipo', 'aliados', 'porque']);
 
 @Component({
   selector: 'app-header',
@@ -70,18 +74,36 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
   private observer?: IntersectionObserver;
 
   onClickFuera(event: MouseEvent): void {
-    if (!this.idiomaMenuAbierto()) return;
-
-    if (!(event.target instanceof Element) || !event.target.closest('.header-language-control')) {
+    if (!(event.target instanceof Element)) {
       this.idiomaMenuAbierto.set(false);
+      this.menuMasAbierto.set(false);
+      return;
     }
+    if (this.idiomaMenuAbierto() && !event.target.closest('.header-language-control')) this.idiomaMenuAbierto.set(false);
+    if (this.menuMasAbierto() && !event.target.closest('.header-more-control')) this.menuMasAbierto.set(false);
   }
 
-  @ViewChildren('navLink') navLinks!: QueryList<ElementRef<HTMLAnchorElement>>;
+  @ViewChildren('navLink') navLinks!: QueryList<ElementRef<HTMLElement>>;
 
   menuMovilAbierto = signal(false);
+  menuMasAbierto = signal(false);
   idiomaMenuAbierto = signal(false);
   platformOptions = PLATAFORMA_OPTIONS;
+  navPrincipal = [
+    { id: 'servicios', key: 'nav.servicios' },
+    { id: 'sectores', key: 'nav.sectores' },
+    { id: 'presencia', key: 'nav.presencia' },
+    { id: 'proyectos', key: 'nav.proyectos' },
+  ];
+  navMas = [
+    { id: 'nosotros', key: 'nav.nosotros' },
+    { id: 'expansion', key: 'nav.trayectoria' },
+    { id: 'latam', key: 'nav.latam' },
+    { id: 'nuclear', key: 'nav.nuclear' },
+    { id: 'equipo', key: 'nav.generador' },
+    { id: 'aliados', key: 'nav.aliados' },
+    { id: 'porque', key: 'nav.porque' },
+  ];
 
   seccionActiva = signal<string>('');
 
@@ -140,7 +162,8 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
 
   private actualizarIndicador(idActivo: string): void {
     if (!this.navLinks) return;
-    const enlace = this.navLinks.find((ref) => ref.nativeElement.dataset['id'] === idActivo);
+    const idNav = SECCIONES_MENU_MAS.has(idActivo) ? 'mas' : idActivo;
+    const enlace = this.navLinks.find((ref) => ref.nativeElement.dataset['id'] === idNav);
     if (!enlace) return;
 
     const el = enlace.nativeElement;
@@ -154,6 +177,7 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
   seleccionarIdioma(codigo: string): void {
     this.language.cambiarIdioma(codigo);
     this.idiomaMenuAbierto.set(false);
+    this.menuMovilAbierto.set(false);
   }
 
   toggleIdiomaMenu(): void {
@@ -170,6 +194,18 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
 
   cerrarMenuMovil(): void {
     this.menuMovilAbierto.set(false);
+  }
+
+  toggleMenuMas(): void {
+    this.menuMasAbierto.set(!this.menuMasAbierto());
+  }
+
+  cerrarMenuMas(): void {
+    this.menuMasAbierto.set(false);
+  }
+
+  seccionMasActiva(): boolean {
+    return SECCIONES_MENU_MAS.has(this.seccionActiva());
   }
 
   openPlatformModal(): void {

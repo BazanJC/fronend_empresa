@@ -1,9 +1,35 @@
 {
+  "preloader": {
+    "brand": "NOVAXIS INTERNATIONAL",
+    "tagline": "Trusted technology for critical infrastructure",
+    "status": "Loading website",
+    "statusConnecting": "Establishing connection",
+    "statusSyncing": "Synchronizing systems",
+    "statusPreparing": "Preparing your experience",
+    "statusReady": "Ready to go",
+    "security": "Security",
+    "energy": "Energy",
+    "evaluation": "Technical evaluation",
+    "maintenance": "Maintenance",
+    "nuclear": "Nuclear technology"
+  },
   "nav": {
-    "servicios": "Expertise",
+    "servicios": "Services",
     "sectores": "Sectors",
     "proyectos": "Projects",
     "contacto": "Contact",
+    "presencia": "Presence",
+    "nosotros": "About us",
+    "trayectoria": "Our journey",
+    "latam": "Latin America",
+    "nuclear": "Nuclear & science",
+    "generador": "Generator",
+    "aliados": "Technology partners",
+    "porque": "Why NOVAXIS",
+    "more": "More",
+    "more_sections": "More sections",
+    "main_sections": "Main sections",
+    "explore": "Explore",
     "cta": "Contact Us",
     "plataforma": "Platform",
     "language": "Select language",
@@ -36,7 +62,7 @@
     "card2_title": "Design & Conception",
     "card2_desc": "We create tailor-made solutions, selecting the most suitable equipment for your specific needs.",
     "card3_title": "Installation & Integration",
-    "card3_desc": "Our certified technicians install and configure every system with guaranteed professional quality.",
+    "card3_desc": "Our technical team installs and configures each system with attention to project requirements.",
     "eyebrow": "Services",
     "heading": "Integrated solutions for critical security",
     "heading_desc": "A technical approach with diagnostics, design, installation and operational support."
@@ -71,7 +97,8 @@
     "pais3_label": "Active operations",
     "pais4_label": "Active operations",
     "eyebrow": "Presence",
-    "proyectos_label": "projects"
+    "proyectos_label": "projects",
+    "operaciones_label": "Active operations"
   },
   "sectores": {
     "eyebrow": "Sectors of Excellence",
@@ -83,9 +110,9 @@
     "card3_title": "Industrial Complexes",
     "card3_desc": "Perimeter security, access control and supervision for industrial plants and large-scale operations.",
     "card4_title": "Nuclear & Science",
-    "card4_desc": "Specialized maintenance, technical training, and distribution of components and consumables for nuclear and scientific applications.",
-    "card5_title": "Defense & Navy",
-    "card5_desc": "Electronic security projects for defense forces and naval operations.",
+    "card4_desc": "Specialized maintenance and technical evaluation of equipment in research centers, laboratories, and radiotherapy facilities.",
+    "card5_title": "Defense & Infrastructure",
+    "card5_desc": "Design and integration of electronic security systems to protect facilities, access points, and perimeters for defense organizations.",
     "stat1_label": "Strategic Projects",
     "stat2_label": "Institutional Clients",
     "stat3_label": "Countries",
@@ -94,7 +121,7 @@
   "nuclear": {
     "eyebrow": "Nuclear Technologies & Science",
     "title": "Maintenance and technical support for nuclear technologies",
-    "desc": "We support nuclear facilities and research centers through specialized maintenance, technical training, and the supply of scientific components and consumables.",
+    "desc": "Our qualified team provides maintenance and laboratory evaluations, with a focus on nuclear equipment and technologies. We also assist organizations through evaluation and ISO certification processes.",
     "item1_title": "Specialized maintenance",
     "item1_desc": "Preventive and corrective maintenance for scientific equipment and systems to help ensure reliable operation.",
     "item2_title": "Technical training",
@@ -107,16 +134,41 @@
   },
   "equipo": {
     "title_pre": "A Team of",
-    "title_accent": "Certified Professionals",
-    "desc": "Our technicians are highly qualified engineers trained in every specialty of the physical security industry.",
-    "stat1_label": "Certified Engineers",
+    "title_accent": "Qualified specialists",
+    "desc": "Professionals experienced in maintenance, equipment evaluation, and technical support for industrial, scientific, and nuclear projects.",
+    "stat1_label": "Qualified specialists",
     "stat2_label": "Completed Projects",
     "stat3_label": "Average Years",
     "stat4_label": "Availability",
-    "badge1": "ISO 9001 Certification",
-    "badge2": "Certified Engineers & Technicians",
-    "badge3": "Defense Sector Clearance",
+    "badge1": "Specialized maintenance",
+    "badge2": "Technical and laboratory evaluation",
+    "badge3": "Support for ISO processes",
     "eyebrow": "Team"
+  },
+  "generador": {
+    "eyebrow": "NOVAXIS POWER · NXP-60KVA",
+    "title": "Industrial power built to respond",
+    "desc": "Explore the NOVAXIS POWER diesel generator specifications directly on the equipment.",
+    "instruction": "Hover over or select a point to view each specification.",
+    "image_alt": "NOVAXIS POWER 60 kVA industrial diesel generator set",
+    "spec_sheet": "TECHNICAL DATA",
+    "rated": "Rated output",
+    "standby": "Standby",
+    "phase": "3-phase",
+    "load_test": "100% load test",
+    "altitude": "≥ 3,500 m",
+    "spec_power": "Power output",
+    "power_value": "Rated: 60 kVA / 48 kW · Standby: 66 kVA / 53 kW.",
+    "spec_electrical": "Electrical system",
+    "electrical_value": "400/230 V · 50 Hz · three-phase · 86.6 A · power factor 0.8.",
+    "spec_engine": "Engine and alternator",
+    "engine_value": "Weichai engine · Stamford alternator.",
+    "spec_controller": "Controller",
+    "controller_value": "Deep Sea Electronics.",
+    "spec_fuel": "Fuel",
+    "fuel_value": "Diesel.",
+    "spec_testing": "Inspection and testing",
+    "testing_value": "SGS inspection · 100% load test · high-altitude configuration ≥ 3,500 m."
   },
   "tecnologias": {
     "eyebrow": "Advanced Technologies",
@@ -161,14 +213,14 @@
     "p2_year": "2018",
     "p2_cliente": "Sri Lanka Navy",
     "p2_pais": "Sri Lanka",
-    "p2_area": "Electronic security",
+    "p2_area": "Facility security and access control",
     "p3_year": "2019",
     "p3_cliente": "High National Election Commission (HNEC)",
     "p3_pais": "Libya",
     "p3_area": "Electronic security",
     "p4_year": "2021",
     "p4_cliente": "Government infrastructure",
-    "p4_pais": "International",
+    "p4_pais": "International project",
     "p4_area": "Integrated physical security",
     "p5_year": "2023",
     "p5_cliente": "Strategic infrastructure",
@@ -193,15 +245,15 @@
   },
   "contacto": {
     "eyebrow": "Contact",
-    "title_pre": "Let's Start Your",
+    "title_pre": "Let’s discuss your",
     "title_accent": "Project",
-    "desc": "Tell us about your physical security needs and we'll get back to you with the best proposal within 24 business hours.",
-    "security_eyebrow": "Contact email",
-    "security_title": "Review before sending",
-    "security_desc": "A message will be prepared for the contact address published by Novaxis.",
-    "security_item1": "Your device will open its configured email application.",
-    "security_item2": "You can review and edit the message before sending it.",
-    "security_item3": "Final delivery is confirmed from your own email application.",
+    "desc": "Our qualified team provides maintenance, laboratory evaluations, and technical support for nuclear equipment and technologies. We also assist with evaluation and ISO certification processes.",
+    "security_eyebrow": "Direct contact",
+    "security_title": "Specialized support",
+    "security_desc": "Tell us what you need evaluated or maintained. We will guide you through the next steps and the support we can provide.",
+    "security_item1": "Equipment maintenance and evaluation",
+    "security_item2": "Laboratory evaluations and nuclear technologies",
+    "security_item3": "Support with ISO evaluation and certification",
     "privacy_note": "This page prepares the message; you confirm sending it from your email application.",
     "preparado": "Your message is ready. Review it and press Send in your email application.",
     "open_mail": "Open the email message",
@@ -244,20 +296,41 @@
       "bolivia": {
         "nombre": "Bolivia (LATAM subsidiary)",
         "descripcion": "Regional subsidiary NOVAXIS LATAM ENGINEERING, established in 2026 for Latin America.",
-        "proyecto1": "IAEA/ABEN — physical protection of a nuclear facility",
-        "proyecto2": "Regional coordination of LATAM operations"
+        "proyecto1": "IAEA/ABEN — physical protection of a nuclear facility"
       },
       "panama": {
         "nombre": "Panama",
-        "descripcion": "Active electronic security and systems integration operations.",
-        "proyecto1": "Electronic security projects in progress",
-        "proyecto2": "Regional expansion in Central America"
+        "descripcion": "Active electronic security and systems integration operations."
       },
       "honduras": {
         "nombre": "Honduras",
         "descripcion": "Active operations with international cooperation.",
-        "proyecto1": "UNDP/UNAH — electronic security modernization and maintenance",
-        "proyecto2": "International cooperation projects"
+        "proyecto1": "UNDP/UNAH — electronic security modernization and maintenance"
+      },
+      "guinea_bissau": {
+        "nombre": "Guinea-Bissau",
+        "descripcion": "Participation in projects for international organizations.",
+        "proyecto1": "United Nations (UNIOGBIS) — electronic security"
+      },
+      "sri_lanka": {
+        "nombre": "Sri Lanka",
+        "descripcion": "Participation in international electronic security projects.",
+        "proyecto1": "Sri Lanka Navy — facility security and access control"
+      },
+      "libia": {
+        "nombre": "Libya",
+        "descripcion": "Electronic security project for a national electoral institution.",
+        "proyecto1": "High National Elections Commission (HNEC) — electronic security"
+      },
+      "mauritania": {
+        "nombre": "Mauritania",
+        "descripcion": "Participation in strategic infrastructure protection projects.",
+        "proyecto1": "Strategic infrastructure — electronic security"
+      },
+      "ucrania": {
+        "nombre": "Ukraine",
+        "descripcion": "Participation in strategic infrastructure protection projects.",
+        "proyecto1": "Strategic infrastructure — electronic security"
       }
     }
   },
@@ -285,7 +358,7 @@
     "ingresar": "Log In"
   },
   "footer": {
-    "descripcion": "We design, integrate, install and maintain physical security solutions for critical infrastructure and strategic projects.",
+    "descripcion": "Qualified specialists in maintenance, laboratory evaluations, and nuclear technologies. We support organizations through evaluation processes and the pursuit of ISO certification.",
     "navegacion": "Navigation",
     "inicio": "Home",
     "servicios": "Services",
@@ -296,7 +369,9 @@
     "email": "Email address",
     "presencia": "Operations in Tunisia and Bolivia",
     "direccion": "[PENDING address, Bolivia]",
-    "derechos": "All rights reserved."
+    "derechos": "All rights reserved.",
+    "whatsapp": "Message us on WhatsApp",
+    "whatsapp_desc": "Direct contact for questions and new projects."
   },
   "stats": {
     "anios": "Years of Experience",
@@ -312,7 +387,7 @@
     "eyebrow": "Who We Are",
     "title": "Physical security engineering for critical infrastructures",
     "desc": "Founded in 2009 in Gabès (Tunisia), NOVAXIS International is an engineering company specializing in the design, supply, integration, installation and maintenance of physical security solutions for critical infrastructures, government institutions, international organizations and industrial complexes.",
-    "desc2": "We rely on certified engineers and technicians and maintain strategic alliances with the world's leading technology manufacturers.",
+    "desc2": "Our team includes qualified maintenance and technical evaluation professionals, and we maintain strategic partnerships with international technology manufacturers.",
     "area1": "Electronic security",
     "area2": "Video surveillance (CCTV)",
     "area3": "Access control",
@@ -334,8 +409,8 @@
     "title": "The strategic partner your project needs",
     "item1_title": "More than 15 years of experience",
     "item1_desc": "Proven track record on critical projects since 2009.",
-    "item2_title": "Certified professional teams",
-    "item2_desc": "Engineers and technicians with ISO 9001 certification and manufacturer-level specialization.",
+    "item2_title": "Maintenance specialists",
+    "item2_desc": "Qualified professionals in maintenance, technical evaluation, and specialized support tailored to each project.",
     "item3_title": "Alliances with world leaders",
     "item3_desc": "Genetec, Bosch, Axis, HID Global, IDEMIA and more leading manufacturers.",
     "item4_title": "Critical infrastructure and nuclear",
@@ -347,13 +422,15 @@
   },
   "latam": {
     "eyebrow": "NOVAXIS LATAM ENGINEERING",
+    "map_label": "Country in focus",
     "title": "Regional presence in Latin America",
-    "desc": "In 2026, NOVAXIS established its regional subsidiary in Bolivia to strengthen its presence in Latin America, with professional, certified teams operating in the field.",
+    "desc": "In 2026, NOVAXIS established its regional subsidiary in Bolivia to strengthen its presence in Latin America, with professional teams working in the field.",
     "pais1_nombre": "Bolivia",
     "pais1_estado": "Regional headquarters",
     "pais2_nombre": "Panama",
     "pais2_estado": "Active operations",
     "pais3_nombre": "Honduras",
-    "pais3_estado": "Active operations"
+    "pais3_estado": "Active operations",
+    "pais4_nombre": "Colombia"
   }
 }

@@ -23,12 +23,7 @@
           [style.height.px]="indicadorHeight()">
         </span>
 
-        @for (item of [
-          { id: 'servicios', key: 'nav.servicios' },
-          { id: 'sectores', key: 'nav.sectores' },
-          { id: 'proyectos', key: 'nav.proyectos' },
-          { id: 'contacto', key: 'nav.contacto' }
-        ]; track item.id) {
+        @for (item of navPrincipal; track item.id) {
           <a
             #navLink
             [attr.data-id]="item.id"
@@ -43,6 +38,41 @@
             {{ item.key | translate }}
           </a>
         }
+        <div class="relative header-more-control">
+          <button
+            #navLink
+            type="button"
+            data-id="mas"
+            class="relative z-10 flex items-center gap-1 px-2.5 2xl:px-4 py-2 text-[13px] 2xl:text-[15px] rounded-full transition-all duration-300 select-none whitespace-nowrap"
+            [attr.aria-expanded]="menuMasAbierto()"
+            aria-controls="header-more-menu"
+            [attr.aria-label]="'nav.more_sections' | translate"
+            [attr.aria-current]="seccionMasActiva() ? 'location' : null"
+            [class.text-primary]="seccionMasActiva()"
+            [class.font-bold]="seccionMasActiva()"
+            [class.text-on-surface]="!seccionMasActiva()"
+            [class.font-semibold]="!seccionMasActiva()"
+            (click)="toggleMenuMas()"
+            (keydown.escape)="cerrarMenuMas()">
+            {{ 'nav.more' | translate }}
+            <svg class="nav-more-chevron" [class.is-open]="menuMasAbierto()" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" /></svg>
+          </button>
+          @if (menuMasAbierto()) {
+            <div id="header-more-menu" class="header-more-menu glass-card" role="group" [attr.aria-label]="'nav.more_sections' | translate" (keydown.escape)="cerrarMenuMas()">
+              <span class="header-more-menu__eyebrow">{{ 'nav.explore' | translate }}</span>
+              @for (item of navMas; track item.id) {
+                <a
+                  [href]="'#' + item.id"
+                  (click)="cerrarMenuMas()"
+                  [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
+                  [class.is-active]="seccionActiva() === item.id">
+                  {{ item.key | translate }}
+                  @if (seccionActiva() === item.id) { <span class="header-more-menu__active-mark" aria-hidden="true"></span> }
+                </a>
+              }
+            </div>
+          }
+        </div>
       </nav>
     </div>
 
@@ -106,18 +136,21 @@
   <!-- Menú Móvil Mejorado -->
   @if (menuMovilAbierto()) {
     <div id="mobile-navigation" class="lg:hidden glass-card mx-4 mb-4 rounded-xl p-4 flex flex-col gap-2 shadow-2xl border border-outline-variant/80">
-      @for (item of [
-        { id: 'servicios', key: 'nav.servicios' },
-        { id: 'sectores', key: 'nav.sectores' },
-        { id: 'proyectos', key: 'nav.proyectos' },
-        { id: 'contacto', key: 'nav.contacto' }
-      ]; track item.id) {
+      <span class="mobile-nav-label">{{ 'nav.main_sections' | translate }}</span>
+      @for (item of navPrincipal; track item.id) {
         <a [href]="'#' + item.id" (click)="cerrarMenuMovil()"
-           class="text-base font-semibold py-3 px-3 rounded-lg transition-all"
+           class="mobile-nav-link"
            [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
-           [class.bg-primary/10]="seccionActiva() === item.id"
-           [class.text-primary]="seccionActiva() === item.id"
-           [class.text-on-surface]="seccionActiva() !== item.id">
+           [class.is-active]="seccionActiva() === item.id">
+          {{ item.key | translate }}
+        </a>
+      }
+      <span class="mobile-nav-label mobile-nav-label--more">{{ 'nav.explore' | translate }}</span>
+      @for (item of navMas; track item.id) {
+        <a [href]="'#' + item.id" (click)="cerrarMenuMovil()"
+           class="mobile-nav-link mobile-nav-link--secondary"
+           [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
+           [class.is-active]="seccionActiva() === item.id">
           {{ item.key | translate }}
         </a>
       }

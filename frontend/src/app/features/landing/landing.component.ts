@@ -1,6 +1,7 @@
 import {
   ApplicationRef,
   Component,
+  computed,
   DestroyRef,
   inject,
   ElementRef,
@@ -9,7 +10,7 @@ import {
   PLATFORM_ID,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MapaMundialComponent } from '../../shared/mapa-mundial/mapa-mundial.component';
@@ -23,7 +24,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 @Component({
   selector: 'app-landing',
-  imports: [FormsModule, TranslatePipe, MapaMundialComponent, CountUpDirective],
+  imports: [FormsModule, TranslatePipe, NgTemplateOutlet, MapaMundialComponent, CountUpDirective],
   templateUrl: './landing.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './landing.component.scss',
@@ -44,11 +45,18 @@ export class LandingComponent implements OnDestroy {
   correoPreparado = signal<string | null>(null);
   carruselPausado = signal(false);
   paisDestacado = signal<string | null>(null);
+  paisLatamHovered = signal<string | null>(null);
+  paisLatamSeleccionado = signal<string | null>(null);
+  paisLatamActivo = computed(() => this.paisLatamHovered() ?? this.paisLatamSeleccionado());
+  generadorSpecHovered = signal<string | null>(null);
+  generadorSpecSeleccionado = signal<string | null>(null);
+  generadorSpecActiva = computed(() => this.generadorSpecHovered() ?? this.generadorSpecSeleccionado());
 
   slidesHero = CLIENT_HERO_IMAGES.map((image, index) => ({
     id: index + 1,
     imagen: image.src,
     alt: image.alt,
+    fondo: `url("${image.src}")`,
   }));
 
   slideActual = signal(0);
@@ -64,8 +72,13 @@ export class LandingComponent implements OnDestroy {
   paisesPresencia = [
     { id: 'tunez', codigoISO: 'tn', anio: 2009, proyectos: 2 },
     { id: 'bolivia', codigoISO: 'bo', anio: 2025, proyectos: 1 },
-    { id: 'panama', codigoISO: 'pa', anio: 2022, proyectos: 1 },
+    { id: 'panama', codigoISO: 'pa', anio: 2022, proyectos: null },
     { id: 'honduras', codigoISO: 'hn', anio: 2026, proyectos: 1 },
+    { id: 'guinea_bissau', codigoISO: 'gw', anio: 2017, proyectos: 1 },
+    { id: 'sri_lanka', codigoISO: 'lk', anio: 2018, proyectos: 1 },
+    { id: 'libia', codigoISO: 'ly', anio: 2019, proyectos: 1 },
+    { id: 'mauritania', codigoISO: 'mr', anio: 2023, proyectos: 1 },
+    { id: 'ucrania', codigoISO: 'ua', anio: 2024, proyectos: 1 },
   ];
 
   proyectosIndices = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -73,16 +86,18 @@ export class LandingComponent implements OnDestroy {
   // Fotos de referencia por proyecto (genéricas, temáticamente acordes a
   // cada caso) — el cliente va a reemplazarlas por fotos reales de cada
   // proyecto más adelante. Mismo orden que proyectosIndices.
+  // Imágenes de referencia de Pexels, elegidas por tema; no son fotografías
+  // documentales de los proyectos reales del cliente.
   proyectosImagenes = [
     'https://images.pexels.com/photos/33984563/pexels-photo-33984563.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 1. ONU (UNIOGBIS) Guinea-Bissau
-    'https://images.pexels.com/photos/18959229/pexels-photo-18959229.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 2. Armada de Sri Lanka
+    'https://images.pexels.com/photos/18760345/pexels-photo-18760345.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 2. Acceso y control de infraestructura portuaria; Pexels: https://www.pexels.com/photo/a-barrier-at-the-entrance-to-an-industrial-area-18760345/
     'https://images.pexels.com/photos/7103169/pexels-photo-7103169.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 3. Elecciones - HNEC Libia
-    'https://images.pexels.com/photos/5187310/pexels-photo-5187310.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 4. Infraestructuras gubernamentales
+    'https://images.pexels.com/photos/37594924/pexels-photo-37594924.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 4. Edificio gubernamental contemporáneo; Pexels: https://www.pexels.com/photo/modernist-architecture-of-government-building-37594924/
     'https://images.pexels.com/photos/36566099/pexels-photo-36566099.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 5. Infraestructuras estratégicas - Mauritania
     'https://images.pexels.com/photos/29886913/pexels-photo-29886913.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 6. Infraestructuras estratégicas - Ucrania
     'https://images.pexels.com/photos/10958528/pexels-photo-10958528.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 7. Banco Mundial - Túnez (vidrios)
-    'https://images.pexels.com/photos/18335700/pexels-photo-18335700.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 8. OIEA/ABEN - Bolivia (nuclear)
-    'https://images.pexels.com/photos/31085774/pexels-photo-31085774.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 9. PNUD/UNAH - Honduras
+    'https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 8. Centro médico de radioterapia; Pexels: https://www.pexels.com/photo/a-room-with-radiotherapy-for-cancer-treatment-11288661/
+    'https://images.pexels.com/photos/37591149/pexels-photo-37591149.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 9. Cámara de seguridad en infraestructura urbana; Pexels: https://www.pexels.com/photo/outdoor-surveillance-camera-on-building-wall-37591149/
   ];
   proyectoActivo = signal(1);
   proyectosPausados = signal(false);
@@ -119,7 +134,8 @@ export class LandingComponent implements OnDestroy {
     { img: 'https://images.pexels.com/photos/7364948/pexels-photo-7364948.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card1_title', descKey: 'tecnologias.card1_desc' },
     { img: 'https://images.pexels.com/photos/13657523/pexels-photo-13657523.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card2_title', descKey: 'tecnologias.card2_desc' },
     { img: 'https://images.pexels.com/photos/12279352/pexels-photo-12279352.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card3_title', descKey: 'tecnologias.card3_desc' },
-    { img: 'https://images.pexels.com/photos/427029/pexels-photo-427029.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card4_title', descKey: 'tecnologias.card4_desc' },
+    // Joshua Brown, Pexels photo 13007861: video intercom and keypad.
+    { img: 'https://images.pexels.com/photos/13007861/pexels-photo-13007861.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card4_title', descKey: 'tecnologias.card4_desc' },
     { img: 'https://images.pexels.com/photos/4373997/pexels-photo-4373997.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card5_title', descKey: 'tecnologias.card5_desc' },
     { img: 'https://images.pexels.com/photos/7720712/pexels-photo-7720712.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card6_title', descKey: 'tecnologias.card6_desc' },
     { img: 'https://images.pexels.com/photos/17842832/pexels-photo-17842832.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card7_title', descKey: 'tecnologias.card7_desc' },
@@ -167,10 +183,116 @@ export class LandingComponent implements OnDestroy {
   }
 
   latamPaises = [
-    { id: 'bolivia', codigoISO: 'bo', nombreKey: 'latam.pais1_nombre', estadoKey: 'latam.pais1_estado', esSede: true },
-    { id: 'panama', codigoISO: 'pa', nombreKey: 'latam.pais2_nombre', estadoKey: 'latam.pais2_estado', esSede: false },
-    { id: 'honduras', codigoISO: 'hn', nombreKey: 'latam.pais3_nombre', estadoKey: 'latam.pais3_estado', esSede: false },
+    { id: 'bolivia', codigoISO: 'bo', nombreKey: 'latam.pais1_nombre', estadoKey: 'latam.pais1_estado', esSede: true, silueta: 'M13.292 15.419 17.841 15.948 20.998 15.81 22.367 13.918 27.732 11.395 30.978 9.054 38.993 8 38.353 12.672 39.104 15.07 38.596 19.261 45.264 24.875 52.131 25.918 54.537 28.26 58.688 29.507 61.228 31.342 65.092 31.278 68.646 33.147 68.911 36.807 70.126 38.651 70.192 41.39 68.404 41.498 70.766 48.916 82.535 49.175 81.629 52.88 82.292 55.41 85.626 57.216 87.083 61.219 86.001 66.311 84.301 69.158 84.897 72.873 82.976 74.221 82.888 72.211 77.169 68.882 71.473 68.783 60.786 70.677 57.849 76.425 57.695 79.956 55.266 87.863 54.272 86.44 47.295 86.171 44.889 91.504 41.289 86.709 33.252 85.097 28.152 91.088 23.736 92 21.329 82.874 18.017 75.505 19.96 69.191 16.737 66.443 15.92 61.776 12.917 57.39 16.781 50.463 14.153 45.104 15.544 42.961 14.462 40.605 16.847 37.439 16.98 32.057 17.267 27.631 18.591 25.503Z' },
+    { id: 'panama', codigoISO: 'pa', nombreKey: 'latam.pais2_nombre', estadoKey: 'latam.pais2_estado', esSede: false, silueta: 'M90.414 46.257 88.617 48.419 92 57.158 89.251 61.573 84.546 60.495 82.643 67.689 77.727 63.429 74.608 55.427 78.203 51.459 74.502 50.454 71.753 45.528 64.458 41.403 58.009 42.359 55.048 47.514 49.128 51.258 45.903 51.761 44.476 54.849 51.454 62.902 47.489 64.807 45.374 66.987 38.502 67.739 35.965 58.89 34.062 61.423 29.198 60.545 26.238 54.573 20.211 53.594 16.405 51.861 10.115 51.886 9.692 55.1 8 52.866 8.74 49.927 9.956 46.911 9.427 44.221 11.595 42.46 8.529 40.245 8.476 34.252 14.132 32.916 19.419 38.257 19.101 41.428 24.969 42.082 26.344 40.875 30.414 44.522 37.604 43.466 43.894 39.692 52.775 36.695 57.797 32.261 65.885 33.118 65.357 34.579 73.551 35.109 80.106 37.678 84.863 42.133Z' },
+    { id: 'honduras', codigoISO: 'hn', nombreKey: 'latam.pais3_nombre', estadoKey: 'latam.pais3_estado', esSede: false, silueta: 'M92 43.049 87.371 42.764 85.52 44.684 80.794 46.509 77.383 46.509 74.411 48.309 71.682 47.669 69.392 45.538 67.979 45.94 66.225 49.279 64.91 49.161 64.715 52.023 59.988 55.875 57.503 57.528 56.09 59.274 52.095 56.442 49.172 60.171 46.346 60.076 43.179 60.407 43.471 67.239 41.473 67.356 39.768 70.532 35.578 71.12 33.239 66.768 29.146 65.567 30.072 59.982 28.22 58.472 25.443 57.481 19.499 59.133 19.012 57.268 14.919 55.025 11.995 52.236 8 51.054 10.826 47.504 9.754 44.756 10.729 42.076 17.111 38.135 23.299 32.786 24.712 33.333 27.684 30.857 31.534 30.667 32.8 31.81 34.896 31.119 41.181 32.381 47.418 32.024 51.803 30.453 53.362 28.88 57.698 29.619 60.914 30.572 64.471 30.238 67.151 29.023 73.339 30.976 75.483 31.286 79.624 33.904 83.522 37.043 88.443 39.204Z' },
+    { id: 'colombia', codigoISO: 'co', nombreKey: 'latam.pais4_nombre', estadoKey: null, esSede: false, silueta: 'M80.215 64.286 79.281 64.902 78.294 61.954 76.911 60.375 75.259 62.09 65.543 61.98 65.615 65.105 68.524 65.62 68.363 67.528 67.357 67.013 64.555 67.832 64.537 71.463 66.746 73.278 67.519 76.141 67.411 78.303 65.166 92 62.67 89.342 61.179 89.224 64.394 84.133 60.569 81.8 57.588 82.231 55.774 81.361 53.026 82.688 49.309 82.062 46.381 76.825 44.065 75.541 42.466 73.185 39.162 70.821 37.833 71.294 35.696 70.112 33.236 68.465 31.817 69.259 27.597 68.567 26.375 66.414 25.442 66.498 20.449 63.644 19.785 62.098 21.634 61.726 21.419 59.226 22.586 57.417 25.064 57.079 27.166 53.942 29.069 51.32 27.237 50.126 28.171 47.222 27.058 42.644 28.117 41.329 27.327 37.082 25.316 34.402 25.962 31.958 27.561 32.325 28.495 30.825 27.345 27.856 27.956 27.122 30.524 27.275 34.277 23.754 36.325 23.214 36.378 21.545 37.294 17.255 40.15 14.9 43.292 14.805 43.688 13.746 47.603 14.168 51.518 11.601 53.475 10.462 55.881 8 57.641 8.311 58.952 9.659 57.983 11.376 54.786 12.23 53.511 14.771 51.589 16.224 50.135 18.114 49.524 21.733 48.141 24.686 50.727 25.028 51.356 27.344 52.469 28.454 52.846 30.484 52.254 32.35 52.433 33.398 53.673 33.815 54.858 35.577 61.269 35.092 64.16 35.73 67.68 40.047 69.692 39.512 73.283 39.784 76.121 39.206 77.899 40.072 77.001 42.771 75.887 44.459 75.492 48.043 76.498 51.37 77.917 52.851 78.078 53.976 75.564 56.462 77.36 57.561 78.689 59.31Z' },
   ];
+
+  paisLatamActivoItem = computed(() => this.latamPaises.find((pais) => pais.id === this.paisLatamActivo()) ?? null);
+
+  generadorSpecs = [
+    { id: 'power', titleKey: 'generador.spec_power', valueKey: 'generador.power_value', side: 'right' },
+    { id: 'electrical', titleKey: 'generador.spec_electrical', valueKey: 'generador.electrical_value', side: 'left' },
+    { id: 'engine', titleKey: 'generador.spec_engine', valueKey: 'generador.engine_value', side: 'right' },
+    { id: 'controller', titleKey: 'generador.spec_controller', valueKey: 'generador.controller_value', side: 'right' },
+    { id: 'fuel', titleKey: 'generador.spec_fuel', valueKey: 'generador.fuel_value', side: 'left' },
+    { id: 'testing', titleKey: 'generador.spec_testing', valueKey: 'generador.testing_value', side: 'left' },
+  ];
+
+  generadorSpecActivaItem = computed(() => this.generadorSpecs.find((spec) => spec.id === this.generadorSpecActiva()) ?? null);
+
+  activarGeneradorSpec(id: string): void {
+    if (this.generadorSpecActiva() === id) return;
+    const anterior = this.generadorSpecActiva();
+    this.generadorSpecHovered.set(id);
+    this.animarTooltipGenerador(anterior, id);
+  }
+
+  salirGeneradorSpec(id: string): void {
+    if (this.generadorSpecHovered() !== id) return;
+    const anterior = this.generadorSpecActiva();
+    this.generadorSpecHovered.set(null);
+    this.animarTooltipGenerador(anterior, this.generadorSpecActiva());
+  }
+
+  seleccionarGeneradorSpec(id: string): void {
+    const anterior = this.generadorSpecActiva();
+    this.generadorSpecSeleccionado.set(this.generadorSpecSeleccionado() === id ? null : id);
+    this.animarTooltipGenerador(anterior, this.generadorSpecActiva());
+  }
+
+  private animarTooltipGenerador(anterior: string | null, actual: string | null): void {
+    if (this.prefersReducedMotion) return;
+    requestAnimationFrame(() => {
+      const stage = (this.el.nativeElement as HTMLElement).querySelector<HTMLElement>('.generator-stage');
+      const tooltipAnterior = anterior
+        ? stage?.querySelector<HTMLElement>(`[data-spec-tooltip="${anterior}"]`)
+        : null;
+      const tooltipActual = actual
+        ? stage?.querySelector<HTMLElement>(`[data-spec-tooltip="${actual}"]`)
+        : null;
+
+      if (tooltipAnterior && tooltipAnterior !== tooltipActual) {
+        gsap.killTweensOf(tooltipAnterior);
+        gsap.to(tooltipAnterior, { autoAlpha: 0, y: 5, duration: 0.2, ease: 'power2.out' });
+      }
+      if (tooltipActual) {
+        gsap.killTweensOf(tooltipActual);
+        gsap.fromTo(tooltipActual,
+          { autoAlpha: 0, y: 9, scale: 0.98, filter: 'blur(3px)' },
+          { autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power2.out' },
+        );
+      }
+    });
+  }
+
+  activarPaisLatam(id: string): void {
+    if (this.paisLatamActivo() === id) return;
+    this.paisLatamHovered.set(id);
+    this.animarSiluetaLatam(id);
+  }
+
+  salirPaisLatam(id: string): void {
+    if (this.paisLatamHovered() !== id) return;
+    this.paisLatamHovered.set(null);
+    this.animarSiluetaLatam(this.paisLatamActivo());
+  }
+
+  seleccionarPaisLatam(id: string): void {
+    this.paisLatamSeleccionado.set(this.paisLatamSeleccionado() === id ? null : id);
+    this.animarSiluetaLatam(this.paisLatamActivo());
+  }
+
+  private animarSiluetaLatam(id: string | null): void {
+    const seccion = (this.el.nativeElement as HTMLElement).querySelector<HTMLElement>('#latam');
+    const anterior = seccion?.querySelector<SVGSVGElement>('.latam-map-panel__shape.is-current');
+    const siguiente = id
+      ? seccion?.querySelector<SVGSVGElement>(`.latam-map-panel__shape[data-pais="${id}"]`)
+      : null;
+
+    if (anterior && anterior !== siguiente) {
+      gsap.killTweensOf(anterior);
+      gsap.to(anterior, { opacity: 0, duration: this.prefersReducedMotion ? 0 : 0.38, ease: 'power2.out' });
+    }
+    if (!siguiente) return;
+
+    const trazo = siguiente.querySelector<SVGPathElement>('path');
+    if (!trazo) return;
+    gsap.killTweensOf([siguiente, trazo]);
+    if (this.prefersReducedMotion) {
+      gsap.set(siguiente, { opacity: 0.78 });
+      gsap.set(trazo, { strokeDasharray: 'none', strokeDashoffset: 0 });
+      return;
+    }
+
+    const longitud = trazo.getTotalLength();
+    gsap.fromTo(siguiente, { opacity: 0 }, { opacity: 0.78, duration: 0.55, ease: 'power2.out' });
+    gsap.fromTo(trazo,
+      { strokeDasharray: `${longitud} ${longitud}`, strokeDashoffset: longitud },
+      { strokeDashoffset: 0, duration: 0.78, ease: 'power2.out' },
+    );
+  }
 
   nuclearHighlights = [
     { icon: 'camera', tituloKey: 'nuclear.item2_title', descKey: 'nuclear.item2_desc' },
@@ -251,11 +373,9 @@ export class LandingComponent implements OnDestroy {
         gsap.set(
           [
             '.hero-title',
-            '.hero-tagline',
             '.hero-subtitle',
             '.hero-actions .btn-primary, .hero-actions .btn-secondary',
             '.hero-visual',
-            '.hero-brand-seal',
           ],
           { opacity: 1, y: 0, scale: 1, rotation: 0, clearProps: 'transform' },
         );
@@ -265,8 +385,8 @@ export class LandingComponent implements OnDestroy {
           defaults: { ease: 'power3.out' },
         });
         heroTl
-          .from('.hero-title', { y: 40, opacity: 0, duration: 1.1 })
-          .from('.hero-tagline', { y: 20, opacity: 0, duration: 0.8 }, '-=0.7')
+          .from('.hero-brand-badge', { y: -14, scale: 0.9, opacity: 0, duration: 0.85, ease: 'back.out(1.25)' }, 0.35)
+          .from('.hero-title', { y: 32, opacity: 0, duration: 1.1 })
           .from('.hero-subtitle', { y: 25, opacity: 0, duration: 0.9 }, '-=0.6')
           .from('.hero-actions .btn-primary, .hero-actions .btn-secondary', {
             y: 20,
@@ -275,23 +395,14 @@ export class LandingComponent implements OnDestroy {
             duration: 0.7,
             ease: 'back.out(1.4)',
           }, '-=0.5')
-          .from('.hero-visual', { scale: 0.94, opacity: 0, duration: 1.2, ease: 'expo.out' }, '-=0.9')
-          .from('.hero-brand-seal', { opacity: 0, duration: 1, ease: 'power3.out' }, '-=0.6');
+          .from('.hero-visual', { scale: 0.94, opacity: 0, duration: 1.2, ease: 'expo.out' }, '-=0.9');
       }
 
-      // 2. Micro-animaciones continuas y orgánicas (Atmósfera & Sello)
+      // 2. Micro-animaciones discretas (isotipo ambiental y atmósfera)
       // Se omiten con reduced-motion, y se guardan en heroLoopTweens para
       // poder pausarlas cuando el hero sale del viewport (ver iniciarObservadorHero).
       if (!this.prefersReducedMotion) {
         this.heroLoopTweens.push(
-          gsap.to('.hero-brand-seal', {
-            y: -6,
-            scale: 1.04,
-            duration: 3.5,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut',
-          }),
           gsap.to('.atmosphere-beam--one', {
             x: '+=35',
             y: '-=25',
@@ -310,6 +421,39 @@ export class LandingComponent implements OnDestroy {
             yoyo: true,
             ease: 'sine.inOut',
           }),
+        );
+
+        gsap.to('.hero-carousel__image', {
+          yPercent: -4,
+          scale: 1.06,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero-section',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // La galería asciende unos píxeles durante el recorrido del hero:
+        // acompaña el gesto de scroll sin fijarse ni secuestrar la página.
+        gsap.fromTo(
+          '.hero-carousel',
+          { y: 14, rotation: 0.35, scale: 0.985 },
+          {
+            y: -18,
+            rotation: 0,
+            scale: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.hero-section',
+              start: 'top top',
+              end: 'bottom top',
+              scrub: 1.1,
+              invalidateOnRefresh: true,
+            },
+          },
         );
       }
 
@@ -435,21 +579,20 @@ export class LandingComponent implements OnDestroy {
         clearProps: 'opacity,transform',
       });
 
-      // 5c. Tarjetas de país de NOVAXIS LATAM: entrada escalonada con pop.
-      // Bolivia (sede regional) está primera en el array, así que abre la
-      // secuencia como la novedad principal del grupo.
+      // 5c. Tarjetas de presencia regional: entrada editorial con cascada
+      // breve. El contenido permanece visible si el usuario reduce movimiento.
       gsap.from('.latam-countries li', {
         scrollTrigger: {
           trigger: '.latam-countries',
           start: 'top 85%',
           toggleActions: 'play none none none',
         },
-        y: 30,
+        y: 28,
         opacity: 0,
-        scale: 0.9,
-        stagger: 0.15,
-        duration: 0.7,
-        ease: 'back.out(1.7)',
+        scale: 0.97,
+        stagger: 0.12,
+        duration: 0.72,
+        ease: 'power3.out',
         clearProps: 'opacity,transform',
       });
 
@@ -587,23 +730,36 @@ export class LandingComponent implements OnDestroy {
         });
       }
 
-      // 8b. Sellos de Calidad y Equipo — efecto "sello estampado": cae
-      // grande, girado, y se asienta con rebote, como si se acabara de
-      // estampar sobre la página.
-      gsap.from('.badge-list__item', {
-        scrollTrigger: {
-          trigger: '.badge-list',
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-        scale: 1.6,
-        rotation: -12,
-        opacity: 0,
-        stagger: 0.18,
-        duration: 0.65,
-        ease: 'back.out(1.8)',
-        clearProps: 'opacity,transform',
-      });
+      // 8b. Presentación de producto: el generador entra como pieza principal
+      // y los puntos técnicos aparecen después con una cascada contenida.
+      if (!this.prefersReducedMotion) {
+        gsap.from('.generator-visual', {
+          scrollTrigger: {
+            trigger: '.generator-stage',
+            start: 'top 82%',
+            toggleActions: 'play none none none',
+          },
+          y: 22,
+          opacity: 0,
+          scale: 0.985,
+          duration: 0.9,
+          ease: 'power3.out',
+          clearProps: 'opacity,transform',
+        });
+        gsap.from('.generator-hotspot', {
+          scrollTrigger: {
+            trigger: '.generator-stage',
+            start: 'top 82%',
+            toggleActions: 'play none none none',
+          },
+          scale: 0.55,
+          opacity: 0,
+          stagger: 0.09,
+          duration: 0.48,
+          ease: 'back.out(1.5)',
+          clearProps: 'opacity,transform',
+        });
+      }
 
       // 9. Especialidades Tecnológicas — el carrusel se mueve solo (CSS),
       // así que acá solo se anima la entrada del contenedor completo, no
@@ -638,20 +794,51 @@ export class LandingComponent implements OnDestroy {
         clearProps: 'opacity,transform',
       });
 
-      // 11. Carrusel de Proyectos
-      gsap.from('.project-card', {
+      // 11. Dossier de Proyectos: entra el conjunto con suavidad; cada ficha
+      // conserva su scroll-snap y sus imágenes reciben un parallax discreto.
+      gsap.from('.projects-carousel', {
         scrollTrigger: {
           trigger: '.projects-carousel',
           start: 'top 82%',
           toggleActions: 'play none none none',
         },
-        x: 40,
+        y: 26,
         opacity: 0,
-        stagger: 0.1,
-        duration: 0.8,
+        duration: 0.85,
         ease: 'power2.out',
         clearProps: 'opacity,transform',
       });
+
+      // Parallax dentro del desplazamiento horizontal nativo de la galería.
+      // Conserva el scroll-snap y el gesto táctil, sin fijar la página ni
+      // convertir el scroll vertical en un desplazamiento lateral forzado.
+      if (!this.prefersReducedMotion) {
+        const proyectosHost = this.el.nativeElement as HTMLElement;
+        const proyectosViewport = proyectosHost.querySelector('.projects-carousel__viewport') as HTMLElement | null;
+        proyectosViewport?.querySelectorAll('.project-card').forEach((card: Element) => {
+          const image = card.querySelector('.project-card__image') as HTMLElement | null;
+          if (!image) return;
+
+          gsap.fromTo(
+            image,
+            { scale: 1.07, xPercent: -2 },
+            {
+              scale: 1.015,
+              xPercent: 2,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: card,
+                scroller: proyectosViewport,
+                horizontal: true,
+                start: 'left right',
+                end: 'right left',
+                scrub: 0.8,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
+        });
+      }
 
       // 12. Razones de Confianza (Por qué NOVAXIS): cada fila entra
       // deslizándose desde el costado mientras su línea divisoria se
@@ -767,10 +954,16 @@ export class LandingComponent implements OnDestroy {
     if (!tarjetas.length) return;
 
     this.proyectosObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const indice = Number((entry.target as HTMLElement).dataset['indice']);
-          this.proyectosRatios[indice] = entry.intersectionRatio;
+      () => {
+        const viewportRect = viewport.getBoundingClientRect();
+        tarjetas.forEach((tarjeta) => {
+          const indice = Number(tarjeta.dataset['indice']);
+          const tarjetaRect = tarjeta.getBoundingClientRect();
+          const visible = Math.max(
+            0,
+            Math.min(tarjetaRect.right, viewportRect.right) - Math.max(tarjetaRect.left, viewportRect.left),
+          );
+          this.proyectosRatios[indice] = tarjetaRect.width ? visible / tarjetaRect.width : 0;
         });
 
         let mejorIndice = this.proyectoActivo();

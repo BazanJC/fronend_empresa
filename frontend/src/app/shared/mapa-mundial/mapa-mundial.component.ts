@@ -22,11 +22,13 @@ import { gsap } from 'gsap';
 
 export interface PaisPresencia {
   id: string;
+  codigoISO: string;
   lat: number;
   lng: number;
   anioIngreso: number;
-  imagenSeed: string;
+  imagenUrl: string;
   topoId: string;
+  proyectos: string[];
 }
 
 interface MarcadorPosicionado extends PaisPresencia {
@@ -47,35 +49,93 @@ interface Conexion {
 const PAISES: PaisPresencia[] = [
   {
     id: 'tunez',
+    codigoISO: 'tn',
     lat: 33.8814,
     lng: 10.0982,
     anioIngreso: 2009,
-    imagenSeed: 'oficina-tunez',
+    imagenUrl: 'https://images.pexels.com/photos/10958528/pexels-photo-10958528.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
     topoId: '788',
+    proyectos: ['proyecto1', 'proyecto2'],
   },
   {
     id: 'bolivia',
+    codigoISO: 'bo',
     lat: -16.5,
     lng: -68.15,
     anioIngreso: 2025,
-    imagenSeed: 'oficina-bolivia',
+    imagenUrl: 'https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
     topoId: '068',
+    proyectos: ['proyecto1'],
   },
   {
     id: 'panama',
+    codigoISO: 'pa',
     lat: 8.9936,
     lng: -79.5197,
     anioIngreso: 2022,
-    imagenSeed: 'oficina-panama',
+    imagenUrl: 'https://images.pexels.com/photos/17842832/pexels-photo-17842832.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
     topoId: '591',
+    proyectos: [],
   },
   {
     id: 'honduras',
+    codigoISO: 'hn',
     lat: 14.1,
     lng: -87.2,
     anioIngreso: 2026,
-    imagenSeed: 'oficina-honduras',
+    imagenUrl: 'https://images.pexels.com/photos/31085774/pexels-photo-31085774.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
     topoId: '340',
+    proyectos: ['proyecto1'],
+  },
+  {
+    id: 'guinea_bissau',
+    codigoISO: 'gw',
+    lat: 11.8636,
+    lng: -15.5977,
+    anioIngreso: 2017,
+    imagenUrl: 'https://images.pexels.com/photos/33984563/pexels-photo-33984563.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    topoId: '624',
+    proyectos: ['proyecto1'],
+  },
+  {
+    id: 'sri_lanka',
+    codigoISO: 'lk',
+    lat: 6.9271,
+    lng: 79.8612,
+    anioIngreso: 2018,
+    imagenUrl: 'https://images.pexels.com/photos/12571569/pexels-photo-12571569.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    topoId: '144',
+    proyectos: ['proyecto1'],
+  },
+  {
+    id: 'libia',
+    codigoISO: 'ly',
+    lat: 32.8872,
+    lng: 13.1913,
+    anioIngreso: 2019,
+    imagenUrl: 'https://images.pexels.com/photos/7103169/pexels-photo-7103169.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    topoId: '434',
+    proyectos: ['proyecto1'],
+  },
+  {
+    id: 'mauritania',
+    codigoISO: 'mr',
+    lat: 18.0735,
+    lng: -15.9582,
+    anioIngreso: 2023,
+    imagenUrl: 'https://images.pexels.com/photos/36566099/pexels-photo-36566099.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    topoId: '478',
+    proyectos: ['proyecto1'],
+  },
+  {
+    id: 'ucrania',
+    codigoISO: 'ua',
+    lat: 50.4501,
+    lng: 30.5234,
+    anioIngreso: 2024,
+    imagenUrl: 'https://images.pexels.com/photos/29886913/pexels-photo-29886913.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    topoId: '804',
+    proyectos: ['proyecto1'],
   },
 ];
 
@@ -99,6 +159,7 @@ export class MapaMundialComponent implements OnInit, AfterViewInit, OnDestroy {
 
   paises = PAISES;
   paisSeleccionado = signal<PaisPresencia | null>(null);
+  paisHoverId = signal<string | null>(null);
 
   otrosPaisesPathD = signal('');
   paisesResaltados = signal<PaisResaltadoPath[]>([]);
@@ -116,6 +177,7 @@ export class MapaMundialComponent implements OnInit, AfterViewInit, OnDestroy {
 
   tooltipVisible = signal(false);
   tooltipTexto = signal('');
+  tooltipPais = signal<PaisPresencia | null>(null);
   tooltipX = signal(0);
   tooltipY = signal(0);
 
@@ -191,9 +253,9 @@ export class MapaMundialComponent implements OnInit, AfterViewInit, OnDestroy {
     this.projection = geoEquirectangular().fitSize([this.width, this.height], countries);
     const path: GeoPath = geoPath(this.projection);
 
-    const idsOficina = new Set(this.paises.map((p) => p.topoId));
-    const featuresOtros = countries.features.filter((f: any) => !idsOficina.has(String(f.id)));
-    const featuresOficina = countries.features.filter((f: any) => idsOficina.has(String(f.id)));
+    const idsPaisesPresencia = new Set(this.paises.map((p) => p.topoId));
+    const featuresOtros = countries.features.filter((f: any) => !idsPaisesPresencia.has(String(f.id)));
+    const featuresPresencia = countries.features.filter((f: any) => idsPaisesPresencia.has(String(f.id)));
 
     this.otrosPaisesPathD.set(
       path({ type: 'FeatureCollection', features: featuresOtros } as any) ?? '',
@@ -201,7 +263,7 @@ export class MapaMundialComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const topoIdAPaisId = new Map(this.paises.map((p) => [p.topoId, p.id]));
     this.paisesResaltados.set(
-      featuresOficina.map((f: any) => ({
+      featuresPresencia.map((f: any) => ({
         id: topoIdAPaisId.get(String(f.id)) ?? '',
         d: path(f) ?? '',
       })),
@@ -232,7 +294,31 @@ export class MapaMundialComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   seleccionarPais(pais: PaisPresencia): void {
+    this.paisHoverId.set(pais.id);
     this.paisSeleccionado.set(pais);
+  }
+
+  seleccionarPaisPorId(id: string): void {
+    const pais = this.paises.find((candidato) => candidato.id === id);
+    if (pais) this.seleccionarPais(pais);
+  }
+
+  onCountryPathEnter(id: string, event: MouseEvent): void {
+    const pais = this.paises.find((candidato) => candidato.id === id);
+    if (!pais) return;
+    this.paisHoverId.set(id);
+    this.onMarkerEnter(pais, event);
+  }
+
+  onCountryPathFocus(id: string): void {
+    const marcador = this.marcadores().find((candidato) => candidato.id === id);
+    if (marcador) this.onMarkerFocus(marcador);
+  }
+
+  onCountryPathLeave(id: string): void {
+    if (this.paisHoverId() !== id) return;
+    this.paisHoverId.set(null);
+    this.onMarkerLeave();
   }
 
   cerrarModal(): void {
@@ -240,9 +326,20 @@ export class MapaMundialComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onMarkerEnter(pais: PaisPresencia, event: MouseEvent): void {
+    this.paisHoverId.set(pais.id);
+    this.tooltipPais.set(pais);
     this.tooltipTexto.set(this.translate.instant('mapa.paises.' + pais.id + '.nombre'));
     this.tooltipVisible.set(true);
     this.actualizarPosicionTooltip(event);
+  }
+
+  onMarkerFocus(pais: MarcadorPosicionado): void {
+    this.paisHoverId.set(pais.id);
+    this.tooltipPais.set(pais);
+    this.tooltipTexto.set(this.translate.instant('mapa.paises.' + pais.id + '.nombre'));
+    this.tooltipX.set(pais.x * this.zoom() + this.panX());
+    this.tooltipY.set(pais.y * this.zoom() + this.panY());
+    this.tooltipVisible.set(true);
   }
 
   onMarkerMove(event: MouseEvent): void {
@@ -250,7 +347,9 @@ export class MapaMundialComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onMarkerLeave(): void {
+    this.paisHoverId.set(null);
     this.tooltipVisible.set(false);
+    this.tooltipPais.set(null);
   }
 
   private actualizarPosicionTooltip(event: MouseEvent): void {

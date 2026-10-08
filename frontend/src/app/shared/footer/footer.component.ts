@@ -12,4 +12,5 @@ import { CONTACT_EMAIL } from '../../core/contact.service';
 export class FooterComponent {
   anioActual = new Date().getFullYear();
   readonly emailContacto = CONTACT_EMAIL;
+  readonly whatsappUrl = 'https://wa.me/5916191142';
 }

@@ -1,9 +1,35 @@
 {
+  "preloader": {
+    "brand": "NOVAXIS INTERNATIONAL",
+    "tagline": "Une technologie fiable pour les infrastructures critiques",
+    "status": "Chargement du site",
+    "statusConnecting": "Établissement de la connexion",
+    "statusSyncing": "Synchronisation des systèmes",
+    "statusPreparing": "Préparation de votre expérience",
+    "statusReady": "Tout est prêt",
+    "security": "Sécurité",
+    "energy": "Énergie",
+    "evaluation": "Évaluation technique",
+    "maintenance": "Maintenance",
+    "nuclear": "Technologie nucléaire"
+  },
   "nav": {
-    "servicios": "Expertise",
+    "servicios": "Services",
     "sectores": "Secteurs",
     "proyectos": "Projets",
     "contacto": "Contact",
+    "presencia": "Présence",
+    "nosotros": "À propos",
+    "trayectoria": "Parcours",
+    "latam": "Amérique latine",
+    "nuclear": "Nucléaire et sciences",
+    "generador": "Groupe électrogène",
+    "aliados": "Partenaires technologiques",
+    "porque": "Pourquoi NOVAXIS",
+    "more": "Plus",
+    "more_sections": "Autres sections",
+    "main_sections": "Sections principales",
+    "explore": "Explorer",
     "cta": "Contactez-nous",
     "plataforma": "Plateforme",
     "language": "Choisir la langue",
@@ -39,7 +65,7 @@
     "card2_title": "Design & Conception",
     "card2_desc": "Nous concevons des solutions sur mesure, en sélectionnant les équipements les plus adaptés à vos besoins spécifiques.",
     "card3_title": "Installation & Intégration",
-    "card3_desc": "Nos techniciens certifiés installent et configurent chaque système avec une qualité professionnelle garantie."
+    "card3_desc": "Notre équipe technique installe et configure chaque système en tenant compte des exigences du projet."
   },
   "expansion": {
     "eyebrow": "Notre Parcours",
@@ -59,7 +85,7 @@
     "stat3_label": "Projets Internationaux",
     "stat4_label": "Fabricants Partenaires",
     "cta_title": "Rejoignez Notre Expansion",
-    "cta_desc": "Avez-vous un projet en Bolivie, au Panama, au Honduras ou en Amérique Latine ? Nous vous accompagnons où que ce soit.",
+    "cta_desc": "Vous avez un projet en Bolivie, au Panama, au Honduras ou en Amérique latine ? Nous vous accompagnons où que vous soyez.",
     "cta_button": "Contactez-nous"
   },
   "presencia": {
@@ -71,7 +97,8 @@
     "pais2_label": "Filiale LATAM (Bolivie)",
     "pais3_label": "Opérations actives",
     "pais4_label": "Opérations actives",
-    "proyectos_label": "projets"
+    "proyectos_label": "projets",
+    "operaciones_label": "Opérations actives"
   },
   "sectores": {
     "eyebrow": "Secteurs d'Excellence",
@@ -83,9 +110,9 @@
     "card3_title": "Complexes Industriels",
     "card3_desc": "Sécurité périmétrique, contrôle d'accès et supervision pour les sites industriels et opérations à grande échelle.",
     "card4_title": "Nucléaire et Science",
-    "card4_desc": "Maintenance spécialisée, formation technique et distribution de composants et de consommables pour les applications nucléaires et scientifiques.",
-    "card5_title": "Défense et Marine",
-    "card5_desc": "Projets de sécurité électronique pour les forces de défense et les opérations navales.",
+    "card4_desc": "Maintenance spécialisée et évaluation technique des équipements dans les centres de recherche, laboratoires et services de radiothérapie.",
+    "card5_title": "Défense et infrastructures",
+    "card5_desc": "Conception et intégration de systèmes de sécurité électronique pour protéger les installations, les accès et les périmètres des organismes de défense.",
     "stat1_label": "Projets Stratégiques",
     "stat2_label": "Clients Institutionnels",
     "stat3_label": "Pays",
@@ -94,7 +121,7 @@
   "nuclear": {
     "eyebrow": "Technologies nucléaires et scientifiques",
     "title": "Maintenance et assistance technique des technologies nucléaires",
-    "desc": "Nous accompagnons les installations nucléaires et les centres de recherche grâce à une maintenance spécialisée, à la formation technique et à la fourniture de composants et consommables scientifiques.",
+    "desc": "Notre équipe qualifiée assure la maintenance et les évaluations en laboratoire, notamment pour les équipements et technologies nucléaires. Nous accompagnons aussi les organisations dans leurs démarches d’évaluation et de certification ISO.",
     "item1_title": "Maintenance spécialisée",
     "item1_desc": "Maintenance préventive et corrective des équipements et systèmes scientifiques afin de contribuer à leur bon fonctionnement.",
     "item2_title": "Formation technique",
@@ -108,15 +135,40 @@
   "equipo": {
     "eyebrow": "Équipe",
     "title_pre": "Une Équipe de",
-    "title_accent": "Professionnels Certifiés",
-    "desc": "Nos techniciens sont des ingénieurs hautement qualifiés, formés à toutes les spécialités du secteur de la sécurité physique.",
-    "stat1_label": "Ingénieurs Certifiés",
+    "title_accent": "Spécialistes qualifiés",
+    "desc": "Des professionnels expérimentés en maintenance, évaluation des équipements et assistance technique pour les projets industriels, scientifiques et nucléaires.",
+    "stat1_label": "Spécialistes qualifiés",
     "stat2_label": "Projets Réalisés",
     "stat3_label": "Années Moyennes",
     "stat4_label": "Disponibilité",
-    "badge1": "Certification ISO 9001",
-    "badge2": "Ingénieurs et Techniciens Certifiés",
-    "badge3": "Habilitation Secteur Défense"
+    "badge1": "Maintenance spécialisée",
+    "badge2": "Évaluation technique et en laboratoire",
+    "badge3": "Accompagnement des démarches ISO"
+  },
+  "generador": {
+    "eyebrow": "NOVAXIS POWER · NXP-60KVA",
+    "title": "Une énergie industrielle conçue pour répondre aux besoins",
+    "desc": "Découvrez les caractéristiques du groupe électrogène diesel NOVAXIS POWER directement sur l'équipement.",
+    "instruction": "Survolez ou sélectionnez un point pour afficher chaque caractéristique.",
+    "image_alt": "Groupe électrogène diesel industriel NOVAXIS POWER de 60 kVA",
+    "spec_sheet": "FICHE TECHNIQUE",
+    "rated": "Puissance nominale",
+    "standby": "Secours",
+    "phase": "Triphasé",
+    "load_test": "Essai à 100 % de charge",
+    "altitude": "≥ 3 500 m",
+    "spec_power": "Puissance",
+    "power_value": "Nominale : 60 kVA / 48 kW · secours : 66 kVA / 53 kW.",
+    "spec_electrical": "Système électrique",
+    "electrical_value": "400/230 V · 50 Hz · triphasé · 86,6 A · facteur de puissance 0,8.",
+    "spec_engine": "Moteur et alternateur",
+    "engine_value": "Moteur Weichai · alternateur Stamford.",
+    "spec_controller": "Contrôleur",
+    "controller_value": "Deep Sea Electronics.",
+    "spec_fuel": "Carburant",
+    "fuel_value": "Diesel.",
+    "spec_testing": "Inspection et essais",
+    "testing_value": "Inspection SGS · essai à 100 % de charge · configuration haute altitude ≥ 3 500 m."
   },
   "tecnologias": {
     "eyebrow": "Technologies Avancées",
@@ -161,14 +213,14 @@
     "p2_year": "2018",
     "p2_cliente": "Marine de Sri Lanka",
     "p2_pais": "Sri Lanka",
-    "p2_area": "Sécurité électronique",
+    "p2_area": "Sécurité des installations et contrôle des accès",
     "p3_year": "2019",
     "p3_cliente": "Haute Commission Nationale Électorale (HNEC)",
     "p3_pais": "Libye",
     "p3_area": "Sécurité électronique",
     "p4_year": "2021",
     "p4_cliente": "Infrastructures gouvernementales",
-    "p4_pais": "International",
+    "p4_pais": "Projet international",
     "p4_area": "Sécurité physique intégrée",
     "p5_year": "2023",
     "p5_cliente": "Infrastructures stratégiques",
@@ -193,15 +245,15 @@
   },
   "contacto": {
     "eyebrow": "Contact",
-    "title_pre": "Démarrons Votre",
+    "title_pre": "Parlons de votre",
     "title_accent": "Projet",
-    "desc": "Parlez-nous de votre besoin en sécurité physique, nous vous répondrons avec la meilleure proposition sous 24 heures ouvrées.",
-    "security_eyebrow": "Adresse de contact",
-    "security_title": "Vérifiez avant l'envoi",
-    "security_desc": "Un message sera préparé pour l'adresse de contact publiée par Novaxis.",
-    "security_item1": "Votre appareil ouvrira l'application de messagerie configurée.",
-    "security_item2": "Vous pourrez vérifier et modifier le message avant l'envoi.",
-    "security_item3": "L'envoi final est confirmé depuis votre propre messagerie.",
+    "desc": "Notre équipe qualifiée assure la maintenance, les évaluations en laboratoire et l’assistance technique pour les équipements et technologies nucléaires. Nous accompagnons aussi les démarches d’évaluation et de certification ISO.",
+    "security_eyebrow": "Contact direct",
+    "security_title": "Assistance spécialisée",
+    "security_desc": "Décrivez-nous vos besoins en évaluation ou en maintenance. Nous vous guiderons sur les prochaines étapes et l’assistance possible.",
+    "security_item1": "Maintenance et évaluation des équipements",
+    "security_item2": "Évaluations en laboratoire et technologies nucléaires",
+    "security_item3": "Accompagnement pour l’évaluation et la certification ISO",
     "privacy_note": "Cette page prépare le message ; vous confirmez son envoi depuis votre messagerie.",
     "preparado": "Votre message est prêt. Vérifiez-le puis cliquez sur Envoyer dans votre messagerie.",
     "open_mail": "Ouvrir le message",
@@ -243,21 +295,42 @@
       },
       "bolivia": {
         "nombre": "Bolivie (filiale LATAM)",
-        "descripcion": "Filiale régionale NOVAXIS LATAM ENGINEERING, créée en 2026 pour l'Amérique Latine.",
-        "proyecto1": "AIEA/ABEN — protection physique d'installation nucléaire",
-        "proyecto2": "Coordination régionale des opérations LATAM"
+        "descripcion": "Filiale régionale NOVAXIS LATAM ENGINEERING, créée en 2026 pour l'Amérique latine.",
+        "proyecto1": "AIEA/ABEN — protection physique d'installation nucléaire"
       },
       "panama": {
         "nombre": "Panama",
-        "descripcion": "Opérations actives de sécurité électronique et d'intégration de systèmes.",
-        "proyecto1": "Projets de sécurité électronique en cours",
-        "proyecto2": "Expansion régionale en Amérique Centrale"
+        "descripcion": "Opérations actives de sécurité électronique et d'intégration de systèmes."
       },
       "honduras": {
         "nombre": "Honduras",
         "descripcion": "Opérations actives avec coopération internationale.",
-        "proyecto1": "PNUD/UNAH — modernisation et maintenance de la sécurité électronique",
-        "proyecto2": "Projets de coopération internationale"
+        "proyecto1": "PNUD/UNAH — modernisation et maintenance de la sécurité électronique"
+      },
+      "guinea_bissau": {
+        "nombre": "Guinée-Bissau",
+        "descripcion": "Participation à des projets pour des organisations internationales.",
+        "proyecto1": "Nations Unies (UNIOGBIS) — sécurité électronique"
+      },
+      "sri_lanka": {
+        "nombre": "Sri Lanka",
+        "descripcion": "Participation à des projets internationaux de sécurité électronique.",
+        "proyecto1": "Marine sri-lankaise — sécurité des installations et contrôle des accès"
+      },
+      "libia": {
+        "nombre": "Libye",
+        "descripcion": "Projet de sécurité électronique pour une institution électorale nationale.",
+        "proyecto1": "Haute Commission électorale nationale (HNEC) — sécurité électronique"
+      },
+      "mauritania": {
+        "nombre": "Mauritanie",
+        "descripcion": "Participation à des projets de protection d'infrastructures stratégiques.",
+        "proyecto1": "Infrastructures stratégiques — sécurité électronique"
+      },
+      "ucrania": {
+        "nombre": "Ukraine",
+        "descripcion": "Participation à des projets de protection d'infrastructures stratégiques.",
+        "proyecto1": "Infrastructures stratégiques — sécurité électronique"
       }
     }
   },
@@ -285,7 +358,7 @@
     "ingresar": "Se connecter"
   },
   "footer": {
-    "descripcion": "Nous concevons, intégrons, installons et entretenons des solutions de sécurité physique pour les infrastructures critiques et les projets stratégiques.",
+    "descripcion": "Des spécialistes qualifiés en maintenance, évaluations de laboratoire et technologies nucléaires. Nous accompagnons les organisations dans leurs processus d’évaluation et de certification ISO.",
     "navegacion": "Navigation",
     "inicio": "Accueil",
     "servicios": "Services",
@@ -296,7 +369,9 @@
     "email": "Adresse e-mail",
     "presencia": "Présence opérationnelle en Tunisie et en Bolivie",
     "direccion": "[À DÉFINIR adresse, Bolivie]",
-    "derechos": "Tous droits réservés."
+    "derechos": "Tous droits réservés.",
+    "whatsapp": "Écrivez-nous sur WhatsApp",
+    "whatsapp_desc": "Contact direct pour vos questions et nouveaux projets."
   },
   "stats": {
     "anios": "Années d'Expérience",
@@ -312,7 +387,7 @@
     "eyebrow": "Qui Nous Sommes",
     "title": "Ingénierie de sécurité physique pour infrastructures critiques",
     "desc": "Fondée en 2009 à Gabès (Tunisie), NOVAXIS International est une société d'ingénierie spécialisée dans la conception, la fourniture, l'intégration, l'installation et la maintenance de solutions de sécurité physique pour les infrastructures critiques, les institutions gouvernementales, les organisations internationales et les complexes industriels.",
-    "desc2": "Nous disposons d'ingénieurs et de techniciens certifiés et entretenons des alliances stratégiques avec les principaux fabricants internationaux de technologies.",
+    "desc2": "Notre équipe réunit des professionnels qualifiés en maintenance et en évaluation technique. Nous entretenons également des alliances stratégiques avec des fabricants internationaux.",
     "area1": "Sécurité électronique",
     "area2": "Vidéosurveillance (CCTV)",
     "area3": "Contrôle d'accès",
@@ -334,8 +409,8 @@
     "title": "Le partenaire stratégique dont votre projet a besoin",
     "item1_title": "Plus de 15 ans d'expérience",
     "item1_desc": "Historique éprouvé sur des projets critiques depuis 2009.",
-    "item2_title": "Équipes professionnelles certifiées",
-    "item2_desc": "Ingénieurs et techniciens certifiés ISO 9001 et spécialisés par fabricant.",
+    "item2_title": "Spécialistes de la maintenance",
+    "item2_desc": "Des professionnels qualifiés en maintenance, évaluation technique et assistance spécialisée, selon les besoins de chaque projet.",
     "item3_title": "Alliances avec les leaders mondiaux",
     "item3_desc": "Genetec, Bosch, Axis, HID Global, IDEMIA et d'autres fabricants de référence.",
     "item4_title": "Infrastructures critiques et nucléaire",
@@ -347,13 +422,15 @@
   },
   "latam": {
     "eyebrow": "NOVAXIS LATAM ENGINEERING",
+    "map_label": "Pays mis en avant",
     "title": "Présence régionale en Amérique latine",
-    "desc": "En 2026, NOVAXIS a établi sa filiale régionale en Bolivie pour renforcer sa présence en Amérique latine, avec des équipes professionnelles, certifiées et opérationnelles sur le terrain.",
+    "desc": "En 2026, NOVAXIS a établi sa filiale régionale en Bolivie afin de renforcer sa présence en Amérique latine, avec des équipes professionnelles sur le terrain.",
     "pais1_nombre": "Bolivie",
     "pais1_estado": "Siège régional",
     "pais2_nombre": "Panama",
     "pais2_estado": "Opérations actives",
     "pais3_nombre": "Honduras",
-    "pais3_estado": "Opérations actives"
+    "pais3_estado": "Opérations actives",
+    "pais4_nombre": "Colombie"
   }
 }

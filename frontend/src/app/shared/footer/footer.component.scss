@@ -91,6 +91,7 @@
 .footer-link-list a:focus-visible,
 .footer-contact-link:focus-visible,
 .footer-contact-cta:focus-visible,
+.footer-whatsapp-cta:focus-visible,
 .footer-logo-link:focus-visible {
 	outline: 2px solid var(--color-primary);
 	outline-offset: 4px;
@@ -166,6 +167,61 @@
 	font-size: 0.86rem;
 	font-weight: 750;
 	text-decoration: none;
+}
+
+.footer-whatsapp-card {
+	margin-top: 1.35rem;
+	padding: 1rem;
+	border: 1px solid color-mix(in srgb, #25d366 28%, var(--color-outline-variant));
+	border-radius: 12px;
+	background: color-mix(in srgb, #25d366 7%, var(--color-surface-container-lowest));
+}
+
+.footer-whatsapp-card p {
+	margin: 0 0 0.85rem;
+	color: var(--color-on-surface-variant);
+	font-size: 0.8rem;
+	line-height: 1.5;
+}
+
+.footer-whatsapp-cta {
+	display: flex;
+	min-height: 3rem;
+	align-items: center;
+	gap: 0.65rem;
+	padding: 0.7rem 0.85rem;
+	border-radius: 8px;
+	background: #128c52;
+	box-shadow: 0 8px 20px color-mix(in srgb, #128c52 20%, transparent);
+	color: #fff;
+	font-size: 0.86rem;
+	font-weight: 750;
+	text-decoration: none;
+	transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.footer-whatsapp-cta:hover {
+	transform: translateY(-2px);
+	background: #0d7845;
+	box-shadow: 0 11px 24px color-mix(in srgb, #128c52 28%, transparent);
+}
+
+.footer-whatsapp-cta svg {
+	width: 1.25rem;
+	height: 1.25rem;
+	flex: none;
+	fill: currentColor;
+}
+
+.footer-whatsapp-cta__arrow {
+	margin-left: auto;
+	fill: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.footer-whatsapp-cta {
+		transition: none;
+	}
 }
 
 .footer-bottom {

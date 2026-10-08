@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, AfterViewInit, signal, inject, ChangeDetectionStrategy, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 import { SeoService } from './core/seo.service';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
@@ -10,7 +11,7 @@ import { gsap } from 'gsap';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, TranslatePipe],
   templateUrl: './app.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.scss',
@@ -19,36 +20,19 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
   loading = signal(true);
   progressWidth = signal('0%');
   heroCoverImage = signal<string>(HERO_COVER_IMAGE);
-
-  /**
-   * Fase del preloader (0–4):
-   * 0 = Inicial — partículas orbitando, logo solo
-   * 1 = Nodos 1–2 activos (Seguridad, Energía) + líneas
-   * 2 = Nodos 3–4 activos (HVAC, Radiación) + más líneas
-   * 3 = Nodo 5 activo (ISO) + todas las conexiones
-   * 4 = IMPACTO — partículas convergen, shockwave, logo recoil
-   */
   fase = signal(0);
-
-  /** Texto dinámico según la fase actual */
-  textoFase = signal('Iniciando sistemas');
+  textoFase = signal('preloader.statusConnecting');
 
   private seo = inject(SeoService);
   private language = inject(LanguageService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private prefersReducedMotion = false;
   private destroyed = false;
-  private preloaderTimers: ReturnType<typeof setTimeout>[] = [];
+  private timers: ReturnType<typeof setTimeout>[] = [];
+  private decorativeTweens: gsap.core.Tween[] = [];
+  private animation?: gsap.core.Timeline;
   private backdropTween?: gsap.core.Tween;
   private outroTimeline?: gsap.core.Timeline;
-
-  private readonly textosPorFase = [
-    'Iniciando sistemas',
-    'Cargando módulos críticos',
-    'Sincronizando infraestructura',
-    'Calibrando sensores de radiación',
-    'Acceso concedido',
-  ];
 
   ngOnInit(): void {
     this.seo.inicializar();
@@ -57,107 +41,101 @@ export class App implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     if (!this.isBrowser) return;
-
-    this.preloaderTimers.push(setTimeout(() => {
+    this.timers.push(setTimeout(() => {
       if (this.destroyed) return;
-
       const imageIndex = Math.floor(Math.random() * HERO_COVER_IMAGES.length);
       this.heroCoverImage.set(HERO_COVER_IMAGES[imageIndex]);
       this.prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-
       if (!this.prefersReducedMotion) {
         this.backdropTween = gsap.to('.preloader-backdrop img', {
-          scale: 1.06,
-          x: 10,
-          duration: 7,
-          repeat: -1,
-          yoyo: true,
-          ease: 'sine.inOut',
+          scale: 1.045, xPercent: 1, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut',
         });
+        this.animation = gsap.timeline({ defaults: { ease: 'power3.out' } })
+          .fromTo('.preloader-heading', { y: 10, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.42 })
+          .fromTo('.preloader-core', { scale: 0.9, autoAlpha: 0.48 }, { scale: 1, autoAlpha: 1, duration: 0.66 }, '-=0.1')
+          .fromTo('.preloader-trace', { strokeDashoffset: 1, autoAlpha: 0.38 }, { strokeDashoffset: 0, autoAlpha: 1, duration: 0.62, stagger: 0.07 }, '-=0.25')
+          .fromTo('.preloader-node', { y: 7, scale: 0.97, autoAlpha: 0.22 }, { y: 0, scale: 1, autoAlpha: 1, duration: 0.4, stagger: 0.1 }, '-=0.22')
+          .fromTo('.preloader-progress', { scaleX: 0.9, autoAlpha: 0.55 }, { scaleX: 1, autoAlpha: 1, duration: 0.3 }, '-=0.1')
+          .fromTo('.preloader-statusline', { y: 4, autoAlpha: 0.55 }, { y: 0, autoAlpha: 1, duration: 0.24 }, '-=0.08');
+        this.decorativeTweens = [
+          gsap.to('.preloader-core-orbit--outer', { rotate: 360, duration: 16, repeat: -1, ease: 'none' }),
+          gsap.to('.preloader-core-orbit--inner', { rotate: -360, duration: 22, repeat: -1, ease: 'none' }),
+          gsap.to('.preloader-trace-dot', { opacity: 0.45, duration: 0.75, repeat: -1, yoyo: true, stagger: 0.14, ease: 'sine.inOut' }),
+        ];
+      } else {
+        gsap.set('.preloader-heading, .preloader-core, .preloader-trace, .preloader-node, .preloader-progress, .preloader-statusline', { autoAlpha: 1 });
+        gsap.set('.preloader-trace', { strokeDashoffset: 0 });
       }
-
-      void this.iniciarPreloader();
+      void this.startLoading();
     }, 0));
   }
 
   ngOnDestroy(): void {
     this.destroyed = true;
-    this.preloaderTimers.forEach((timer) => clearTimeout(timer));
+    this.timers.forEach(clearTimeout);
+    this.animation?.kill();
     this.backdropTween?.kill();
     this.outroTimeline?.kill();
+    this.decorativeTweens.forEach((tween) => tween.kill());
   }
 
-  private async iniciarPreloader(): Promise<void> {
-    this.progressWidth.set('82%');
-
-    const fases = this.prefersReducedMotion ? [0] : [1, 2, 3];
-    fases.forEach((fase, index) => {
-      this.preloaderTimers.push(setTimeout(() => {
-        this.fase.set(fase);
-        this.textoFase.set(this.textosPorFase[fase]);
-      }, 320 * (index + 1)));
-    });
-
-    await Promise.all([
-      this.esperarImagenHero(),
-      this.esperar(this.prefersReducedMotion ? 500 : 1400),
-    ]);
+  private async startLoading(): Promise<void> {
+    this.progressWidth.set('18%');
+    const steps = [
+      { delay: 650, progress: '38%', phase: 1, text: 'preloader.statusSyncing' },
+      { delay: 1500, progress: '68%', phase: 2, text: 'preloader.statusPreparing' },
+    ];
+    for (const step of steps) {
+      this.timers.push(setTimeout(() => {
+        if (this.destroyed) return;
+        this.progressWidth.set(step.progress);
+        this.fase.set(step.phase);
+        this.textoFase.set(step.text);
+      }, step.delay));
+    }
+    await Promise.all([this.waitForHero(), this.wait(this.prefersReducedMotion ? 380 : 2850)]);
     if (this.destroyed) return;
-
     this.progressWidth.set('100%');
-    this.fase.set(4);
-    this.textoFase.set(this.textosPorFase[4]);
-    await this.esperar(this.prefersReducedMotion ? 180 : 650);
-    this.cerrarPreloader();
+    this.fase.set(3);
+    this.textoFase.set('preloader.statusReady');
+    await this.wait(this.prefersReducedMotion ? 120 : 850);
+    this.closePreloader();
   }
 
-  private esperarImagenHero(): Promise<void> {
+  private waitForHero(): Promise<void> {
     return new Promise((resolve) => {
-      let finalizado = false;
-      const timeout = setTimeout(finalizar, 2600);
-      this.preloaderTimers.push(timeout);
-      const imagen = new Image();
-
-      function finalizar(): void {
-        if (finalizado) return;
-        finalizado = true;
+      let done = false;
+      const timeout = setTimeout(finish, 2600);
+      this.timers.push(timeout);
+      const image = new Image();
+      function finish(): void {
+        if (done) return;
+        done = true;
         clearTimeout(timeout);
         resolve();
       }
-
-      imagen.onload = () => {
-        void imagen.decode().catch(() => undefined).finally(finalizar);
-      };
-      imagen.onerror = finalizar;
-      imagen.src = this.heroCoverImage();
-
-      if (imagen.complete && imagen.naturalWidth > 0) {
-        void imagen.decode().catch(() => undefined).finally(finalizar);
-      }
+      image.onload = () => { void image.decode().catch(() => undefined).finally(finish); };
+      image.onerror = finish;
+      image.src = this.heroCoverImage();
+      if (image.complete && image.naturalWidth > 0) void image.decode().catch(() => undefined).finally(finish);
     });
   }
 
-  private esperar(duracion: number): Promise<void> {
-    return new Promise((resolve) => {
-      this.preloaderTimers.push(setTimeout(resolve, duracion));
-    });
+  private wait(duration: number): Promise<void> {
+    return new Promise((resolve) => this.timers.push(setTimeout(resolve, duration)));
   }
 
-  private cerrarPreloader(): void {
+  private closePreloader(): void {
     const overlay = document.querySelector<HTMLElement>('.preloader-overlay');
     const content = document.querySelector<HTMLElement>('.preloader-content');
     this.backdropTween?.kill();
-
     if (!overlay || !content) {
       this.loading.set(false);
       return;
     }
-
-    this.outroTimeline = gsap.timeline({
-      onComplete: () => this.loading.set(false),
-    });
+    this.outroTimeline = gsap.timeline({ onComplete: () => this.loading.set(false) });
     this.outroTimeline
-      .to(content, { scale: 0.96, autoAlpha: 0, duration: 0.42, ease: 'power2.in' })
-      .to(overlay, { autoAlpha: 0, duration: 0.58, ease: 'power2.inOut' }, '-=0.16');
+      .to(content, { y: -12, autoAlpha: 0, duration: 0.3, ease: 'power2.in' })
+      .to(overlay, { yPercent: -100, duration: 0.72, ease: 'power4.inOut' }, '-=0.04');
   }
 }

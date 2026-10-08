@@ -1,171 +1,52 @@
 @if (loading()) {
-  <div
-    class="fixed inset-0 z-[100] flex items-center justify-center preloader-overlay">
-    <div class="preloader-backdrop" aria-hidden="true">
-      <img [src]="heroCoverImage()" alt="" fetchpriority="high" />
-    </div>
-    <div class="flex flex-col items-center preloader-content">
-  
-      <!-- ===== ÁREA VISUAL: Proporcional al logo grande ===== -->
-      <div class="preloader-visual" [class]="'phase-' + fase()">
-  
-        <!-- Partículas de energía nuclear -->
-        <div class="particle-orbit orbit-1"><div class="particle"></div></div>
-        <div class="particle-orbit orbit-2"><div class="particle"></div></div>
-        <div class="particle-orbit orbit-3"><div class="particle"></div></div>
-        <div class="particle-orbit orbit-4"><div class="particle"></div></div>
-        <div class="particle-orbit orbit-5"><div class="particle particle-accent"></div></div>
-        <div class="particle-orbit orbit-6"><div class="particle particle-accent"></div></div>
-  
-        <!-- Shockwave post-impacto -->
-        <div class="shockwave-ring"></div>
-        <div class="shockwave-ring delay-1"></div>
-        <div class="shockwave-flash"></div>
-  
-        <!-- SVG: viewBox 600×600 para logo 300×300 + nodos con aire -->
-        <svg viewBox="0 0 600 600" class="preloader-svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <filter id="preloader-glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="6" result="blur"/>
-              <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-            <linearGradient id="conn-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style="stop-color:var(--color-brand-500);stop-opacity:0" />
-              <stop offset="50%" style="stop-color:var(--color-accent-400);stop-opacity:0.9" />
-              <stop offset="100%" style="stop-color:var(--color-brand-500);stop-opacity:0" />
-            </linearGradient>
-            <radialGradient id="impact-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" style="stop-color:var(--color-accent-400);stop-opacity:0.9" />
-              <stop offset="40%" style="stop-color:var(--color-brand-500);stop-opacity:0.4" />
-              <stop offset="100%" style="stop-color:var(--color-brand-500);stop-opacity:0" />
-            </radialGradient>
-            <!-- Fondo adaptativo del logo -->
-            <filter id="logo-bg-blur" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="12"/>
-            </filter>
-          </defs>
-  
-          <!-- Aura de impacto SVG -->
-          <circle cx="300" cy="300" r="0" class="impact-aura" fill="url(#impact-glow)" />
+  <section class="preloader-overlay" role="status" aria-live="polite" aria-label="{{ 'preloader.status' | translate }}">
+    <div class="preloader-backdrop" aria-hidden="true"><img [src]="heroCoverImage()" alt="" fetchpriority="high" /></div>
+    <div class="preloader-content">
+      <header class="preloader-heading">
+        <span class="preloader-kicker">{{ 'preloader.brand' | translate }}</span>
+        <p>{{ 'preloader.tagline' | translate }}</p>
+      </header>
 
-          <!-- Halo detrás de las conexiones para que los trazos no queden ocultos -->
-          <circle cx="300" cy="300" r="165" class="logo-bg-circle" />
-  
-          <!-- Líneas de conexión (desde nodos hacia el centro del logo) -->
-          <g class="connection-lines">
-            <line x1="300" y1="85" x2="300" y2="135" class="conn-line conn-1" />
-            <line x1="515" y1="300" x2="465" y2="300" class="conn-line conn-2" />
-            <line x1="300" y1="515" x2="300" y2="465" class="conn-line conn-3" />
-            <line x1="85" y1="300" x2="135" y2="300" class="conn-line conn-4" />
-            <line x1="126" y1="126" x2="183" y2="183" class="conn-line conn-5" />
-          </g>
-  
-          <!-- Nodos: 5 pilares — reescalados para viewBox 600 -->
-          <g class="system-node node-1">
-            <circle cx="300" cy="55" r="30" class="node-ring" />
-            <circle cx="300" cy="55" r="24" class="node-fill" />
-            <g class="node-icon" transform="translate(288 43)">
-              <rect x="3" y="10" width="18" height="14" rx="3" />
-              <path d="M7 10V7a5 5 0 0 1 10 0v3" />
-              <circle cx="12" cy="17" r="1.2" class="node-icon__solid" />
-            </g>
-            <text x="300" y="22" text-anchor="middle" class="node-label">SEGURIDAD</text>
-          </g>
-  
-          <g class="system-node node-2">
-            <circle cx="545" cy="300" r="30" class="node-ring" />
-            <circle cx="545" cy="300" r="24" class="node-fill" />
-            <g class="node-icon" transform="translate(533 288)">
-              <path d="M14 1 5 13h6l-1 10 9-13h-6l1-9Z" />
-            </g>
-            <text x="545" y="348" text-anchor="middle" class="node-label">ENERGÍA</text>
-          </g>
-  
-          <g class="system-node node-3">
-            <circle cx="300" cy="545" r="30" class="node-ring" />
-            <circle cx="300" cy="545" r="24" class="node-fill" />
-            <g class="node-icon" transform="translate(288 533)">
-              <path d="M4 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
-              <path d="M4 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0" />
-            </g>
-            <text x="300" y="588" text-anchor="middle" class="node-label">HVAC</text>
-          </g>
-  
-          <g class="system-node node-4 node-highlight">
-            <circle cx="55" cy="300" r="30" class="node-ring node-ring-accent" />
-            <circle cx="55" cy="300" r="24" class="node-fill" />
-            <g class="node-icon" transform="translate(43 288)">
-              <circle cx="12" cy="12" r="2" class="node-icon__solid" />
-              <path d="M12 8.5a4 4 0 0 0-3.5-5.8 9 9 0 0 0-3.7 6.4 4 4 0 0 0 7.2-.6Z" />
-              <path d="M15 10a4 4 0 0 0 5.8 3.5 9 9 0 0 0-3.1-6.7A4 4 0 0 0 15 10Z" />
-              <path d="M10 15a4 4 0 0 0-2.3 6.4 9 9 0 0 0 7.4.3A4 4 0 0 0 10 15Z" />
-            </g>
-            <text x="55" y="348" text-anchor="middle" class="node-label">RADIACIÓN</text>
-          </g>
-  
-          <g class="system-node node-5">
-            <circle cx="105" cy="105" r="30" class="node-ring" />
-            <circle cx="105" cy="105" r="24" class="node-fill" />
-            <g class="node-icon" transform="translate(93 93)">
-              <path d="M8 3h8l3 3v16H5V3h3Z" />
-              <path d="M8 3v5h8V3M9 13h6m-6 4h6" />
-            </g>
-            <text x="105" y="63" text-anchor="middle" class="node-label">ISO</text>
-          </g>
-  
-          <!-- Centro: Logo con fondo adaptativo + anillos nucleares -->
-          <g class="logo-center">
-            <!-- Anillos nucleares -->
-            <circle cx="300" cy="300" r="90" class="nuclear-ring ring-1" />
-            <circle cx="300" cy="300" r="78" class="nuclear-ring ring-2" />
-            <circle cx="300" cy="300" r="68" class="nuclear-ring ring-3" />
-  
-            <!-- Logo — AHORA SÍ VISIBLE EN AMBOS TEMAS -->
-            <g class="preloader-logo-wrap">
-              <image href="/assets/images/logo-novaxis.png"
-                     x="150" y="150" width="300" height="300"
-                     class="preloader-logo-img"
-                     preserveAspectRatio="xMidYMid meet" />
-            </g>
-  
-            <!-- Scan line sobre el logo -->
-            <rect x="148" y="148" width="304" height="4" rx="2" class="scan-line" />
-          </g>
+      <div class="preloader-visual" [class]="'preloader-visual phase-' + fase()" aria-hidden="true">
+        <svg class="preloader-circuit" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="circuit-flow" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2d87c5" stop-opacity=".28" />
+              <stop offset=".5" stop-color="#f4c542" stop-opacity=".98" />
+              <stop offset="1" stop-color="#49a9d5" stop-opacity=".42" />
+            </linearGradient>
+          </defs>
+          <path class="preloader-trace" pathLength="1" d="M400 71V168" />
+          <path class="preloader-trace" pathLength="1" d="M650 180C590 180 550 205 492 226" />
+          <path class="preloader-trace" pathLength="1" d="M150 180C210 180 250 205 308 226" />
+          <path class="preloader-trace" pathLength="1" d="M575 402C540 365 520 345 480 322" />
+          <path class="preloader-trace" pathLength="1" d="M225 402C260 365 280 345 320 322" />
+          <circle class="preloader-trace-dot" cx="400" cy="168" r="3" />
+          <circle class="preloader-trace-dot" cx="492" cy="226" r="3" />
+          <circle class="preloader-trace-dot" cx="308" cy="226" r="3" />
+          <circle class="preloader-trace-dot" cx="480" cy="322" r="3" />
+          <circle class="preloader-trace-dot" cx="320" cy="322" r="3" />
         </svg>
+
+        <div class="preloader-core">
+          <span class="preloader-core-orbit preloader-core-orbit--outer"></span>
+          <span class="preloader-core-orbit preloader-core-orbit--inner"></span>
+          <span class="preloader-core-mark"><img src="/assets/images/logo-novaxis-symbol.png" alt="" /></span>
+        </div>
+
+        <div class="preloader-node preloader-node--security"><span class="preloader-node-icon"><svg viewBox="0 0 24 24"><path d="M12 3 19 6v5c0 4.5-2.8 8-7 10-4.2-2-7-5.5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span><span>{{ 'preloader.security' | translate }}</span></div>
+        <div class="preloader-node preloader-node--energy"><span class="preloader-node-icon"><svg viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-13h-7l0-7Z"/></svg></span><span>{{ 'preloader.energy' | translate }}</span></div>
+        <div class="preloader-node preloader-node--evaluation"><span class="preloader-node-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span><span>{{ 'preloader.evaluation' | translate }}</span></div>
+        <div class="preloader-node preloader-node--maintenance"><span class="preloader-node-icon"><svg viewBox="0 0 24 24"><path d="M14 6a5 5 0 0 0-6 6l-5 5 4 4 5-5a5 5 0 0 0 6-6l-3 3-4-4 3-3Z"/></svg></span><span>{{ 'preloader.maintenance' | translate }}</span></div>
+        <div class="preloader-node preloader-node--nuclear"><span class="preloader-node-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M12 3c2.5 0 3.5 2.4 2.3 4.5L12 12 9.7 7.5C8.5 5.4 9.5 3 12 3ZM4.2 7.5c1.2-2.2 3.8-1.8 5 .3l2.8 4.2-5 .1C4.6 12.1 3 9.7 4.2 7.5ZM4.2 16.5c-1.2-2.2.4-4.6 2.8-4.4l5 .1-2.8 4.2c-1.2 2.1-3.8 2.3-5 .1ZM19.8 16.5c-1.2 2.2-3.8 2-5-.1L12 12.2l5-.1c2.4-.2 4 2.2 2.8 4.4ZM19.8 7.5c1.2 2.2-.4 4.6-2.8 4.4l-5-.1 2.8-4.2c1.2-2.1 3.8-2.5 5-.1Z"/></svg></span><span>{{ 'preloader.nuclear' | translate }}</span></div>
       </div>
-  
-      <!-- ===== BARRA DE PROGRESO ===== -->
-      <div class="mt-8 w-80 max-w-[85vw] h-1.5 bg-on-surface/10 overflow-hidden rounded-full relative">
-        <div class="h-full bg-primary-container transition-all duration-1000 ease-out rounded-full"
-             [style.width]="progressWidth()"></div>
-      </div>
-  
-      <!-- ===== TEXTO DE FASE ===== -->
-      <div class="mt-6 h-6 flex items-center justify-center">
-        <p class="text-[11px] tracking-[0.3em] uppercase font-medium text-on-surface/40 phase-text"
-           [class]="'phase-text-' + fase()">
-          {{ textoFase() }}
-        </p>
-      </div>
-  
-      <!-- Indicadores de fase -->
-      <div class="flex gap-2.5 mt-4">
-        @for (i of [0,1,2,3,4]; track i) {
-          <div class="w-2 h-2 rounded-full transition-all duration-500"
-               [class.bg-primary-container]="fase() >= i"
-               [class.bg-on-surface/15]="fase() < i"
-               [class.scale-125]="fase() === i"
-               [class.shadow-glow]="fase() === i"></div>
-        }
-      </div>
-  
+
+      <div class="preloader-progress" aria-hidden="true"><span [style.width]="progressWidth()"></span></div>
+      <div class="preloader-statusline"><span class="preloader-status-dot"></span><p>{{ textoFase() | translate }}</p><span class="preloader-percent">{{ progressWidth() }}</span></div>
     </div>
-  </div>
-  }
-  
-  <app-header></app-header>
-  <router-outlet />
-  <app-footer></app-footer>
+  </section>
+}
+
+<app-header></app-header>
+<router-outlet />
+<app-footer></app-footer>

@@ -42,7 +42,23 @@
 
       <!-- Países resaltados -->
       @for (p of paisesResaltados(); track p.id) {
-        <path [attr.d]="p.d" class="mapa-pais-resaltado" />
+        <path
+          [attr.d]="p.d"
+          class="mapa-pais-resaltado"
+          [class.is-hovered]="paisHoverId() === p.id"
+          [class.is-selected]="paisSeleccionado()?.id === p.id"
+          (pointerdown)="$event.stopPropagation()"
+          (mouseenter)="onCountryPathEnter(p.id, $event)"
+          (mousemove)="onMarkerMove($event)"
+          (mouseleave)="onCountryPathLeave(p.id)"
+          (click)="seleccionarPaisPorId(p.id)"
+          (focus)="onCountryPathFocus(p.id)"
+          (blur)="onCountryPathLeave(p.id)"
+          (keydown.enter)="seleccionarPaisPorId(p.id)"
+          (keydown.space)="seleccionarPaisPorId(p.id); $event.preventDefault()"
+          role="button"
+          tabindex="0"
+          [attr.aria-label]="'mapa.paises.' + p.id + '.nombre' | translate" />
       }
 
       <!-- Conexiones mesh -->
@@ -61,7 +77,12 @@
           (mouseenter)="onMarkerEnter(m, $event)"
           (mousemove)="onMarkerMove($event)"
           (mouseleave)="onMarkerLeave()"
+          (focus)="onMarkerFocus(m)"
+          (blur)="onMarkerLeave()"
+          (keydown.enter)="seleccionarPais(m)"
+          (keydown.space)="seleccionarPais(m); $event.preventDefault()"
           role="button"
+          tabindex="0"
           [attr.aria-label]="'mapa.paises.' + m.id + '.nombre' | translate">
           <circle [attr.cx]="m.x" [attr.cy]="m.y" r="16" class="mapa-marcador__ring"></circle>
           <circle [attr.cx]="m.x" [attr.cy]="m.y" r="8" class="mapa-marcador__core"></circle>
@@ -74,7 +95,14 @@
   <!-- Tooltip -->
   @if (tooltipVisible()) {
     <div class="mapa-tooltip" [style.left.px]="tooltipX() + 16" [style.top.px]="tooltipY() - 16">
-      {{ tooltipTexto() }}
+      @if (tooltipPais(); as pais) {
+        <img
+          [src]="'https://flagcdn.com/w160/' + pais.codigoISO + '.png'"
+          class="mapa-tooltip__flag"
+          alt=""
+          aria-hidden="true" />
+      }
+      <span>{{ tooltipTexto() }}</span>
     </div>
   }
 
@@ -107,19 +135,26 @@
       </span>
       <h3 class="mapa-modal__title">{{ 'mapa.paises.' + pais.id + '.nombre' | translate }}</h3>
 
-      <img
-        [src]="'https://picsum.photos/seed/' + pais.imagenSeed + '/600/400'"
-        class="mapa-modal__image img-tinted"
-        [alt]="'mapa.paises.' + pais.id + '.nombre' | translate"
-      />
+      <div class="mapa-modal__media">
+        <img
+          [src]="pais.imagenUrl"
+          class="mapa-modal__image img-tinted"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async" />
+      </div>
 
       <p class="mapa-modal__desc">{{ 'mapa.paises.' + pais.id + '.descripcion' | translate }}</p>
 
-      <h4 class="mapa-modal__subheading">{{ 'mapa.proyectos_destacados' | translate }}</h4>
-      <ul class="mapa-modal__list">
-        <li><span>•</span> {{ 'mapa.paises.' + pais.id + '.proyecto1' | translate }}</li>
-        <li><span>•</span> {{ 'mapa.paises.' + pais.id + '.proyecto2' | translate }}</li>
-      </ul>
+      @if (pais.proyectos.length) {
+        <h4 class="mapa-modal__subheading">{{ 'mapa.proyectos_destacados' | translate }}</h4>
+        <ul class="mapa-modal__list">
+          @for (proyecto of pais.proyectos; track proyecto) {
+            <li><span>•</span> {{ 'mapa.paises.' + pais.id + '.' + proyecto | translate }}</li>
+          }
+        </ul>
+      }
     </div>
   </div>
 }
