@@ -1,0 +1,126 @@
+<section
+  #root
+  class="atlas"
+  id="expansion"
+  [class.atlas--animado]="modo() === 'animado'"
+  [class.atlas--estatico]="modo() === 'estatico'"
+  [class.atlas--apilado]="modo() === 'apilado'">
+
+  <div class="atlas__runway" #pista>
+    <div class="atlas__pin" #pin>
+      <div class="atlas__stage">
+        <!-- Mapa: se dibuja con d3-geo + world.json (sin SVG gigante en el código) -->
+        <div class="atlas__map" id="atlasMapLayer">
+          <svg viewBox="0 0 1180 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <g id="atlasCamera">
+              <g transform="translate(-10 87.5) scale(0.9833)">
+                <path id="atlasCountries" class="atlas__countries" fill-rule="evenodd" [attr.d]="countriesD()" />
+                <g id="atlasRoutes">
+                  @for (ruta of rutas; track ruta.key) {
+                    <path
+                      class="atlas__route"
+                      [attr.data-key]="ruta.key"
+                      [attr.d]="ruta.d"
+                      vector-effect="non-scaling-stroke" />
+                  }
+                </g>
+              </g>
+            </g>
+
+            <!-- Capa fija: nodos, referencias y la marca de inicio (2009) -->
+            <g id="atlasOverlay">
+              @for (nodo of nodos; track nodo.key) {
+                <g
+                  class="atlas__node"
+                  [attr.data-key]="nodo.key"
+                  [attr.data-end]="nodo.end"
+                  [attr.data-x]="nodo.x"
+                  [attr.data-y]="nodo.y">
+                  <circle class="atlas__node-halo" cx="0" cy="0" r="9" />
+                  <circle class="atlas__node-dot" cx="0" cy="0" r="3.2" />
+                  <text class="atlas__node-label" x="9" y="3.5" text-anchor="start">{{ nodo.label }}</text>
+                </g>
+              }
+
+              @for (ref of referencias; track $index) {
+                <circle class="atlas__ref" [attr.data-x]="ref.x" [attr.data-y]="ref.y" cx="0" cy="0" r="2.1" />
+              }
+
+              <g class="atlas__start" id="atlasStart" [attr.data-x]="origen.x" [attr.data-y]="origen.y">
+                <circle class="atlas__start-disc" cx="0" cy="0" r="13" />
+                <circle class="atlas__start-pulse" cx="0" cy="0" r="18" />
+                <circle class="atlas__start-ring" cx="0" cy="0" r="26" />
+                <circle class="atlas__start-ring atlas__start-ring--2" cx="0" cy="0" r="40" />
+                <path class="atlas__start-cross" d="M0 -56V-46M0 46V56M-56 0H-46M46 0H56" />
+                <text class="atlas__start-year" x="0" y="70" text-anchor="middle">2009</text>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <div class="atlas__scrim" id="atlasScrim"></div>
+        <div class="atlas__edge" id="atlasEdge"></div>
+        <div class="atlas__frame" id="atlasFrame"></div>
+
+        @if (cargando() && modo() !== 'apilado') {
+          <div class="atlas__skeleton" aria-hidden="true"></div>
+        }
+      </div>
+
+      <div class="atlas__content">
+        <div class="atlas__heading">
+          <p class="atlas__eyebrow">{{ 'expansion.eyebrow' | translate }}</p>
+          <h2 class="atlas__title">
+            {{ 'expansion.title_pre' | translate }}
+            <span>Gabès</span>
+            {{ 'expansion.title_post' | translate }}
+          </h2>
+          <p class="atlas__intro">{{ 'expansion.intro' | translate }}</p>
+        </div>
+
+        <div class="atlas__panels" aria-live="polite">
+          @for (panel of paneles; track panel.id; let i = $index) {
+            <article class="atlas__panel" [class.is-active]="i === indicePanel()">
+              <span class="atlas__panel-year">
+                @if (panel.yearKey) {
+                  {{ panel.yearKey | translate }}
+                } @else {
+                  {{ panel.year }}
+                }
+              </span>
+              <h3>{{ panel.titleKey | translate }}</h3>
+              @if (panel.refs) {
+                <ul class="atlas__refs">
+                  @for (ref of refKeys; track ref) {
+                    <li>{{ ref | translate }}</li>
+                  }
+                </ul>
+              } @else {
+                <p>{{ panel.descKey | translate }}</p>
+              }
+            </article>
+          }
+        </div>
+
+        <div class="atlas__rail">
+          <div class="atlas__rail-bar">
+            <span class="atlas__rail-fill" id="atlasRailFill"></span>
+            <div class="atlas__rail-stops">
+              @for (panel of paneles; track panel.id; let i = $index) {
+                <span class="atlas__stop" [class.is-on]="i === indicePanel()">
+                  <i aria-hidden="true"></i>
+                  @if (panel.yearKey) {
+                    {{ panel.yearKey | translate }}
+                  } @else {
+                    {{ panel.year }}
+                  }
+                </span>
+              }
+            </div>
+          </div>
+          <span class="atlas__counter" id="atlasCounter">01 / 05</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

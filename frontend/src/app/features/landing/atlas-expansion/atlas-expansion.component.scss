@@ -1,0 +1,636 @@
+/* ============================================================
+ * ATLAS DE EXPANSIÓN — "De Gabès al Mundo"
+ *
+ * Escenario con mapa (d3-geo + world.json) cuya cámara se controla
+ * con el scroll (GSAP ScrollTrigger + scrub), arcos que se dibujan
+ * con stroke-dashoffset y un rail con contador de hitos.
+ *
+ * Modos:
+ *  - .atlas--animado  mapa + pin + scrub (>= 1200px)
+ *  - .atlas--estatico  mapa abierto sin animación (reduced-motion)
+ *  - .atlas--apilado  sin mapa: timeline en columna (< 1200px)
+ * ============================================================ */
+
+:host {
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+.atlas {
+  position: relative;
+  background:
+    radial-gradient(circle at 78% 24%, color-mix(in srgb, var(--color-primary-container) 12%, transparent), transparent 42rem),
+    radial-gradient(circle at 8% 88%, color-mix(in srgb, var(--color-accent-400) 10%, transparent), transparent 38rem),
+    var(--color-surface);
+}
+
+/* ---------- escenario ---------- */
+
+/* "Pista" de scroll: es el espacio que recorre el scroll mientras el
+   escenario queda pegado. El pin visual lo hace `position: sticky`
+   (determinista, no depende de la medición de ScrollTrigger). */
+.atlas__runway {
+  position: relative;
+}
+
+.atlas--animado .atlas__runway {
+  height: 250vh;
+}
+
+.atlas__pin {
+  position: sticky;
+  top: 92px;
+  display: grid;
+  height: calc(100svh - 92px);
+  place-items: center;
+  overflow: hidden;
+}
+
+.atlas__stage {
+  position: relative;
+  width: min(1180px, calc(100% - 3rem));
+  aspect-ratio: 1180 / 640;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-on-surface) 12%, transparent);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 78% 30%, color-mix(in srgb, var(--color-primary-container) 8%, transparent), transparent 42%),
+    radial-gradient(circle at 8% 90%, color-mix(in srgb, var(--color-accent-400) 9%, transparent), transparent 40%),
+    linear-gradient(180deg, var(--color-surface-container-lowest) 0%, var(--color-surface-container-low) 100%);
+  box-shadow: 0 40px 90px -50px color-mix(in srgb, #0b1f33 50%, transparent);
+}
+
+.atlas__stage::before {
+  position: absolute;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  background-image: radial-gradient(color-mix(in srgb, var(--color-primary) 14%, transparent) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.5;
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+.atlas__map {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  will-change: clip-path;
+}
+
+.atlas__map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- países ---------- */
+
+.atlas__countries {
+  fill: color-mix(in srgb, var(--color-primary) 11%, transparent);
+  stroke: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  stroke-width: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+
+/* ---------- arcos ---------- */
+
+.atlas__route {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  opacity: 0;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--color-primary) 35%, transparent));
+}
+
+/* ---------- nodos y referencias ---------- */
+
+.atlas__node {
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.atlas__node-halo {
+  fill: color-mix(in srgb, var(--color-primary) 16%, transparent);
+}
+
+.atlas__node-dot {
+  fill: var(--color-surface-container-lowest);
+  stroke: var(--color-primary);
+  stroke-width: 1.4;
+}
+
+.atlas__node-label {
+  fill: var(--color-primary);
+  font-family: var(--font-display), sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.atlas__node.is-on .atlas__node-label {
+  opacity: 0.92;
+}
+
+.atlas__ref {
+  fill: var(--color-primary);
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+
+.atlas__ref.is-on {
+  opacity: 1;
+}
+
+/* ---------- marca de inicio (2009) ---------- */
+
+.atlas__start-disc {
+  fill: color-mix(in srgb, var(--color-accent-400) 16%, transparent);
+}
+
+.atlas__start-ring {
+  fill: none;
+  stroke: var(--color-accent-400);
+  stroke-width: 1.8;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-accent-400) 60%, transparent));
+}
+
+.atlas__start-ring--2 {
+  stroke-width: 1.1;
+  stroke-dasharray: 3 7;
+  opacity: 0.6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: atlasStartSpin 14s linear infinite;
+}
+
+.atlas__start-pulse {
+  fill: none;
+  stroke: var(--color-accent-400);
+  stroke-width: 1.4;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: atlasStartPulse 2.6s ease-out infinite;
+}
+
+.atlas__start-cross {
+  stroke: var(--color-accent-400);
+  stroke-width: 1.4;
+  opacity: 0.75;
+}
+
+.atlas__start-year {
+  fill: var(--color-accent-400);
+  font-family: var(--font-display), sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+@keyframes atlasStartSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes atlasStartPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  75% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---------- velos y marco ---------- */
+
+.atlas__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-container-lowest) 0%,
+    color-mix(in srgb, var(--color-surface-container-lowest) 97%, transparent) 30%,
+    color-mix(in srgb, var(--color-surface-container-lowest) 86%, transparent) 44%,
+    color-mix(in srgb, var(--color-surface-container-lowest) 40%, transparent) 54%,
+    transparent 63%
+  );
+}
+
+.atlas__edge {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    180deg,
+    var(--color-surface-container-lowest) 0%,
+    transparent 22%,
+    transparent 78%,
+    var(--color-surface-container-lowest) 100%
+  );
+}
+
+.atlas__frame {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--color-on-surface) 16%, transparent);
+  border-radius: 14px;
+  box-shadow: 0 26px 60px -34px color-mix(in srgb, #0b1f33 55%, transparent);
+}
+
+.atlas__frame::after {
+  position: absolute;
+  left: 14px;
+  bottom: 10px;
+  content: '33.88° N · 10.10° E';
+  color: color-mix(in srgb, var(--color-on-surface) 55%, transparent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+.atlas__skeleton {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-container) 25%,
+    var(--color-surface-container-high) 50%,
+    var(--color-surface-container) 75%
+  );
+  background-size: 200% 100%;
+  animation: atlasShimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes atlasShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ---------- contenido sobre el mapa ---------- */
+
+/* El contenido se superpone exactamente al escenario: mismo ancho y
+   misma relación de aspecto, centrado en el pin. */
+.atlas__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: min(1180px, calc(100% - 3rem));
+  aspect-ratio: 1180 / 640;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.atlas__heading {
+  position: absolute;
+  top: 4.7%;
+  left: 3.6%;
+  width: 54%;
+}
+
+.atlas__eyebrow {
+  margin: 0 0 10px;
+  color: color-mix(in srgb, var(--color-primary) 78%, var(--color-accent-400));
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.atlas__title {
+  margin: 0;
+  color: var(--color-on-surface);
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.6rem, 3.4vw, 3.1rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+}
+
+.atlas__title span {
+  color: var(--color-primary);
+}
+
+.atlas__intro {
+  max-width: 540px;
+  margin: 14px 0 0;
+  color: color-mix(in srgb, var(--color-on-surface) 84%, var(--color-on-surface-variant));
+  font-size: clamp(0.82rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+/* ---------- paneles ---------- */
+
+.atlas__panels {
+  position: absolute;
+  top: 47%;
+  left: 3.6%;
+  width: 48%;
+  height: 40%;
+}
+
+.atlas__panel {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+  pointer-events: none;
+}
+
+.atlas__panel.is-active {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.atlas__panel-year {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-accent-400) 18%, transparent);
+  color: color-mix(in srgb, var(--color-accent-500) 88%, var(--color-on-surface));
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.atlas__panel h3 {
+  margin: 12px 0 8px;
+  color: var(--color-on-surface);
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(1.05rem, 1.9vw, 1.42rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.atlas__panel p {
+  max-width: 500px;
+  margin: 0;
+  color: color-mix(in srgb, var(--color-on-surface) 82%, var(--color-on-surface-variant));
+  font-size: clamp(0.8rem, 1.05vw, 0.92rem);
+  line-height: 1.6;
+}
+
+.atlas__refs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 16px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.atlas__refs li {
+  position: relative;
+  padding-left: 12px;
+  color: color-mix(in srgb, var(--color-on-surface) 80%, var(--color-on-surface-variant));
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.atlas__refs li::before {
+  position: absolute;
+  top: 0.5em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-accent-400);
+  content: '';
+}
+
+/* ---------- rail ---------- */
+
+.atlas__rail {
+  position: absolute;
+  right: 3.6%;
+  bottom: 3.4%;
+  left: 3.6%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.atlas__rail-bar {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-on-surface) 16%, transparent);
+}
+
+.atlas__rail-fill {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--color-brand-500), var(--color-accent-400));
+}
+
+.atlas__rail-stops {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.atlas__stop {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: color-mix(in srgb, var(--color-on-surface) 62%, transparent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  transform: translateY(-1px);
+}
+
+.atlas__stop i {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border: 1px solid color-mix(in srgb, var(--color-on-surface) 18%, transparent);
+  border-radius: 50%;
+  background: var(--color-surface-container-lowest);
+}
+
+.atlas__stop.is-on {
+  color: var(--color-primary);
+}
+
+.atlas__stop.is-on i {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 14%, transparent);
+}
+
+.atlas__counter {
+  color: color-mix(in srgb, var(--color-on-surface) 62%, transparent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  white-space: nowrap;
+}
+
+/* ============================================================
+ * Modo estático (reduced-motion): mapa abierto, paneles apilados
+ * ============================================================ */
+
+.atlas--estatico .atlas__runway {
+  height: auto;
+}
+
+.atlas--estatico .atlas__pin {
+  position: static;
+  display: block;
+  height: auto;
+  padding: 5rem 0 0;
+  overflow: visible;
+}
+
+.atlas--estatico .atlas__stage {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.atlas--estatico .atlas__content {
+  position: static;
+  width: min(1180px, calc(100% - 2rem));
+  aspect-ratio: auto;
+  margin-inline: auto;
+  padding-bottom: 5rem;
+  transform: none;
+}
+
+.atlas--estatico .atlas__heading,
+.atlas--estatico .atlas__panels {
+  position: static;
+  width: auto;
+  height: auto;
+}
+
+.atlas--estatico .atlas__heading {
+  margin-top: 3rem;
+}
+
+.atlas--estatico .atlas__panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+
+.atlas--estatico .atlas__panel {
+  position: static;
+  opacity: 1;
+  transform: none;
+}
+
+.atlas--estatico .atlas__rail {
+  display: none;
+}
+
+/* ============================================================
+ * Modo apilado (< 1200px): sin mapa, timeline en columna
+ * ============================================================ */
+
+.atlas--apilado .atlas__runway {
+  height: auto;
+}
+
+.atlas--apilado .atlas__pin {
+  position: static;
+  display: block;
+  height: auto;
+  padding: 5rem 0;
+  overflow: visible;
+}
+
+.atlas--apilado .atlas__stage {
+  display: none;
+}
+
+.atlas--apilado .atlas__content {
+  position: static;
+  width: min(1180px, calc(100% - 2rem));
+  aspect-ratio: auto;
+  margin-inline: auto;
+  transform: none;
+}
+
+.atlas--apilado .atlas__heading,
+.atlas--apilado .atlas__panels {
+  position: static;
+  width: auto;
+  height: auto;
+}
+
+.atlas--apilado .atlas__panels {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.atlas--apilado .atlas__panel {
+  position: static;
+  padding: 1.4rem 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 60%, transparent);
+  border-radius: 1.1rem;
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 78%, transparent);
+  opacity: 1;
+  transform: none;
+}
+
+.atlas--apilado .atlas__panel h3 {
+  margin-top: 10px;
+}
+
+.atlas--apilado .atlas__rail {
+  display: none;
+}
+
+/* ============================================================
+ * Reduced motion
+ * ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas__start-ring--2,
+  .atlas__start-pulse,
+  .atlas__skeleton {
+    animation: none;
+  }
+
+  .atlas__panel {
+    transition: none;
+  }
+}
