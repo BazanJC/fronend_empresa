@@ -165,65 +165,13 @@
     </div>
   </section>
 
-  <!-- LINEA DE TIEMPO / EXPANSION -->
-  <section class="section-band section-band--expansion" id="expansion">
-    <!-- Todo esto se pinea junto (título + ruta + track) — así, mientras
-         el scroll recorre la historia, se sigue viendo el resto de la
-         sección en vez de que ya haya quedado scrolleada fuera de vista.
-         Ver iniciarLineaDeTiempo() en el .ts. En mobile/reduced-motion se
-         apila verticalmente sin pin (ver .scss, clase .no-pin). -->
-    <div class="expansion-pin">
-      <div class="expansion-route" aria-hidden="true">
-        <svg viewBox="0 0 420 260" class="expansion-route__svg">
-          <defs>
-            <mask id="expansionRouteMask">
-              <rect class="expansion-route__mask-rect" x="0" y="0" width="0" height="260" fill="#ffffff" />
-            </mask>
-          </defs>
-          <g mask="url(#expansionRouteMask)">
-            <path class="expansion-route__path" d="M20 220 C 120 40, 260 240, 400 30" fill="none" stroke-width="2.5" stroke-linecap="round" />
-          </g>
-          <circle class="expansion-route__origin" cx="20" cy="220" r="5" />
-          <circle class="expansion-route__pin" cx="400" cy="30" r="7" />
-        </svg>
-      </div>
+  <!-- ATLAS DE EXPANSIÓN: mapa (d3-geo + world.json) con cámara guiada
+       por el scroll, arcos que se dibujan y rail de hitos. Por debajo de
+       1200px el propio componente cae al timeline apilado, sin mapa. -->
+  <app-atlas-expansion />
 
-      <div class="section-shell expansion-pin__heading">
-        <div class="section-heading reveal">
-          <p class="section-eyebrow">{{ 'expansion.eyebrow' | translate }}</p>
-          <h2>
-            {{ 'expansion.title_pre' | translate }}
-            <span>Gabès</span>
-            {{ 'expansion.title_post' | translate }}
-          </h2>
-          <p>{{ 'expansion.intro' | translate }}</p>
-        </div>
-      </div>
-
-      <div class="timeline-track">
-        @for (hito of expansionHitos; track hito.id) {
-          <article class="timeline-panel" [class.timeline-panel--references]="hito.referenciasKeys">
-            <span class="timeline-panel__year">{{ (hito.anioKey ?? hito.anio) | translate }}</span>
-            <h4>{{ hito.tituloKey | translate }}</h4>
-            @if (hito.referenciasKeys) {
-              <ul class="timeline-panel__references">
-                @for (refKey of hito.referenciasKeys; track refKey) {
-                  <li>{{ refKey | translate }}</li>
-                }
-              </ul>
-            } @else if (hito.descKey) {
-              <p>{{ hito.descKey | translate }}</p>
-            }
-          </article>
-        }
-      </div>
-      <div class="timeline-dots" aria-hidden="true">
-        @for (hito of expansionHitos; track hito.id) {
-          <span class="timeline-dots__dot"></span>
-        }
-      </div>
-    </div>
-
+  <!-- CTA DE EXPANSIÓN -->
+  <section class="section-band section-band--expansion">
     <div class="section-shell">
       <div class="cta-strip reveal">
         <div>

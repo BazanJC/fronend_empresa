@@ -16,6 +16,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MapaMundialComponent } from '../../shared/mapa-mundial/mapa-mundial.component';
+import { AtlasExpansionComponent } from './atlas-expansion/atlas-expansion.component';
 import { CountUpDirective } from '../../shared/count_up.directive';
 import { ContactService } from '../../core/contact.service';
 import { CLIENT_HERO_IMAGES } from '../../core/site-media';
@@ -50,7 +51,7 @@ interface OficinaContacto {
 
 @Component({
   selector: 'app-landing',
-  imports: [FormsModule, TranslatePipe, MapaMundialComponent, CountUpDirective],
+  imports: [FormsModule, TranslatePipe, MapaMundialComponent, AtlasExpansionComponent, CountUpDirective],
   templateUrl: './landing.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './landing.component.scss',
@@ -342,29 +343,6 @@ export class LandingComponent implements OnDestroy {
     { icon: 'camera', tituloKey: 'nuclear.item2_title', descKey: 'nuclear.item2_desc' },
     { icon: 'radar', tituloKey: 'nuclear.item3_title', descKey: 'nuclear.item3_desc' },
     { icon: 'doc', tituloKey: 'nuclear.item4_title', descKey: 'nuclear.item4_desc' },
-  ];
-
-  private readonly expansionReferenciasTunisia = [
-    'expansion.ref_gct',
-    'expansion.ref_scg',
-    'expansion.ref_steg',
-    'expansion.ref_prisons',
-    'expansion.ref_ports',
-    'expansion.ref_world_bank',
-    'expansion.ref_oim',
-  ] as const;
-
-  expansionHitos = [
-    { id: '2009', anio: '2009', tituloKey: 'expansion.item1_title', descKey: 'expansion.item1_desc' },
-    {
-      id: 'refs-tunisia',
-      anioKey: 'expansion.references_year',
-      tituloKey: 'expansion.references_title',
-      referenciasKeys: this.expansionReferenciasTunisia,
-    },
-    { id: '2017-2019', anio: '2017-2019', tituloKey: 'expansion.item2_title', descKey: 'expansion.item2_desc' },
-    { id: '2021-2024', anio: '2021-2024', tituloKey: 'expansion.item3_title', descKey: 'expansion.item3_desc' },
-    { id: '2025-2026', anio: '2025-2026', tituloKey: 'expansion.item4_title', descKey: 'expansion.item4_desc' },
   ];
 
   private ctx?: gsap.Context;
@@ -659,87 +637,9 @@ export class LandingComponent implements OnDestroy {
         clearProps: 'opacity,transform',
       });
 
-      // 6. Línea de Tiempo (Hitos de Expansión): scroll pineado horizontal.
-      // La sección se queda fija en pantalla (pin: true) y el scroll vertical
-      // normal empuja .timeline-track hacia la izquierda — el usuario sigue
-      // haciendo scroll hacia abajo como siempre, pero visualmente el
-      // contenido avanza de lado a lado, un panel/hito a la vez.
-      // Se conserva el recorrido horizontal en escritorio. El layout reduce
-      // su altura y espaciado en pantallas bajas para seguir bajo el header.
-      const timelinePin = this.el.nativeElement.querySelector('.expansion-pin') as HTMLElement | null;
-      const timelineTrack = this.el.nativeElement.querySelector('.timeline-track') as HTMLElement | null;
-      const timelinePanels = gsap.utils.toArray<HTMLElement>('.timeline-panel');
-      const timelineDots = gsap.utils.toArray<HTMLElement>('.timeline-dots__dot');
-      const alturaHeaderFijo = (): number =>
-        parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 92;
-
-      if (timelinePin && timelineTrack && timelinePanels.length > 1 && !this.prefersReducedMotion && window.matchMedia('(min-width: 901px)').matches) {
-        if (timelineDots[0]) timelineDots[0].classList.add('is-active');
-
-        gsap.to(timelineTrack, {
-          x: () => -(timelineTrack.scrollWidth - timelinePin.offsetWidth),
-          ease: 'none',
-          scrollTrigger: {
-            trigger: timelinePin,
-            start: () => 'top top+=' + alturaHeaderFijo(),
-            end: () => '+=' + (timelineTrack.scrollWidth - timelinePin.offsetWidth),
-            scrub: 1,
-            pin: true,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              const indiceActivo = Math.round(self.progress * (timelinePanels.length - 1));
-              timelineDots.forEach((dot, i) => dot.classList.toggle('is-active', i === indiceActivo));
-            },
-          },
-        });
-      } else {
-        // Fallback: mobile o reduced-motion — sin pin ni movimiento
-        // horizontal, todo apilado y visible con un fade simple de entrada.
-        timelinePin?.classList.add('no-pin');
-        gsap.from('#expansion .timeline-panel', {
-          scrollTrigger: {
-            trigger: '#expansion .timeline-track',
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
-          y: 30,
-          opacity: 0,
-          stagger: 0.16,
-          duration: 0.8,
-          ease: 'power2.out',
-          clearProps: 'opacity,transform',
-        });
-      }
-
-      // 6b. Gráfico de ruta "De Gabès al Mundo": se revela progresivamente
-      // (máscara SVG que crece en ancho) mientras se hace scroll por la
-      // sección, y tiene un leve parallax propio. Respeta reduced-motion
-      // como el resto de los parallax del sitio.
-      const rutaMask = this.el.nativeElement.querySelector('.expansion-route__mask-rect') as SVGRectElement | null;
-      if (rutaMask && !this.prefersReducedMotion) {
-        gsap.to(rutaMask, {
-          attr: { width: 420 },
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '#expansion',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.6,
-          },
-        });
-
-        gsap.to('.expansion-route', {
-          y: -30,
-          x: 15,
-          scrollTrigger: {
-            trigger: '#expansion',
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1,
-          },
-        });
-      }
+      // 6. La línea de tiempo de expansión vive ahora en <app-atlas-expansion>:
+      // mapa generado con d3-geo + world.json, cámara con ScrollTrigger y
+      // pin propio. Aquí ya no hay nada que pinear.
 
       // 7. Tarjetas de Sectores. Importante: se anima .sector-card (la
       // tarjeta completa), nunca .sector-card__inner — ese elemento es el
