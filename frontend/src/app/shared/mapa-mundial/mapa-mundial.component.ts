@@ -63,7 +63,7 @@ const PAISES: PaisPresencia[] = [
     lat: -16.5,
     lng: -68.15,
     anioIngreso: 2025,
-    imagenUrl: 'https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    imagenUrl: '/assets/images/extras/tecnico.png',
     topoId: '068',
     proyectos: ['proyecto1'],
   },

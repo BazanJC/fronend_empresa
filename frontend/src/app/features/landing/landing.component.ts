@@ -134,7 +134,7 @@ export class LandingComponent implements OnDestroy {
     null,
     null,
     null,
-    'https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 8. Radioterapia (referencia)
+    '/assets/images/extras/tecnico.png', // 8. Bolivia (ABEN): técnico trabajando en la instalación. La foto propia es la principal (ver proyectosImagenes).
     null,
   ];
   proyectoActivo = signal(1);

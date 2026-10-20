@@ -366,11 +366,11 @@
         <article class="sector-card reveal reveal-delay-100" tabindex="0">
           <div class="sector-card__inner">
             <div class="sector-card__front">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <img (error)="alFallarImagen($event)" src="/assets/images/extras/reactor.jpg" data-fallback="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
               <h3>{{ 'sectores.card4_title' | translate }}</h3>
             </div>
             <div class="sector-card__back">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <img (error)="alFallarImagen($event)" src="/assets/images/extras/reactor.jpg" data-fallback="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
               <div class="sector-card__back-glass"></div>
               <div class="sector-card__back-content">
                 <div class="sector-card__back-icon" aria-hidden="true">
@@ -408,11 +408,11 @@
   <!-- SEGURIDAD EN INSTALACIONES NUCLEARES -->
   <section class="nuclear-band" id="nuclear">
     <div class="nuclear-band__media" aria-hidden="true">
-      <!-- Reactor de investigación TRIGA (resplandor azul por radiación Cherenkov). Foto: Christopher
-           Farwell, USGS, 2017. Dominio público: https://www.usgs.gov/media/images/a-blue-glow-emitted-radiation-during-operation-usgs-triga-reactor-denver-co
-           Conviene descargarla a /assets/images/ y servirla desde el propio sitio. -->
+      <!-- Reactor de investigación: foto propia del cliente en /assets/images/extras/.
+           Se sirve desde el propio sitio (antes se usaba una imagen remota del
+           TRIGA de USGS, con una de central térmica de Pexels como respaldo). -->
       <img
-        src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/media/images/Blue_Glow_2017-10-27_Christopher_Farwell.JPG?itok=l3RhysZb"
+        src="/assets/images/extras/reactor.jpg"
         data-fallback="https://images.pexels.com/photos/18334961/pexels-photo-18334961.jpeg?auto=compress&cs=tinysrgb&w=1600&h=1100&fit=crop"
         (error)="alFallarImagen($event)"
         alt=""
