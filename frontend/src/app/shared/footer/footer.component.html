@@ -22,6 +22,7 @@
           <li><a href="#servicios">{{ 'nav.servicios' | translate }}</a></li>
           <li><a href="#sectores">{{ 'nav.sectores' | translate }}</a></li>
           <li><a href="#proyectos">{{ 'nav.proyectos' | translate }}</a></li>
+          <li><a href="#contacto">{{ 'footer.contacto' | translate }}</a></li>
         </ul>
       </nav>
 
@@ -31,10 +32,13 @@
           <li><a href="#servicios">{{ 'servicios.card1_title' | translate }}</a></li>
           <li><a href="#servicios">{{ 'servicios.card2_title' | translate }}</a></li>
           <li><a href="#servicios">{{ 'servicios.card3_title' | translate }}</a></li>
-          <li><a href="#nuclear">{{ 'nuclear.title' | translate }}</a></li>
+          <li><a href="#nuclear">{{ 'nav.nuclear' | translate }}</a></li>
         </ul>
       </section>
 
+      <!-- COLUMNA DE CONTACTO: desactivada por ahora (el contacto vive en la sección #contacto
+           de la página). Tenía id="contacto", que duplicaba el id de esa sección y hacía que los
+           enlaces #contacto dependieran del orden en el DOM; si se reactiva, quítale ese id.
       <section class="footer-column footer-contact" id="contacto">
         <h2 class="footer-heading">{{ 'footer.contacto' | translate }}</h2>
         <a class="footer-contact-link" [href]="'mailto:' + emailContacto">
@@ -59,6 +63,7 @@
           </a>
         </div>
       </section>
+      -->
     </div>
 
     <div class="footer-bottom">

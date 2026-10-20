@@ -68,6 +68,15 @@
     "card3_desc": "يقوم فريقنا الفني بتركيب كل نظام وتهيئته مع مراعاة متطلبات المشروع."
   },
   "expansion": {
+    "references_year": "تونس",
+    "references_title": "مراجع NOVAXIS S.A.R.L. في تونس",
+    "ref_gct": "Groupe Chimique Tunisien (GCT)",
+    "ref_scg": "Société des Ciments de Gabès",
+    "ref_steg": "Société Tunisienne de l'Électricité et du Gaz (STEG)",
+    "ref_prisons": "المؤسسات العقابية التونسية (السجون)",
+    "ref_ports": "الموانئ التونسية",
+    "ref_world_bank": "البنك الدولي – تونس",
+    "ref_oim": "المنظمة الدولية للهجرة (OIM) – تونس",
     "eyebrow": "مسيرتنا",
     "title_pre": "من",
     "title_post": "إلى العالم",
@@ -146,12 +155,22 @@
     "badge3": "المساعدة في إجراءات ISO"
   },
   "generador": {
-    "eyebrow": "NOVAXIS POWER · NXP-60KVA",
-    "title": "طاقة صناعية مصممة للاستجابة",
-    "desc": "استكشف مواصفات مولد الديزل NOVAXIS POWER مباشرة على المعدة.",
+    "eyebrow": "خدمة جديدة · NOVAXIS POWER NXP-60KVA",
+    "title": "بيع وتركيب المولدات الصناعية",
+    "desc": "نضيف مولد الديزل NOVAXIS POWER بقدرة 60 ك.ف.أ إلى حلول الطاقة الاحتياطية، مع التوريد والتكامل بما يناسب مشروعكم.",
     "instruction": "مرر المؤشر أو اختر نقطة لعرض كل مواصفة.",
+    "new_service": "خدمة جديدة",
+    "offer_label": "نطاق خدمات NOVAXIS POWER",
+    "offer_sales": "البيع والتوريد",
+    "offer_installation": "التركيب الاحترافي",
+    "offer_commissioning": "التشغيل والتسليم",
+    "quote": "طلب عرض سعر",
     "image_alt": "مجموعة مولد ديزل صناعية NOVAXIS POWER بقدرة 60 ك.ف.أ",
     "spec_sheet": "البيانات الفنية",
+    "all_specs": "مواصفات المولد",
+    "show_specs": "عرض جميع المواصفات",
+    "pin_specs": "تثبيت المواصفات مفتوحة",
+    "hide_specs": "إخفاء البيانات الفنية",
     "rated": "القدرة الاسمية",
     "standby": "الاحتياطية",
     "phase": "ثلاثي الطور",
@@ -374,6 +393,10 @@
         "nombre": "أوكرانيا",
         "descripcion": "المشاركة في مشاريع لحماية البنى التحتية الاستراتيجية.",
         "proyecto1": "بنى تحتية استراتيجية — الأمن الإلكتروني"
+      },
+      "nueva_york": {
+        "nombre": "نيويورك، الولايات المتحدة (مكتب)",
+        "descripcion": "مكتب جديد في نيويورك للحضور التجاري وتنسيق المشاريع في أمريكا الشمالية."
       }
     }
   },

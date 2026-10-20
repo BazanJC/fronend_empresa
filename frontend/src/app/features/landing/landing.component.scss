@@ -206,7 +206,7 @@ $accent-blue-strong: #38bdf8;
 .nuclear-band {
   position: relative;
   overflow: hidden;
-  padding: 7rem 0;
+  padding: clamp(6rem, 10vw, 9rem) 0;
 }
 
 .nuclear-band__media {
@@ -226,7 +226,12 @@ $accent-blue-strong: #38bdf8;
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(4, 10, 18, 0.86) 0%, rgba(4, 10, 18, 0.5) 45%, rgba(4, 10, 18, 0.9) 100%);
+  // Viñeta radial + degradado vertical: la foto se apaga hacia los bordes y
+  // queda apenas más presente detrás del título, con contraste suficiente
+  // para el texto blanco en cualquier tamaño de pantalla.
+  background:
+    radial-gradient(115% 95% at 50% 42%, rgba(4, 10, 18, 0.34) 0%, rgba(4, 10, 18, 0.86) 78%),
+    linear-gradient(180deg, rgba(4, 10, 18, 0.78) 0%, rgba(4, 10, 18, 0.42) 46%, rgba(4, 10, 18, 0.88) 100%);
 }
 
 // Línea de escaneo tipo cámara de seguridad, recorriendo la imagen de
@@ -303,69 +308,179 @@ $accent-blue-strong: #38bdf8;
   color: var(--color-accent-300);
 }
 
-.nuclear-band .section-heading h2,
-.nuclear-band .section-heading p {
+.nuclear-band .section-heading h2 {
   color: #ffffff;
+}
+
+// Encabezado: entradilla más angosta y cerrada con un filete fino de
+// acento, para que el texto no compita con el trío de tarjetas.
+// El eyebrow también es un <p> dentro de .section-heading: se excluye para
+// que conserve su color de acento (si no, estas reglas lo pisan).
+.nuclear-band .section-heading {
+  max-width: 46rem;
+  margin-bottom: 0;
+}
+
+.nuclear-band .section-heading p:not(.section-eyebrow) {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.nuclear-band .section-heading::after {
+  content: '';
+  display: block;
+  width: 5rem;
+  height: 1px;
+  margin: clamp(1.75rem, 3vw, 2.25rem) auto 0;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent-300) 90%, transparent), transparent);
 }
 
 .nuclear-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+  max-width: 66rem;
+  margin: clamp(2.25rem, 4.5vw, 3.25rem) auto 0;
+  align-items: stretch;
 }
 
 .nuclear-item {
   position: relative;
-  padding: 1.75rem 1.5rem;
-  border-radius: 1.15rem;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(10px);
-  transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: clamp(2rem, 3.2vw, 2.6rem) clamp(1.35rem, 2.4vw, 2rem) clamp(1.85rem, 2.8vw, 2.25rem);
+  border-radius: 1rem;
+  overflow: hidden;
+  // Vidrio ahumado (mismo lenguaje que la insignia del hero): una base
+  // oscura translúcida garantiza contraste sobre el brillo de la foto, y el
+  // resplandor superior le da el volumen de una superficie iluminada.
+  background:
+    radial-gradient(120% 72% at 50% 0%, rgba(255, 255, 255, 0.1), transparent 62%),
+    linear-gradient(155deg, rgba(13, 23, 37, 0.74) 0%, rgba(7, 13, 22, 0.62) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  // Bisel de acrílico: el borde superior e izquierdo reciben la luz, igual
+  // que en la insignia del hero.
+  border-top-color: rgba(255, 255, 255, 0.26);
+  border-left-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 18px 44px -20px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  transition:
+    transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 260ms ease,
+    box-shadow 260ms ease,
+    background 260ms ease;
+}
+
+// Filo de luz superior: invisible en reposo; en hover marca la tarjeta como
+// "enfocada" sin agregar bordes ni mover el layout.
+.nuclear-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 62%;
+  height: 1px;
+  transform: translateX(-50%) scaleX(0.25);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  opacity: 0;
+  transition: opacity 260ms ease, transform 260ms ease;
+  pointer-events: none;
 }
 
 .nuclear-item:hover {
   transform: translateY(-6px);
-  border-color: rgba(255, 255, 255, 0.32);
-  background: rgba(255, 255, 255, 0.1);
+  border-color: color-mix(in srgb, var(--color-accent-300) 45%, transparent);
+  background:
+    radial-gradient(120% 72% at 50% 0%, rgba(255, 255, 255, 0.13), transparent 62%),
+    linear-gradient(155deg, rgba(16, 28, 44, 0.8) 0%, rgba(9, 16, 26, 0.68) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 30px 64px -26px rgba(0, 0, 0, 0.75),
+    0 0 34px -12px color-mix(in srgb, var(--color-accent-300) 40%, transparent);
+}
+
+.nuclear-item:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scaleX(1);
+}
+
+// Numeración 01/02/03: ordena la lectura en tres pasos sin sumar texto
+// nuevo que haya que traducir.
+.nuclear-item__index {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 1.1rem;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  color: rgba(255, 255, 255, 0.52);
 }
 
 // Marcas de esquina tipo mira/visor de cámara — apenas visibles en reposo,
 // se iluminan en hover, como si la tarjeta quedara "enfocada".
 .nuclear-item__corner {
   position: absolute;
-  width: 0.85rem;
-  height: 0.85rem;
-  border: 2px solid rgba(255, 255, 255, 0.22);
-  opacity: 0.6;
-  transition: border-color 260ms ease, opacity 260ms ease;
+  z-index: 1;
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  opacity: 0.55;
+  transition: border-color 280ms ease, opacity 280ms ease, filter 280ms ease;
 }
 
 .nuclear-item:hover .nuclear-item__corner {
-  border-color: var(--color-accent-300);
+  border-color: color-mix(in srgb, var(--color-accent-300) 78%, transparent);
   opacity: 1;
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-accent-300) 55%, transparent));
 }
 
-.nuclear-item__corner--tl { top: 0.5rem; left: 0.5rem; border-right: none; border-bottom: none; }
-.nuclear-item__corner--tr { top: 0.5rem; right: 0.5rem; border-left: none; border-bottom: none; }
-.nuclear-item__corner--bl { bottom: 0.5rem; left: 0.5rem; border-right: none; border-top: none; }
-.nuclear-item__corner--br { bottom: 0.5rem; right: 0.5rem; border-left: none; border-top: none; }
+.nuclear-item__corner--tl { top: 0.7rem; left: 0.7rem; border-right: none; border-bottom: none; border-top-left-radius: 0.4rem; }
+.nuclear-item__corner--tr { top: 0.7rem; right: 0.7rem; border-left: none; border-bottom: none; border-top-right-radius: 0.4rem; }
+.nuclear-item__corner--bl { bottom: 0.7rem; left: 0.7rem; border-right: none; border-top: none; border-bottom-left-radius: 0.4rem; }
+.nuclear-item__corner--br { bottom: 0.7rem; right: 0.7rem; border-left: none; border-top: none; border-bottom-right-radius: 0.4rem; }
 
 .nuclear-item__icon {
+  position: relative;
+  z-index: 2;
   display: grid;
   place-items: center;
-  width: 3rem;
-  height: 3rem;
-  margin-bottom: 1rem;
-  border-radius: 0.85rem;
-  background: color-mix(in srgb, var(--color-accent-400) 30%, transparent);
+  width: 3.4rem;
+  height: 3.4rem;
+  margin: 0 auto 1.4rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 30%,
+    color-mix(in srgb, var(--color-accent-400) 32%, transparent),
+    color-mix(in srgb, var(--color-accent-400) 6%, transparent) 72%
+  );
+  border: 1px solid color-mix(in srgb, var(--color-accent-300) 32%, transparent);
+  box-shadow:
+    0 0 0 5px rgba(255, 255, 255, 0.025),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   color: var(--color-accent-300);
+  transition: border-color 260ms ease, box-shadow 260ms ease;
+}
+
+.nuclear-item:hover .nuclear-item__icon {
+  border-color: color-mix(in srgb, var(--color-accent-300) 62%, transparent);
+  box-shadow:
+    0 0 0 5px color-mix(in srgb, var(--color-accent-300) 9%, transparent),
+    0 0 22px -4px color-mix(in srgb, var(--color-accent-300) 45%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .nuclear-item__icon svg {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.45rem;
+  height: 1.45rem;
   transition: transform 260ms ease;
 }
 
@@ -399,20 +514,36 @@ $accent-blue-strong: #38bdf8;
 }
 
 .nuclear-item h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.05rem;
+  position: relative;
+  z-index: 2;
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.06rem;
+  font-weight: 700;
+  letter-spacing: 0.005em;
   color: #ffffff;
 }
 
 .nuclear-item p {
+  position: relative;
+  z-index: 2;
   margin: 0;
+  max-width: 30ch;
   font-size: 0.9rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.78);
 }
 
+// Cierre de la sección: el CTA se separa con un filete fino, centrado y a
+// todo el ancho del contenedor, para que la sección termine con aire.
 .nuclear-cta {
-  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   text-align: center;
 }
 
@@ -453,6 +584,31 @@ $accent-blue-strong: #38bdf8;
   }
 }
 
+// Debajo de 1000px las 3 columnas quedan demasiado apretadas para un trío
+// que se lee de un vistazo: pasa a una sola columna centrada y más ancha,
+// conservando el contenido al centro.
+@media (max-width: 1000px) {
+  .nuclear-grid {
+    grid-template-columns: minmax(0, 34rem);
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .nuclear-item {
+    padding: 1.9rem 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .nuclear-band .section-heading::after {
+    width: 3.5rem;
+  }
+
+  .nuclear-item p {
+    max-width: none;
+  }
+}
+
 // ============================================================
 // HERO REDISEÑADO
 // ============================================================
@@ -475,22 +631,72 @@ $accent-blue-strong: #38bdf8;
   max-width: 700px;
 }
 
+.hero-brand-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.95rem;
+  margin-bottom: 1.15rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary-container) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 28%, transparent);
+  box-shadow: 0 2px 10px -2px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+.hero-eyebrow-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.7; }
+}
+
+.hero-eyebrow-tagline {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
 .hero-title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 4.3vw, 4rem);
-  font-weight: 800;
-  letter-spacing: 0;
-  line-height: 1;
+  line-height: 1.15;
+}
+
+.hero-title__brand {
+  display: block;
+  font-size: clamp(2.35rem, 4.2vw, 3.85rem);
+  font-weight: 900;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
   background: var(--gradient-brand);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
+  margin-bottom: 0.65rem;
+  text-transform: uppercase;
+}
+
+.hero-title__lead {
+  display: block;
+  font-size: clamp(1.25rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.28;
+  color: var(--color-on-surface);
 }
 
 .hero-title__accent {
-  display: block;
+  color: var(--color-primary);
 }
 
 .hero-subtitle {
@@ -516,35 +722,90 @@ $accent-blue-strong: #38bdf8;
   place-items: center;
 }
 
-// Insignia de marca superpuesta a la foto, con el mismo blanco limpio del
-// navbar para conservar contraste sobre cualquier imagen del carrusel.
+// Insignia de marca superpuesta a la foto, acrílico ahumado elegante
 .hero-brand-badge {
   position: absolute;
-  top: 1.15rem;
-  right: 1.15rem;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 5;
-  display: grid;
-  place-items: center;
-  width: clamp(5.75rem, 8vw, 7rem);
-  aspect-ratio: 1;
-  padding: 0.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(11.5rem, 17vw, 15rem);
+  padding: 0.75rem 1.25rem;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, rgba(255, 255, 255, 0.75));
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.97);
+  border-radius: 1.125rem;
+
+  // Acrílico ahumado translúcido: deja ver la imagen de fondo con blur elegante
+  background: linear-gradient(
+    145deg,
+    rgba(14, 23, 38, 0.58) 0%,
+    rgba(8, 14, 26, 0.46) 100%
+  );
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+
+  // Bordes finos biselados de acrílico ahumado
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-top-color: rgba(255, 255, 255, 0.35);
+  border-left-color: rgba(255, 255, 255, 0.26);
+
   box-shadow:
-    0 12px 32px rgba(3, 16, 31, 0.24),
-    0 0 0 5px rgba(255, 255, 255, 0.16),
-    0 0 0 1px rgba(255, 255, 255, 0.45);
-  pointer-events: none;
+    0 16px 36px -6px rgba(0, 0, 0, 0.45),
+    0 4px 14px -2px rgba(0, 115, 255, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease, background-color 0.35s ease;
   will-change: transform, opacity;
+
+  // Reflejo diagonal sutil en la superficie del acrílico
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.04) 40%,
+      transparent 70%
+    );
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  // Halo interno tenue para dar vida al logotipo
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1), transparent 70%);
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
+    background: linear-gradient(
+      145deg,
+      rgba(18, 30, 50, 0.68) 0%,
+      rgba(10, 18, 34, 0.54) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+      0 22px 46px -6px rgba(0, 0, 0, 0.55),
+      0 8px 22px -2px rgba(0, 115, 255, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
 }
 
 .hero-brand-badge img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 5.5rem;
   object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.6));
 }
 
 // Carrusel con glow sutil
@@ -1490,6 +1751,44 @@ $accent-blue-strong: #38bdf8;
   line-height: 1.6;
 }
 
+.timeline-panel--references h4 {
+  max-width: 38rem;
+}
+
+.timeline-panel__references {
+  display: grid;
+  gap: 0.55rem 1.25rem;
+  max-width: 38rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .timeline-panel__references {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.timeline-panel__references li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: var(--color-on-surface-variant);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.timeline-panel__references li::before {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: var(--color-accent-400);
+  content: '';
+}
+
 // Indicador de progreso (qué panel está activo), mismo lenguaje visual que
 // los dots del carrusel del hero.
 .timeline-dots {
@@ -1653,285 +1952,822 @@ $accent-blue-strong: #38bdf8;
   justify-content: center;
 }
 
-// Generador NOVAXIS POWER — producto central con puntos interactivos.
+// Generador NOVAXIS POWER — imagen limpia del equipo y ficha técnica siempre
+// visible. La ficha se arma como un panel de datos (celdas separadas por
+// líneas finas) en vez de tarjetas sueltas, y usa solo tokens del tema, así
+// que funciona igual en claro y oscuro. Los logos de marca van sobre fichas
+// claras fijas porque los PNG están pensados para fondo claro.
+// ============================================================
+// GENERADOR NOVAXIS POWER — NUEVO SERVICIO
+// Banda de metal cepillado opaco (gunmetal) con la luz del logo: oro
+// (#e0a800) y plata (#d6dade). Es la sección "de producto" del sitio,
+// pensada para que el servicio nuevo se note al pasar.
+// ============================================================
 .generator-section {
-  position: relative;
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 50% 72%, color-mix(in srgb, var(--color-primary-container) 13%, transparent), transparent 46rem),
-    linear-gradient(180deg, color-mix(in srgb, var(--color-surface-container-low) 72%, var(--color-surface)), var(--color-surface));
-}
+  --gen-gold: #e0a800;
+  --gen-gold-bright: #ffcf3f;
+  --gen-gold-soft: #f6d98a;
+  --gen-silver: #d6dade;
 
-.generator-section::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  height: 2px;
-  background: var(--gradient-brand);
-}
-
-.generator-section .section-heading {
-  max-width: 54rem;
-  margin-inline: auto;
-}
-
-.generator-instruction {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-top: 1rem;
-  color: var(--color-on-surface-variant);
-  font-size: 0.84rem;
-}
-
-.generator-instruction::before {
-  content: '';
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  background: var(--color-primary);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 15%, transparent);
-}
-
-.generator-stage {
   position: relative;
   isolation: isolate;
-  width: min(100%, 1120px);
-  margin: 2.75rem auto 0;
+  overflow: hidden;
+  padding: clamp(5.5rem, 9vw, 8rem) 0;
+  background: #15181d;
+  color: var(--gen-silver);
 }
 
-.generator-visual {
+.generator-section > .section-shell {
   position: relative;
-  z-index: 0;
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 1396 / 900;
-  object-fit: cover;
-  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 70%, transparent);
-  border-radius: 1.2rem;
-  background: #111820;
-  box-shadow: 0 30px 90px color-mix(in srgb, #000 34%, transparent), 0 0 0 7px color-mix(in srgb, var(--color-on-surface) 3%, transparent);
+  z-index: 1;
 }
 
-.generator-stage__scrim {
+// Filo dorado arriba y abajo: separa la banda del resto sin cortar en seco.
+.generator-section::before,
+.generator-section::after {
+  content: '';
   position: absolute;
-  z-index: 1;
-  inset: 0;
-  border-radius: 1.2rem;
-  background: linear-gradient(90deg, color-mix(in srgb, #071019 18%, transparent), transparent 24% 76%, color-mix(in srgb, #071019 20%, transparent));
+  z-index: 2;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--gen-gold) 80%, transparent) 22%,
+    color-mix(in srgb, var(--gen-gold-bright) 90%, transparent) 50%,
+    color-mix(in srgb, var(--gen-gold) 80%, transparent) 78%,
+    transparent
+  );
+  opacity: 0.7;
   pointer-events: none;
 }
 
-.generator-hotspot {
+.generator-section::before {
+  top: 0;
+}
+
+.generator-section::after {
+  bottom: 0;
+}
+
+// ------------------------------------------------------------
+// TEXTURA — metal cepillado opaco
+// Capas: cepillado (líneas finas + grano), reflejo que acompaña el scroll y
+// dos halos desenfocados (oro y plata). Todo se mueve con transform.
+// ------------------------------------------------------------
+.generator-metal {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(70% 50% at 50% 30%, rgba(255, 255, 255, 0.05), transparent 72%),
+    radial-gradient(120% 95% at 50% 50%, transparent 42%, rgba(3, 6, 9, 0.62) 100%),
+    linear-gradient(180deg, #1e2227 0%, #161a1f 48%, #101318 100%);
+}
+
+// Franja diagonal dorada: cita la banda amarilla de la máquina y le da al
+// fondo el gesto "de producto" sin competir con el texto.
+.generator-metal::before {
+  content: '';
+  position: absolute;
+  inset: -12% -6%;
+  background: linear-gradient(
+    102deg,
+    transparent 50%,
+    rgba(224, 168, 0, 0.05) 60%,
+    rgba(255, 207, 63, 0.14) 67%,
+    rgba(224, 168, 0, 0.06) 72%,
+    transparent 81%
+  );
+  pointer-events: none;
+}
+
+// Resplandor cálido bajo el equipo: lo asienta y evita que la foto "flote".
+.generator-metal::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -10rem;
+  width: 62rem;
+  height: 24rem;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(255, 176, 32, 0.16), transparent);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.generator-metal__brushed {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.07) 0 1px,
+      transparent 1px 2px,
+      rgba(0, 0, 0, 0.09) 2px 3px,
+      transparent 3px 5px,
+      rgba(255, 255, 255, 0.035) 5px 6px,
+      transparent 6px 11px
+    ),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 2px, transparent 2px 6px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='0.55'/%3E%3C/svg%3E");
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+}
+
+.generator-metal__sheen {
+  position: absolute;
+  inset: -25% -20%;
+  background: linear-gradient(
+    100deg,
+    transparent 44%,
+    rgba(255, 255, 255, 0.07) 49%,
+    rgba(255, 215, 94, 0.1) 51%,
+    transparent 57%
+  );
+  transform: translate3d(-6%, 0, 0);
+  will-change: transform;
+}
+
+.generator-metal__glow {
+  position: absolute;
+  width: 34rem;
+  height: 34rem;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.16;
+}
+
+.generator-metal__glow--gold {
+  top: -18rem;
+  left: -14rem;
+  background: rgba(255, 176, 32, 0.55);
+}
+
+.generator-metal__glow--silver {
+  right: -14rem;
+  bottom: -18rem;
+  background: color-mix(in srgb, var(--gen-silver) 30%, transparent);
+  opacity: 0.08;
+}
+
+// ------------------------------------------------------------
+// ENCABEZADO
+// ------------------------------------------------------------
+.generator-section .section-heading {
+  max-width: 60rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  margin-inline: auto;
+}
+
+.generator-brandlockup {
+  display: grid;
+  justify-items: center;
+  gap: 0.85rem;
+  margin-bottom: clamp(1.4rem, 2.6vw, 1.9rem);
+}
+
+// Título metálico: la luz del logo barre las letras. GSAP mueve
+// background-position (ver iniciarGeneradorDestacado en el .ts). La banda
+// dorada es angosta a propósito: en reposo el título se lee plateado y el
+// oro solo pasa como un reflejo.
+.generator-section .section-heading h2 {
+  font-size: clamp(2.15rem, 4.6vw, 3.9rem);
+  letter-spacing: -0.012em;
+  background-image: linear-gradient(
+    100deg,
+    #cfd6de 0%,
+    #eef2f6 16%,
+    #ffffff 32%,
+    #ffffff 37%,
+    var(--gen-gold-bright) 39.2%,
+    #fff6d2 40.6%,
+    #ffffff 42.4%,
+    #c6ced8 64%,
+    #eef2f6 100%
+  );
+  background-size: 235% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.5));
+}
+
+.generator-section .section-heading p:not(.section-eyebrow) {
+  max-width: 58ch;
+  margin: 1.15rem auto 0;
+  color: rgba(226, 232, 240, 0.76);
+  font-size: clamp(1rem, 1.5vw, 1.08rem);
+}
+
+// Ojo con la especificidad: `.section-heading p` (0,1,1) le gana a una sola
+// clase, por eso el selector va con el prefijo de la sección.
+.generator-section .generator-eyebrow {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0.6rem;
+  color: var(--gen-gold-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
+  text-shadow: 0 0 20px color-mix(in srgb, var(--gen-gold) 45%, transparent);
+}
+
+// Filete dorado bajo el anuncio: refuerza el "sello" de servicio nuevo.
+.generator-section .generator-eyebrow::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 3.25rem;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--gen-gold), transparent);
+}
+
+// ------------------------------------------------------------
+// PLACA DE MARCA — NOVAXIS POWER
+// El logo es de dos tonos (oro + plata) y su texto plateado solo se lee
+// sobre fondo oscuro, así que vive sobre una placa ahumada con bisel.
+// El COLOR del logo se controla con una sola clase en el HTML:
+//   (sin clase)                        → original, oro + plata
+//   .generator-brandplate--mono        → todo plateado
+//   .generator-brandplate--brand       → el oro vira al cian de la marca
+// ------------------------------------------------------------
+.generator-brandplate {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  padding: 0.6rem clamp(0.95rem, 2vw, 1.35rem);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-top-color: rgba(255, 255, 255, 0.3);
+  border-radius: 0.7rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 58%),
+    linear-gradient(150deg, #1b222b 0%, #0a0f15 100%);
+  box-shadow:
+    0 24px 50px -24px rgba(0, 0, 0, 0.85),
+    0 0 0 1px color-mix(in srgb, var(--gen-gold) 20%, transparent),
+    0 0 34px -14px color-mix(in srgb, var(--gen-gold) 45%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.generator-brandplate__logo {
+  display: block;
+  width: clamp(9rem, 16vw, 12rem);
+  height: auto;
+}
+
+// Reflejo que cruza la placa. El transform lo maneja GSAP (xPercent +
+// rotación); el degradado va difuminado para que no se lea como una franja
+// gris con borde duro.
+.generator-brandplate__shine {
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: 0;
+  width: 46%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.16) 42%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.16) 58%,
+    transparent
+  );
+  filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.generator-brandplate--mono .generator-brandplate__logo {
+  filter: grayscale(1) brightness(1.08) contrast(1.03);
+}
+
+// El texto plateado no tiene saturación, así que hue-rotate solo mueve el
+// oro: el logo queda bicolor cian + plata, dentro de la paleta del sitio.
+.generator-brandplate--brand .generator-brandplate__logo {
+  filter: hue-rotate(168deg) saturate(0.9) brightness(1.04);
+}
+
+// ------------------------------------------------------------
+// ALCANCE DEL SERVICIO — tres piezas incluidas
+// Son el "qué incluye" del lanzamiento, así que van grandes y centradas:
+// icono en oro, borde degradado y barrido de luz al pasar el mouse.
+// ------------------------------------------------------------
+.generator-offer {
+  width: min(100%, 1120px);
+  margin: clamp(1.75rem, 3.2vw, 2.5rem) auto 0;
+}
+
+.generator-offer__services {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.9rem, 1.6vw, 1.15rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: paso;
+}
+
+.generator-offer__services li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.9rem;
+  min-height: clamp(7.75rem, 9vw, 9rem);
+  padding: 1.5rem 1.15rem 1.35rem;
+  overflow: hidden;
+  text-align: center;
+  color: #f3f6fa;
+  font-size: clamp(0.92rem, 1.15vw, 1.05rem);
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  // Borde degradado: oro arriba, plata al medio, oro abajo. Se hace con tres
+  // capas: brillo + base oscura (padding-box) y el degradado del borde
+  // (border-box). La base tiene que ser opaca, si no el oro del borde se ve
+  // a través del relleno y la pieza queda toda dorada.
+  border: 1px solid transparent;
+  border-radius: 0.9rem;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255, 207, 63, 0.12), transparent 58%) padding-box,
+    linear-gradient(165deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.015)) padding-box,
+    linear-gradient(180deg, #161b22 0%, #0b0f14 100%) padding-box,
+    linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--gen-gold) 78%, transparent),
+        rgba(255, 255, 255, 0.2) 46%,
+        color-mix(in srgb, var(--gen-gold) 62%, transparent)
+      )
+      border-box;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 26px 54px -34px rgba(0, 0, 0, 0.95);
+  transition: transform 240ms ease, box-shadow 240ms ease;
+}
+
+// Filo dorado superior: aparece al hover, como si la pieza se encendiera.
+.generator-offer__services li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3.5rem;
+  height: 2px;
+  transform: translateX(-50%) scaleX(0.35);
+  background: linear-gradient(90deg, transparent, var(--gen-gold-bright), transparent);
+  opacity: 0;
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+// Barrido de luz diagonal al hover.
+.generator-offer__services li::after {
+  content: '';
+  position: absolute;
+  inset: -20% -40%;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.14) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 620ms ease;
+  pointer-events: none;
+}
+
+.generator-offer__services li:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 34px 64px -34px rgba(0, 0, 0, 0.95),
+    0 0 42px -18px color-mix(in srgb, var(--gen-gold) 55%, transparent);
+}
+
+.generator-offer__services li:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) scaleX(1);
+}
+
+.generator-offer__services li:hover::after {
+  transform: translateX(120%);
+}
+
+.generator-offer__icon {
+  position: relative;
+  display: grid;
+  width: 3.4rem;
+  height: 3.4rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--gen-gold) 45%, transparent);
+  border-radius: 0.8rem;
+  background: radial-gradient(circle at 50% 24%, rgba(255, 207, 63, 0.28), rgba(224, 168, 0, 0.08) 72%);
+  color: var(--gen-gold-bright);
+  box-shadow:
+    0 0 26px -10px color-mix(in srgb, var(--gen-gold) 70%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition: transform 260ms ease, box-shadow 260ms ease;
+}
+
+.generator-offer__services li:hover .generator-offer__icon {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow:
+    0 0 34px -8px color-mix(in srgb, var(--gen-gold) 85%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.26);
+}
+
+.generator-offer__icon svg {
+  width: 1.45rem;
+  height: 1.45rem;
+}
+
+.generator-display {
+  position: relative;
+  width: min(100%, 1120px);
+  margin: 1.75rem auto 0;
+}
+
+// Imagen del equipo: el marco, la viñeta y las esquinas la convierten en
+// una ficha de producto en vez de una foto suelta. Las capas decorativas
+// van por encima de la foto pero por debajo del botón y de la ficha técnica.
+.generator-stage {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 1396 / 687;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--gen-gold) 26%, transparent);
+  border-top-color: color-mix(in srgb, var(--gen-gold-bright) 55%, transparent);
+  border-radius: 1.2rem;
+  background: #0c141d;
+  box-shadow:
+    0 46px 110px -40px rgba(0, 0, 0, 0.9),
+    0 0 70px -34px color-mix(in srgb, var(--gen-gold) 55%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.generator-visual {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: filter 300ms ease;
+}
+
+// Viñeta: hunde los bordes de la foto y concentra la mirada en el equipo.
+.generator-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(115% 95% at 50% 45%, transparent 50%, rgba(4, 9, 16, 0.58) 100%);
+  pointer-events: none;
+}
+
+// Asiento inferior: le da base al botón y evita que la foto "flote".
+.generator-stage::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  height: 34%;
+  background: linear-gradient(180deg, transparent, rgba(4, 9, 16, 0.66));
+  pointer-events: none;
+}
+
+// Esquinas del marco, apenas visibles: ordenan la composición sin competir
+// con la foto.
+.generator-stage__tick {
   position: absolute;
   z-index: 2;
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  pointer-events: none;
+}
+
+.generator-stage__tick--tl { top: 0.8rem; left: 0.8rem; border-right: none; border-bottom: none; }
+.generator-stage__tick--tr { top: 0.8rem; right: 0.8rem; border-left: none; border-bottom: none; }
+.generator-stage__tick--bl { bottom: 0.8rem; left: 0.8rem; border-right: none; border-top: none; }
+.generator-stage__tick--br { bottom: 0.8rem; right: 0.8rem; border-left: none; border-top: none; }
+
+// Destello que recorre el marco cada tanto (lo anima GSAP). Va por encima de
+// la foto pero por debajo del botón y de la ficha técnica.
+.generator-stage__glint {
+  position: absolute;
+  top: -60%;
+  bottom: -60%;
+  left: 0;
+  z-index: 3;
+  width: 26%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 233, 170, 0.22) 44%,
+    rgba(255, 255, 255, 0.32) 50%,
+    rgba(255, 233, 170, 0.16) 58%,
+    transparent
+  );
+  filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+// Con la ficha abierta, la foto baja un poco de intensidad para que el panel
+// de datos quede como protagonista.
+.generator-display:has(.generator-spec-sheet.is-open) .generator-visual {
+  filter: brightness(0.76) saturate(0.92);
+}
+
+// Botón para fijar/ocultar la ficha. En escritorio flota sobre la esquina
+// inferior izquierda de la imagen; en móvil pasa debajo (ver @media).
+.generator-spec-toggle {
+  position: absolute;
+  z-index: 6;
+  bottom: 1rem;
+  left: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.6rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid color-mix(in srgb, white 22%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, #0e151c 78%, transparent);
+  color: #fff;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 26px -14px rgba(0, 0, 0, 0.8);
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.generator-spec-toggle svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--color-primary-container);
+}
+
+.generator-spec-toggle:hover,
+.generator-spec-toggle[aria-pressed='true'] {
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 34%, #0e151c);
+}
+
+.generator-spec-toggle:focus-visible,
+.generator-spec-sheet__close:focus-visible {
+  outline: 3px solid var(--color-accent-300);
+  outline-offset: 3px;
+}
+
+// Ventana emergente de especificaciones (esquina superior derecha de la
+// imagen). Es oscura a propósito: flota sobre la foto del equipo.
+.generator-spec-sheet {
+  display: none;
+  position: absolute;
+  z-index: 8;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: min(35rem, calc(100% - 1.5rem));
+  max-height: calc(100% - 1.5rem);
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, white 15%, transparent);
+  border-top: 2px solid var(--color-primary);
+  border-radius: 0.9rem;
+  background: color-mix(in srgb, #0e151c 93%, transparent);
+  color: #f7f9fb;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 58%, transparent) transparent;
+}
+
+.generator-spec-sheet.is-open {
+  display: block;
+  animation: generatorSheetIn 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.generator-spec-sheet__header {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0.9rem 0.7rem 1.05rem;
+  border-bottom: 1px solid color-mix(in srgb, white 14%, transparent);
+  background: linear-gradient(180deg, #101a24, #0d151e);
+}
+
+.generator-spec-sheet__heading {
   display: grid;
-  width: 2.65rem;
-  height: 2.65rem;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.generator-spec-sheet__kicker {
+  color: var(--color-accent-300);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.generator-spec-sheet__title {
+  margin: 0;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.generator-spec-sheet__close {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: none;
   place-items: center;
   padding: 0;
-  border: 0;
+  border: 1px solid color-mix(in srgb, white 18%, transparent);
   border-radius: 50%;
   background: transparent;
-  color: #fff;
+  color: color-mix(in srgb, white 82%, transparent);
   cursor: pointer;
-  transform: translate(-50%, -50%);
+  transition: background 160ms ease, color 160ms ease;
 }
 
-.generator-hotspot:focus-visible {
-  outline: 3px solid var(--color-primary);
-  outline-offset: 4px;
+.generator-spec-sheet__close:hover {
+  background: color-mix(in srgb, white 12%, transparent);
+  color: #fff;
 }
 
-.generator-hotspot__marker {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  width: 1.85rem;
-  height: 1.85rem;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, white 82%, transparent);
-  border-radius: 50%;
-  background: color-mix(in srgb, #101820 78%, transparent);
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.45), inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 75%, transparent);
-  transition: transform 280ms ease, background 280ms ease, border-color 280ms ease;
-}
-
-.generator-hotspot__marker svg {
+.generator-spec-sheet__close svg {
   width: 0.95rem;
   height: 0.95rem;
 }
 
-.generator-hotspot__pulse {
-  position: absolute;
-  inset: 0;
-  border: 1px solid color-mix(in srgb, var(--color-primary) 88%, white);
-  border-radius: 50%;
-  opacity: 0;
-  transform: scale(0.65);
-  transition: transform 450ms ease, opacity 450ms ease;
+// Ficha como tabla de datos: una fila por especificación (etiqueta a la
+// izquierda, valor a la derecha). Así entra completa sin scroll en
+// escritorio y se lee de un tirón; las dos columnas anteriores obligaban a
+// desplazar el panel y cortaban la última fila.
+.generator-spec-sheet__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: color-mix(in srgb, white 11%, transparent);
 }
 
-.generator-hotspot:hover .generator-hotspot__pulse,
-.generator-hotspot.is-active .generator-hotspot__pulse,
-.generator-hotspot:focus-visible .generator-hotspot__pulse {
-  opacity: 0.72;
-  transform: scale(1.12);
+.generator-spec {
+  display: grid;
+  grid-template-columns: minmax(7.25rem, 9.5rem) minmax(0, 1fr);
+  align-items: start;
+  gap: 0.35rem 0.9rem;
+  min-width: 0;
+  padding: 0.5rem 1.05rem;
+  background: #101820;
 }
 
-.generator-hotspot:hover .generator-hotspot__marker,
-.generator-hotspot.is-active .generator-hotspot__marker {
-  transform: scale(1.12);
-  border-color: var(--color-primary);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
+// Potencia conserva su bloque grande a todo el ancho: es el dato que se
+// busca primero.
+.generator-spec--power {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.45rem;
+  padding: 0.8rem 1.05rem 0.85rem;
+  background:
+    linear-gradient(100deg, color-mix(in srgb, var(--color-primary) 22%, transparent), transparent 62%),
+    #101820;
 }
 
-.generator-hotspot.is-active {
-  z-index: 5;
+.generator-spec__head {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-.generator-hotspot--power { left: 24%; top: 39%; }
-.generator-hotspot--electrical { left: 39%; top: 65%; }
-.generator-hotspot--engine { left: 60%; top: 37%; }
-.generator-hotspot--controller { left: 32%; top: 26%; }
-.generator-hotspot--fuel { left: 80%; top: 59%; }
-.generator-hotspot--testing { left: 71%; top: 78%; }
-
-.generator-tooltip {
-  position: absolute;
-  z-index: 4;
-  width: min(17rem, calc(100vw - 2rem));
-  padding: 0.9rem 1rem 0.95rem;
-  border: 1px solid color-mix(in srgb, var(--color-primary) 44%, transparent);
-  border-radius: 0.75rem;
-  background: color-mix(in srgb, #101820 92%, transparent);
-  color: #f7f9fb;
-  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.38), inset 0 1px 0 color-mix(in srgb, white 12%, transparent);
-  backdrop-filter: blur(14px);
-  pointer-events: none;
-  text-align: left;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(0.45rem) scale(0.98);
-}
-
-.generator-tooltip.is-open {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.generator-hotspot[data-side='right'] .generator-tooltip {
-  top: 50%;
-  left: calc(100% + 0.7rem);
-  transform: translateY(calc(-50% + 0.45rem)) scale(0.98);
-}
-
-.generator-hotspot[data-side='right'] .generator-tooltip.is-open {
-  transform: translateY(-50%) scale(1);
-}
-
-.generator-hotspot[data-side='left'] .generator-tooltip {
-  top: 50%;
-  right: calc(100% + 0.7rem);
-  transform: translateY(calc(-50% + 0.45rem)) scale(0.98);
-}
-
-.generator-hotspot[data-side='left'] .generator-tooltip.is-open {
-  transform: translateY(-50%) scale(1);
-}
-
-.generator-tooltip__eyebrow {
-  display: block;
-  margin-bottom: 0.38rem;
+.generator-spec__icon {
+  display: grid;
+  flex: none;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--color-primary) 24%, transparent);
   color: var(--color-primary-container);
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.15em;
 }
 
-.generator-tooltip__title {
-  display: block;
-  margin-bottom: 0.6rem;
-  color: #fff;
-  font-size: 0.92rem;
-  line-height: 1.25;
+.generator-spec__icon svg {
+  width: 0.9rem;
+  height: 0.9rem;
 }
 
+.generator-spec__title {
+  margin: 0;
+  color: color-mix(in srgb, white 72%, transparent);
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+// Potencia: las cifras grandes son lo más importante de la ficha.
 .generator-metrics {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.3rem;
 }
 
 .generator-metrics__primary {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.45rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
 }
 
 .generator-metrics__primary strong {
   display: flex;
   align-items: baseline;
-  gap: 0.25rem;
-  padding: 0.45rem 0.55rem;
-  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
-  border-radius: 0.5rem;
-  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  gap: 0.35rem;
   color: #fff;
-  font-size: 1.4rem;
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
   line-height: 1;
+  letter-spacing: -0.015em;
   font-variant-numeric: tabular-nums;
+}
+
+.generator-metrics__primary strong + strong {
+  padding-inline-start: 1.6rem;
+  border-inline-start: 1px solid color-mix(in srgb, white 20%, transparent);
 }
 
 .generator-metrics__primary strong span {
   color: var(--color-primary-container);
-  font-size: 0.74rem;
+  font-size: 0.42em;
+  font-weight: 750;
 }
 
 .generator-metrics__caption {
-  color: color-mix(in srgb, white 70%, transparent);
-  font-size: 0.62rem;
+  color: color-mix(in srgb, white 68%, transparent);
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .generator-metrics__secondary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  padding-top: 0.4rem;
-  border-top: 1px solid color-mix(in srgb, white 16%, transparent);
+  gap: 0.75rem;
+  margin-top: 0.1rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid color-mix(in srgb, white 14%, transparent);
   color: color-mix(in srgb, white 72%, transparent);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
 }
 
 .generator-metrics__secondary strong {
   color: #fff;
-  font-size: 0.74rem;
+  font-size: 0.86rem;
   font-variant-numeric: tabular-nums;
 }
 
 .generator-metrics__secondary i {
-  color: color-mix(in srgb, white 55%, transparent);
+  color: color-mix(in srgb, white 50%, transparent);
   font-style: normal;
+}
+
+.generator-electrical {
+  display: grid;
+  gap: 0.45rem;
 }
 
 .generator-electrical__voltage {
   display: block;
-  margin: 0.15rem 0 0.65rem;
   color: #fff;
-  font-size: 1.65rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
 .generator-electrical__voltage span {
   color: var(--color-primary-container);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  font-weight: 750;
 }
 
 .generator-spec-tags {
@@ -1941,166 +2777,248 @@ $accent-blue-strong: #38bdf8;
 }
 
 .generator-spec-tags span {
-  padding: 0.27rem 0.45rem;
+  padding: 0.2rem 0.42rem;
   border: 1px solid color-mix(in srgb, white 18%, transparent);
-  border-radius: 999px;
+  border-radius: 4px;
   background: color-mix(in srgb, white 7%, transparent);
   color: #fff;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
+// Los logos de marca van sobre fichas claras: los PNG están pensados para
+// fondo claro.
 .generator-brandmarks {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.5rem;
 }
 
 .generator-brandmarks__item {
   display: grid;
   min-width: 0;
-  min-height: 2.4rem;
+  min-height: 2.35rem;
   flex: 1;
   place-items: center;
-  padding: 0.3rem 0.4rem;
-  border-radius: 0.35rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.4rem;
   background: #f4f4f1;
 }
 
 .generator-brandmarks__item img {
   display: block;
   width: 100%;
-  max-width: 8.8rem;
-  max-height: 2rem;
+  max-width: 7.5rem;
+  max-height: 1.7rem;
   object-fit: contain;
 }
 
 .generator-brandmarks--controller .generator-brandmarks__item {
-  min-height: 2.9rem;
+  flex: 0 1 auto;
+  padding-inline: 0.75rem;
 }
 
 .generator-brandmarks--controller .generator-brandmarks__item img {
-  max-width: 15rem;
-  max-height: 2.35rem;
+  max-width: 9.5rem;
+  max-height: 1.9rem;
 }
 
-.generator-fuel-mark {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.15rem 0 0.25rem;
-}
-
-.generator-fuel-mark svg {
-  width: 2rem;
-  height: 2rem;
-  color: var(--color-primary-container);
-}
-
-.generator-fuel-mark strong {
+.generator-fuel-value {
+  display: block;
   color: #fff;
-  font-size: 1.3rem;
-  letter-spacing: 0.1em;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.generator-testing {
+  display: grid;
+  gap: 0.45rem;
 }
 
 .generator-testing__logos {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 0.65rem;
+  gap: 1rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.4rem;
+  background: #f4f4f1;
 }
 
 .generator-testing__sgs {
-  width: 2.9rem;
-  height: 2.25rem;
+  width: 2.8rem;
+  height: 2.1rem;
   object-fit: contain;
-  border: 1px solid color-mix(in srgb, white 15%, transparent);
-  border-radius: 0.25rem;
 }
 
 .generator-testing__quality {
   width: 7.4rem;
-  height: 2.25rem;
+  height: 2.1rem;
   object-fit: contain;
-  border-radius: 0.25rem;
 }
 
-.generator-spec-tags--testing span {
-  font-size: 0.58rem;
+@keyframes generatorSheetIn {
+  from { opacity: 0; transform: translateY(-0.5rem) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.generator-tooltip::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 0.45rem;
-  height: 0.45rem;
-  border-top: 1px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
-  border-right: 1px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
-  background: #101820;
+// La ficha y el botón heredan el oro de la banda, para no mezclar dos
+// acentos (el cian del tema) dentro de la misma sección.
+.generator-section .generator-spec-toggle svg {
+  color: var(--gen-gold-bright);
 }
 
-.generator-hotspot[data-side='right'] .generator-tooltip::after {
-  left: -0.26rem;
-  transform: translateY(-50%) rotate(-135deg);
+.generator-section .generator-spec-toggle:hover,
+.generator-section .generator-spec-toggle[aria-pressed='true'] {
+  border-color: color-mix(in srgb, var(--gen-gold) 70%, transparent);
+  background: color-mix(in srgb, var(--gen-gold) 28%, #0e151c);
 }
 
-.generator-hotspot[data-side='left'] .generator-tooltip::after {
-  right: -0.26rem;
-  transform: translateY(-50%) rotate(45deg);
+.generator-section .generator-spec-sheet {
+  border-top-color: var(--gen-gold);
 }
 
-.generator-spec-card {
-  display: none;
+.generator-section .generator-spec-sheet__kicker {
+  color: var(--gen-gold-bright);
+}
+
+.generator-section .generator-spec__icon {
+  background: color-mix(in srgb, var(--gen-gold) 18%, transparent);
+  color: var(--gen-gold-bright);
+}
+
+.generator-section .generator-spec--power {
+  background:
+    linear-gradient(100deg, color-mix(in srgb, var(--gen-gold) 18%, transparent), transparent 62%),
+    #101820;
+}
+
+.generator-section .generator-spec-tags span {
+  border-color: color-mix(in srgb, var(--gen-gold) 26%, transparent);
+}
+
+// Unidades de la ficha (kVA, kW, V): también en oro, no en el cian del tema.
+.generator-section .generator-metrics__primary strong span,
+.generator-section .generator-electrical__voltage span {
+  color: var(--gen-gold-bright);
 }
 
 @media (max-width: 760px) {
+  .generator-brandplate {
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.6rem;
+  }
+
+  .generator-brandplate__logo {
+    width: clamp(8rem, 46vw, 10rem);
+  }
+
+  .generator-eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+  }
+
+  .generator-stage__tick {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  .generator-stage__tick--tl { top: 0.55rem; left: 0.55rem; }
+  .generator-stage__tick--tr { top: 0.55rem; right: 0.55rem; }
+  .generator-stage__tick--bl { bottom: 0.55rem; left: 0.55rem; }
+  .generator-stage__tick--br { bottom: 0.55rem; right: 0.55rem; }
+
+  .generator-offer__services {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+  }
+
+  // En móvil las piezas pasan a fila compacta: icono a la izquierda y texto
+  // alineado a la izquierda, para no sumar 3 tarjetas altas al scroll.
+  .generator-offer__services li {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: start;
+    gap: 0.9rem;
+    min-height: 0;
+    padding: 1rem 1.1rem;
+    text-align: left;
+  }
+
+  .generator-offer__icon {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  .generator-offer__icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
   .generator-stage {
-    margin-top: 2rem;
-  }
-
-  .generator-visual {
     border-radius: 0.85rem;
   }
 
-  .generator-stage__scrim {
-    border-radius: 0.85rem;
-  }
-
-  .generator-hotspot {
-    width: 2.3rem;
-    height: 2.3rem;
-  }
-
-  .generator-hotspot__marker {
-    width: 1.55rem;
-    height: 1.55rem;
-  }
-
-  .generator-tooltip {
-    display: none;
-  }
-
-  .generator-spec-card {
-    display: block;
-    position: relative;
+  // En móvil el botón y la ficha pasan debajo de la imagen.
+  .generator-spec-toggle {
+    position: static;
     width: 100%;
-    margin-top: 0.8rem;
-    padding: 0.95rem 1rem;
-    border: 1px solid color-mix(in srgb, var(--color-primary) 44%, transparent);
-    border-radius: 0.8rem;
-    background: color-mix(in srgb, #101820 92%, transparent);
-    color: #f7f9fb;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+    margin-top: 0.75rem;
+    border-color: color-mix(in srgb, var(--gen-gold) 48%, transparent);
+    border-radius: 5px;
+    background: color-mix(in srgb, var(--gen-gold) 12%, transparent);
+    color: var(--gen-gold-soft);
+    backdrop-filter: none;
   }
 
+  .generator-spec-toggle svg {
+    color: currentColor;
+  }
+
+  .generator-spec-sheet {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-height: min(75vh, 38rem);
+    margin-top: 0.75rem;
+    border-radius: 0.8rem;
+    // En móvil la ficha siempre scrollea: el degradado inferior avisa que
+    // hay más especificaciones abajo.
+    mask-image: linear-gradient(180deg, #000 calc(100% - 2rem), transparent);
+    -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 2rem), transparent);
+  }
+}
+
+@media (max-width: 560px) {
+  // En pantallas angostas la fila pasa a dos líneas: etiqueta arriba, dato abajo.
+  .generator-spec {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.55rem;
+    padding: 0.9rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .generator-spec-sheet__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .generator-metrics__primary strong {
+    font-size: 2.1rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .generator-hotspot__marker,
-  .generator-hotspot__pulse {
+  .generator-spec-sheet.is-open {
+    animation: none;
+  }
+
+  .generator-spec-toggle,
+  .generator-spec-sheet__close {
     transition: none;
   }
 }
@@ -2589,9 +3507,11 @@ $accent-blue-strong: #38bdf8;
   }
 
   .hero-brand-badge {
-    top: 0.9rem;
-    right: 0.9rem;
-    width: 6rem;
+    top: 1rem;
+    right: 1rem;
+    width: clamp(10rem, 24vw, 13rem);
+    padding: 0.65rem 1rem;
+    border-radius: 1rem;
   }
 
   .stats-grid {
@@ -2600,8 +3520,7 @@ $accent-blue-strong: #38bdf8;
 
   .feature-grid--three,
   .sector-grid,
-  .project-grid,
-  .nuclear-grid {
+  .project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -2638,9 +3557,11 @@ $accent-blue-strong: #38bdf8;
   }
 
   .hero-brand-badge {
-    top: 0.7rem;
-    right: 0.7rem;
-    width: 5.25rem;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: clamp(9rem, 38vw, 11.5rem);
+    padding: 0.5rem 0.85rem;
+    border-radius: 0.875rem;
   }
 
   .hero-carousel__caption-wrap {
@@ -3867,4 +4788,542 @@ $accent-blue-strong: #38bdf8;
   .contact-trust__email {
     margin-left: 0;
   }
+}
+
+// ============================================================
+// CONTACTO POR OFICINA
+// Fichas de las tres sedes (Túnez, Nueva York, Bolivia) y un panel de
+// formulario que cambia de destinatario según la oficina elegida. Usa los
+// mismos tokens y el mismo lenguaje de tarjetas que Latam y Servicios, así
+// que sigue el tema claro/oscuro sin colores propios.
+// ============================================================
+.contact-hub {
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-hub .section-heading {
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
+.office-grid-wrap {
+  position: relative;
+  margin-top: 3rem;
+}
+
+// Línea que se dibuja sobre las fichas al entrar (la anima GSAP).
+.office-grid__line {
+  position: absolute;
+  top: -1.25rem;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-primary), color-mix(in srgb, var(--color-outline-variant) 60%, transparent) 60%, transparent);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.office-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.office-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  min-width: 0;
+  padding: 1.5rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 55%, transparent);
+  border-radius: 1.15rem;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--color-on-surface) 5%, transparent), transparent),
+    color-mix(in srgb, color-mix(in srgb, var(--color-surface-container-low) 60%, var(--color-surface-container-lowest)) 70%, transparent);
+  transition: border-color 260ms ease, box-shadow 260ms ease, background-color 260ms ease;
+}
+
+// Barra inferior: se completa en la oficina elegida.
+.office-card::after {
+  position: absolute;
+  inset: auto 1.5rem 0;
+  height: 2px;
+  background: var(--gradient-brand);
+  content: '';
+  opacity: 0.6;
+  transform: scaleX(0.16);
+  transform-origin: left;
+  transition: transform 340ms ease, opacity 340ms ease;
+}
+
+.office-card:hover,
+.office-card:focus-within {
+  border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--color-on-surface) 10%, transparent);
+}
+
+.office-card:hover::after,
+.office-card:focus-within::after {
+  opacity: 1;
+  transform: scaleX(0.55);
+}
+
+.office-card.is-hq,
+.office-card.is-active {
+  border-color: color-mix(in srgb, var(--color-primary) 60%, transparent);
+  background:
+    linear-gradient(150deg, color-mix(in srgb, var(--color-primary-container) 22%, transparent), transparent),
+    color-mix(in srgb, color-mix(in srgb, var(--color-surface-container-low) 60%, var(--color-surface-container-lowest)) 70%, transparent);
+  box-shadow: 0 20px 50px color-mix(in srgb, var(--color-primary-container) 24%, transparent);
+}
+
+.office-card.is-hq::after,
+.office-card.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.office-card__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.office-card__flag {
+  width: 2.9rem;
+  height: 1.95rem;
+  object-fit: cover;
+  border-radius: 0.3rem;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-on-surface) 18%, transparent);
+}
+
+.office-card__badge {
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+  color: var(--color-on-surface-variant);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: right;
+}
+
+// La casa matriz es la única con la etiqueta rellena.
+.office-card.is-hq .office-card__badge {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 800;
+}
+
+.office-card__heading {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.office-card__name {
+  margin: 0;
+  color: var(--color-on-surface);
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1.7vw, 1.45rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.office-card__country {
+  margin: 0;
+  color: var(--color-on-surface-variant);
+  font-size: 0.88rem;
+}
+
+.office-card__details {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  font-style: normal;
+}
+
+.office-card__line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0;
+  color: var(--color-on-surface);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.office-card__line svg {
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.12rem;
+  color: var(--color-primary);
+}
+
+.office-card__line a {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.office-card__line a:hover {
+  color: var(--color-primary);
+  text-decoration-thickness: 2px;
+}
+
+.office-card__line a:focus-visible,
+.office-panel__email:focus-visible,
+.office-form__fallback:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.office-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.8rem;
+  margin-top: auto;
+  padding: 0.65rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+  border-radius: 0.7rem;
+  background: color-mix(in srgb, var(--color-primary-container) 12%, transparent);
+  color: var(--color-primary);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+.office-card__action svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.office-card__action:hover,
+.office-card__action[aria-pressed='true'] {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.office-card__action:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+// Panel: resumen del destinatario a la izquierda, formulario a la derecha.
+.office-panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  margin-top: 1.5rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 70%, transparent);
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--color-on-surface) 5%, transparent), transparent),
+    color-mix(in srgb, color-mix(in srgb, var(--color-surface-container-low) 60%, var(--color-surface-container-lowest)) 78%, transparent);
+  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(18px);
+  scroll-margin-top: 7rem;
+}
+
+// Barra que recorre el borde superior al cambiar de oficina (la anima GSAP).
+.office-panel__sweep {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--gradient-brand);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.office-panel__aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border-inline-end: 1px solid color-mix(in srgb, var(--color-outline-variant) 60%, transparent);
+  background: linear-gradient(165deg, color-mix(in srgb, var(--color-primary-container) 18%, transparent), transparent 70%);
+}
+
+.office-panel__intro {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.office-panel__intro .section-eyebrow {
+  margin-bottom: 0.4rem;
+}
+
+.office-panel__title {
+  display: grid;
+  margin: 0;
+  color: var(--color-on-surface);
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.office-panel__title span {
+  color: var(--color-primary);
+}
+
+.office-panel__email {
+  width: fit-content;
+  margin-top: 0.6rem;
+  color: var(--color-primary);
+  font-weight: 750;
+  overflow-wrap: anywhere;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.office-panel__email:hover {
+  text-decoration-thickness: 2px;
+}
+
+.office-trust {
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 70%, transparent);
+}
+
+.office-trust__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.office-trust__heading h4 {
+  margin: 0;
+  color: var(--color-on-surface);
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  line-height: 1.25;
+}
+
+.office-trust__icon {
+  display: grid;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 40%, var(--color-outline-variant));
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, var(--color-primary-container) 30%, transparent);
+  color: var(--color-primary);
+}
+
+.office-trust__icon svg {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.office-trust__copy {
+  margin: 0.9rem 0;
+  color: var(--color-on-surface-variant);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.office-trust__list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.office-trust__list li {
+  position: relative;
+  padding-inline-start: 1.25rem;
+  color: var(--color-on-surface);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.office-trust__list li::before {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  background: var(--color-accent-400);
+  content: '';
+}
+
+.office-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 1.1rem 1rem;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+}
+
+.office-form label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--color-on-surface);
+  font-size: 0.88rem;
+  font-weight: 680;
+}
+
+.office-form input,
+.office-form select,
+.office-form textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 80%, transparent);
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--color-surface-container-highest) 76%, transparent);
+  color: var(--color-on-surface);
+  font: inherit;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.office-form input:focus,
+.office-form select:focus,
+.office-form textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary-container) 18%, transparent);
+}
+
+.office-form input:focus-visible,
+.office-form select:focus-visible,
+.office-form textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+// Campo tocado y vacío/inválido: lo marca Angular con estas clases.
+.office-form .ng-touched.ng-invalid {
+  border-color: var(--color-error, #ff6b6b);
+}
+
+.office-form textarea {
+  min-height: 8.5rem;
+  resize: vertical;
+}
+
+.office-form__wide {
+  grid-column: 1 / -1;
+}
+
+.office-form__privacy {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--color-on-surface-variant);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.office-form__submit {
+  gap: 0.6rem;
+}
+
+.office-form__submit svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.office-form__fallback {
+  display: block;
+  margin-top: 0.65rem;
+  color: var(--color-primary);
+  font-weight: 750;
+  text-align: center;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+@media (max-width: 1080px) {
+  .office-card {
+    padding: 1.25rem;
+  }
+
+  .office-card__line {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .office-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .office-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .office-panel__aside {
+    border-inline-end: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-outline-variant) 60%, transparent);
+  }
+}
+
+@media (max-width: 600px) {
+  .office-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .office-card,
+  .office-card::after,
+  .office-card__action,
+  .office-form input,
+  .office-form select,
+  .office-form textarea {
+    transition: none;
+  }
+}
+
+// ============================================================
+// IMÁGENES QUE NO CARGAN + ENLACES A SECCIONES
+// ============================================================
+// Si una foto falla (alFallarImagen), se oculta y se ve el fondo del contenedor, así
+// ninguna tarjeta queda con un hueco en blanco.
+.sector-card__front,
+.project-card__media {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--color-primary-container) 45%, #0b1520), #0b1520);
+}
+
+.nuclear-band__media {
+  background: #0a1420;
+}
+
+.sector-card__image.is-failed,
+.sector-card__back-blur.is-failed,
+.project-card__image.is-failed,
+.nuclear-band__image.is-failed {
+  visibility: hidden;
+}
+
+// Los enlaces #sección del footer y de los botones de la página no deben quedar tapados
+// por el header fijo. El header publica su altura real en --header-h.
+section[id] {
+  scroll-margin-top: calc(var(--header-h, 92px) - 1px);
 }

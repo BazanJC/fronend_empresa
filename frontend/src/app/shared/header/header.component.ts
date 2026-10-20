@@ -1,12 +1,15 @@
 import {
   Component,
   signal,
+  computed,
   inject,
   effect,
   AfterViewInit,
   OnDestroy,
   ElementRef,
+  NgZone,
   PLATFORM_ID,
+  ViewChild,
   ViewChildren,
   QueryList,
   ChangeDetectionStrategy,
@@ -51,11 +54,34 @@ const PLATAFORMA_OPTIONS: PlataformaOption[] = [
   },
 ];
 
-const SECCIONES_OBSERVADAS = [
-  'nosotros', 'servicios', 'expansion', 'presencia', 'latam', 'sectores',
-  'nuclear', 'equipo', 'aliados', 'proyectos', 'porque', 'contacto',
+interface SeccionNav {
+  id: string;
+  key: string;
+  /** Id del botón principal al que pertenece: la cápsula se queda en él mientras
+   *  la sección en pantalla sea esta. Si coincide con `id`, la sección es un botón principal. */
+  grupo: string;
+}
+
+// Mismo orden en que aparecen las secciones en la página. Mientras se baja por la
+// landing, el grupo activo solo avanza de izquierda a derecha, por eso la cápsula
+// ya no salta de un lado a otro cuando pasas por una sección de "Más".
+const SECCIONES_NAV: SeccionNav[] = [
+  { id: 'nosotros', key: 'nav.nosotros', grupo: 'nosotros' },
+  { id: 'servicios', key: 'nav.servicios', grupo: 'servicios' },
+  { id: 'expansion', key: 'nav.trayectoria', grupo: 'presencia' },
+  { id: 'presencia', key: 'nav.presencia', grupo: 'presencia' },
+  { id: 'latam', key: 'nav.latam', grupo: 'presencia' },
+  { id: 'sectores', key: 'nav.sectores', grupo: 'sectores' },
+  { id: 'nuclear', key: 'nav.nuclear', grupo: 'sectores' },
+  { id: 'equipo', key: 'nav.generador', grupo: 'sectores' },
+  { id: 'aliados', key: 'nav.aliados', grupo: 'proyectos' },
+  { id: 'proyectos', key: 'nav.proyectos', grupo: 'proyectos' },
+  { id: 'porque', key: 'nav.porque', grupo: 'proyectos' },
 ];
-const SECCIONES_MENU_MAS = new Set(['nosotros', 'expansion', 'latam', 'nuclear', 'equipo', 'aliados', 'porque']);
+
+const ID_CONTACTO = 'contacto';
+// Todas las secciones que se siguen al hacer scroll, en orden de página.
+const SECCIONES_OBSERVADAS = [...SECCIONES_NAV.map((s) => s.id), ID_CONTACTO];
 
 @Component({
   selector: 'app-header',
@@ -65,54 +91,55 @@ const SECCIONES_MENU_MAS = new Set(['nosotros', 'expansion', 'latam', 'nuclear',
   styleUrl: './header.component.scss',
   host: {
     '(document:click)': 'onClickFuera($event)',
+    '(document:keydown.escape)': 'onEscape()',
   },
 })
 export class HeaderComponent implements AfterViewInit, OnDestroy {
   theme = inject(ThemeService);
   language = inject(LanguageService);
   private isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-  private observer?: IntersectionObserver;
+  private zone = inject(NgZone);
+  private host = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  onClickFuera(event: MouseEvent): void {
-    if (!(event.target instanceof Element)) {
-      this.idiomaMenuAbierto.set(false);
-      this.menuMasAbierto.set(false);
-      return;
-    }
-    if (this.idiomaMenuAbierto() && !event.target.closest('.header-language-control')) this.idiomaMenuAbierto.set(false);
-    if (this.menuMasAbierto() && !event.target.closest('.header-more-control')) this.menuMasAbierto.set(false);
-  }
-
+  @ViewChild('barra') private barra?: ElementRef<HTMLElement>;
+  @ViewChild('progreso') private progreso?: ElementRef<HTMLElement>;
   @ViewChildren('navLink') navLinks!: QueryList<ElementRef<HTMLElement>>;
+
+  private resizeObserver?: ResizeObserver;
+  private frame = 0;
+  // Mientras se hace scroll por un clic en el menú, no se recalcula la sección activa:
+  // así la cápsula va directo al destino en vez de pasar por todos los botones del camino.
+  private navegandoA: string | null = null;
+  private liberarTimer?: ReturnType<typeof setTimeout>;
+  private limiteTimer?: ReturnType<typeof setTimeout>;
 
   menuMovilAbierto = signal(false);
   menuMasAbierto = signal(false);
   idiomaMenuAbierto = signal(false);
   platformOptions = PLATAFORMA_OPTIONS;
-  navPrincipal = [
-    { id: 'servicios', key: 'nav.servicios' },
-    { id: 'sectores', key: 'nav.sectores' },
-    { id: 'presencia', key: 'nav.presencia' },
-    { id: 'proyectos', key: 'nav.proyectos' },
-  ];
-  navMas = [
-    { id: 'nosotros', key: 'nav.nosotros' },
-    { id: 'expansion', key: 'nav.trayectoria' },
-    { id: 'latam', key: 'nav.latam' },
-    { id: 'nuclear', key: 'nav.nuclear' },
-    { id: 'equipo', key: 'nav.generador' },
-    { id: 'aliados', key: 'nav.aliados' },
-    { id: 'porque', key: 'nav.porque' },
-  ];
 
+  navTodas = SECCIONES_NAV;
+  navPrincipal = SECCIONES_NAV.filter((s) => s.grupo === s.id);
+  navMas = SECCIONES_NAV.filter((s) => s.grupo !== s.id);
+
+  /** Sección que está en pantalla ('' = hero, estadísticas o fuera de las secciones). */
   seccionActiva = signal<string>('');
+  /** Botón principal que corresponde a la sección activa. */
+  grupoActivo = computed(() => SECCIONES_NAV.find((s) => s.id === this.seccionActiva())?.grupo ?? '');
+  /** La sección activa está dentro del menú "Más". */
+  masActivo = computed(() => this.navMas.some((s) => s.id === this.seccionActiva()));
+  contactoActivo = computed(() => this.seccionActiva() === ID_CONTACTO);
 
-  // Posición/ancho/alto del indicador deslizante (la cápsula que se mueve)
-  indicadorLeft = signal(0);
+  // Cápsula deslizante: se mueve con transform (acelerado por GPU) en vez de left/top.
+  indicadorX = signal(0);
+  indicadorY = signal(0);
   indicadorWidth = signal(0);
-  indicadorTop = signal(0);
   indicadorHeight = signal(0);
-  indicadorListo = signal(false);
+  indicadorVisible = signal(false);
+  indicadorAnimado = signal(false);
+
+  /** Altura real de la barra fija (incluye su borde). 0 hasta que se mide. */
+  alturaBarra = signal(0);
 
   platformModalOpen = signal(false);
   vistaModal = signal<'seleccion' | 'login'>('seleccion');
@@ -122,58 +149,252 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      const activa = this.seccionActiva();
-      if (activa) {
-        queueMicrotask(() => this.actualizarIndicador(activa));
-      }
+      const grupo = this.grupoActivo();
+      queueMicrotask(() => this.actualizarIndicador(grupo));
     });
   }
 
   ngAfterViewInit(): void {
     if (!this.isBrowser) return;
 
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.seccionActiva.set(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: '-30% 0px -50% 0px', threshold: 0 },
-    );
+    this.medirBarra();
 
-    SECCIONES_OBSERVADAS.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) this.observer!.observe(el);
+    // Los listeners corren fuera de Angular: un scroll no debe disparar detección de
+    // cambios en toda la app. Solo se vuelve a entrar a la zona cuando algo cambia.
+    this.zone.runOutsideAngular(() => {
+      window.addEventListener('scroll', this.onScroll, { passive: true });
+      window.addEventListener('resize', this.onResize, { passive: true });
+
+      if ('ResizeObserver' in window) {
+        // Se recalcula cuando cambia la barra o el ancho de la pista de navegación
+        // (por ejemplo al cambiar de idioma, que cambia el ancho de los textos).
+        this.resizeObserver = new ResizeObserver(() => {
+          this.zone.run(() => {
+            this.medirBarra();
+            this.actualizarIndicador(this.grupoActivo());
+          });
+        });
+        if (this.barra) this.resizeObserver.observe(this.barra.nativeElement);
+        const pista = this.host.nativeElement.querySelector('.nav-track-container');
+        if (pista) this.resizeObserver.observe(pista);
+      }
     });
 
-    window.addEventListener('resize', this.onResize);
+    // Al cargar la tipografía cambia el ancho de los botones.
+    document.fonts?.ready.then(() => this.zone.run(() => this.actualizarIndicador(this.grupoActivo())));
+
+    requestAnimationFrame(() => {
+      this.actualizarProgreso();
+      this.sincronizarSeccionActiva();
+    });
   }
 
   ngOnDestroy(): void {
-    this.observer?.disconnect();
-    if (this.isBrowser) window.removeEventListener('resize', this.onResize);
+    if (!this.isBrowser) return;
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    this.resizeObserver?.disconnect();
+    cancelAnimationFrame(this.frame);
+    clearTimeout(this.liberarTimer);
+    clearTimeout(this.limiteTimer);
+    if (this.platformModalOpen()) document.body.style.overflow = '';
   }
 
-  private onResize = (): void => {
-    this.actualizarIndicador(this.seccionActiva());
+  // ------------------------------------------------------------------
+  // Cierre de menús
+  // ------------------------------------------------------------------
+  onClickFuera(event: MouseEvent): void {
+    const destino = event.target;
+    if (!(destino instanceof Element)) {
+      this.idiomaMenuAbierto.set(false);
+      this.menuMasAbierto.set(false);
+      this.menuMovilAbierto.set(false);
+      return;
+    }
+    if (this.idiomaMenuAbierto() && !destino.closest('.header-language-control')) this.idiomaMenuAbierto.set(false);
+    if (this.menuMasAbierto() && !destino.closest('.header-more-control')) this.menuMasAbierto.set(false);
+    if (this.menuMovilAbierto() && !destino.closest('#mobile-navigation, .header-mobile-toggle')) this.menuMovilAbierto.set(false);
+  }
+
+  onEscape(): void {
+    if (this.platformModalOpen()) {
+      this.closePlatformModal();
+      return;
+    }
+    if (this.menuMasAbierto()) {
+      this.menuMasAbierto.set(false);
+      // Devuelve el foco al botón "Más" para que el teclado no se pierda.
+      this.navLinks?.find((ref) => ref.nativeElement.dataset['id'] === 'mas')?.nativeElement.focus();
+    }
+    this.idiomaMenuAbierto.set(false);
+    this.menuMovilAbierto.set(false);
+  }
+
+  // ------------------------------------------------------------------
+  // Navegación a secciones
+  // ------------------------------------------------------------------
+
+  /**
+   * Lleva a la sección con scroll suave, descontando la altura de la barra fija, y
+   * actualiza el botón activo de inmediato. Si la sección no existe en la página
+   * actual, no hace nada y deja que el enlace se comporte normal.
+   */
+  irASeccion(id: string, evento: Event): void {
+    if (!this.isBrowser) return;
+    if (evento instanceof MouseEvent && (evento.ctrlKey || evento.metaKey || evento.shiftKey || evento.button !== 0)) return;
+
+    const destino = document.getElementById(id);
+    if (!destino) return;
+    evento.preventDefault();
+
+    this.menuMasAbierto.set(false);
+    this.menuMovilAbierto.set(false);
+
+    const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Se mide solo la barra: con el menú móvil abierto el header completo mide mucho más.
+    const alturaBarra = this.alturaBarra() || 92;
+    const top = Math.max(0, destino.getBoundingClientRect().top + window.scrollY - alturaBarra + 1);
+
+    this.bloquearSeguimiento(id);
+    this.seccionActiva.set(id === 'hero' ? '' : id);
+    window.scrollTo({ top, behavior: reducirMovimiento ? (('instant' as string) as ScrollBehavior) : 'smooth' });
+
+    // Conserva history.state para no interferir con el router de Angular.
+    const url = `${location.pathname}${location.search}${id === 'hero' ? '' : '#' + id}`;
+    history.replaceState(history.state, '', url);
+  }
+
+  private bloquearSeguimiento(id: string): void {
+    this.navegandoA = id;
+    clearTimeout(this.limiteTimer);
+    // Tope de seguridad: si algo falla, el seguimiento se reactiva solo.
+    this.limiteTimer = setTimeout(() => this.liberarSeguimiento(), 3000);
+    this.reiniciarLiberacion();
+  }
+
+  // El scroll suave termina cuando dejan de llegar eventos de scroll.
+  private reiniciarLiberacion(): void {
+    clearTimeout(this.liberarTimer);
+    this.liberarTimer = setTimeout(() => this.liberarSeguimiento(), 160);
+  }
+
+  private liberarSeguimiento(): void {
+    clearTimeout(this.liberarTimer);
+    clearTimeout(this.limiteTimer);
+    this.navegandoA = null;
+    this.sincronizarSeccionActiva();
+  }
+
+  // ------------------------------------------------------------------
+  // Scroll: sección activa y avance de lectura
+  // ------------------------------------------------------------------
+  private onScroll = (): void => {
+    if (this.navegandoA) this.reiniciarLiberacion();
+    if (this.frame) return;
+    this.frame = requestAnimationFrame(() => {
+      this.frame = 0;
+      this.actualizarProgreso();
+      if (!this.navegandoA) this.sincronizarSeccionActiva();
+    });
   };
 
-  private actualizarIndicador(idActivo: string): void {
-    if (!this.navLinks) return;
-    const idNav = SECCIONES_MENU_MAS.has(idActivo) ? 'mas' : idActivo;
-    const enlace = this.navLinks.find((ref) => ref.nativeElement.dataset['id'] === idNav);
-    if (!enlace) return;
+  private onResize = (): void => {
+    if (window.innerWidth >= 1024 && this.menuMovilAbierto()) {
+      this.zone.run(() => this.menuMovilAbierto.set(false));
+    }
+    this.sincronizarSeccionActiva();
+  };
 
-    const el = enlace.nativeElement;
-    this.indicadorLeft.set(el.offsetLeft);
-    this.indicadorWidth.set(el.offsetWidth);
-    this.indicadorTop.set(el.offsetTop);
-    this.indicadorHeight.set(el.offsetHeight);
-    this.indicadorListo.set(true);
+  /**
+   * Una sección es la activa cuando cruza una línea ubicada al 30 % del alto visible
+   * bajo la barra. Se leen las posiciones en cada cálculo (no se guardan los elementos),
+   * así funciona aunque la landing se renderice después que el header.
+   */
+  private detectarSeccion(): string {
+    const barra = this.alturaBarra() || 92;
+    const linea = barra + (window.innerHeight - barra) * 0.3;
+    let actual = '';
+    let ultima = '';
+
+    for (const id of SECCIONES_OBSERVADAS) {
+      const el = document.getElementById(id);
+      if (!el) continue;
+      ultima = id;
+      const r = el.getBoundingClientRect();
+      if (r.top <= linea && r.bottom > linea) actual = id;
+    }
+
+    // Al llegar al final de la página, la última sección cuenta aunque no alcance la línea.
+    const alFinal = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4;
+    return alFinal && ultima ? ultima : actual;
   }
 
+  private sincronizarSeccionActiva(): void {
+    const id = this.detectarSeccion();
+    if (id !== this.seccionActiva()) this.zone.run(() => this.seccionActiva.set(id));
+  }
+
+  // Se escribe directo en el elemento: actualizar un signal en cada frame de scroll
+  // dispararía detección de cambios sin necesidad.
+  private actualizarProgreso(): void {
+    const el = this.progreso?.nativeElement;
+    if (!el) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const avance = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    el.style.transform = `scaleX(${avance})`;
+  }
+
+  // ------------------------------------------------------------------
+  // Altura de la barra y cápsula indicadora
+  // ------------------------------------------------------------------
+  private medirBarra(): void {
+    const barra = this.barra?.nativeElement;
+    if (!barra) return;
+    const altura = Math.round(barra.getBoundingClientRect().height) + 1; // +1 por el borde inferior
+    if (altura === this.alturaBarra()) return;
+    this.alturaBarra.set(altura);
+    // La landing la usa para el punto donde se fija la línea de tiempo.
+    document.documentElement.style.setProperty('--header-h', `${altura}px`);
+  }
+
+  private actualizarIndicador(grupo: string): void {
+    if (!this.isBrowser) return;
+    const enlace = grupo ? this.navLinks?.find((ref) => ref.nativeElement.dataset['id'] === grupo) : undefined;
+    const el = enlace?.nativeElement;
+
+    // Sin grupo (hero, contacto) o con la navegación oculta (móvil): la cápsula se esconde.
+    if (!el || !el.offsetWidth) {
+      this.indicadorVisible.set(false);
+      return;
+    }
+
+    if (!this.indicadorVisible()) {
+      // Reaparece ya colocada en su sitio y solo después se activan las transiciones;
+      // si no, cruzaría la barra desde donde se quedó.
+      this.indicadorAnimado.set(false);
+      this.colocarIndicador(el);
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          this.indicadorAnimado.set(true);
+          this.indicadorVisible.set(true);
+        }),
+      );
+      return;
+    }
+
+    this.colocarIndicador(el);
+  }
+
+  private colocarIndicador(el: HTMLElement): void {
+    this.indicadorX.set(el.offsetLeft);
+    this.indicadorY.set(el.offsetTop);
+    this.indicadorWidth.set(el.offsetWidth);
+    this.indicadorHeight.set(el.offsetHeight);
+  }
+
+  // ------------------------------------------------------------------
+  // Idioma y menús
+  // ------------------------------------------------------------------
   seleccionarIdioma(codigo: string): void {
     this.language.cambiarIdioma(codigo);
     this.idiomaMenuAbierto.set(false);
@@ -204,10 +425,9 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
     this.menuMasAbierto.set(false);
   }
 
-  seccionMasActiva(): boolean {
-    return SECCIONES_MENU_MAS.has(this.seccionActiva());
-  }
-
+  // ------------------------------------------------------------------
+  // Modal de plataforma
+  // ------------------------------------------------------------------
   openPlatformModal(): void {
     this.platformModalOpen.set(true);
     this.vistaModal.set('seleccion');
@@ -217,7 +437,8 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
 
   closePlatformModal(): void {
     this.platformModalOpen.set(false);
-    if (this.isBrowser) document.body.style.overflow = 'auto';
+    // '' devuelve el control al CSS; 'auto' pisaba cualquier regla propia de la página.
+    if (this.isBrowser) document.body.style.overflow = '';
   }
 
   seleccionarPlataforma(opcion: PlataformaOption): void {

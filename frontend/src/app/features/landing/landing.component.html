@@ -13,9 +13,17 @@
   <!-- HERO -->
   <section class="hero-section section-shell" id="hero">
     <div class="hero-copy">
+      <div class="hero-brand-eyebrow reveal reveal-step-1">
+        <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+        <span class="hero-eyebrow-tagline">{{ 'hero.tagline' | translate }}</span>
+      </div>
+
       <h1 class="hero-title reveal reveal-step-1">
-        <span>{{ 'hero.title_pre' | translate }}</span>
-        <span class="hero-title__accent">{{ 'hero.title_accent' | translate }}</span>
+        <span class="hero-title__brand">{{ 'hero.title_brand' | translate }}</span>
+        <span class="hero-title__lead">
+          {{ 'hero.title_pre' | translate }}
+          <span class="hero-title__accent">{{ 'hero.title_accent' | translate }}</span>
+        </span>
       </h1>
       <p class="hero-subtitle reveal reveal-step-2">
         {{ 'hero.subtitle' | translate }}
@@ -54,29 +62,13 @@
         }
         <div class="hero-carousel__overlay" aria-hidden="true"></div>
 
-        <div class="hero-brand-badge">
+        <div class="hero-brand-badge" title="NOVAXIS International">
           <img
-            src="/assets/images/logo-novaxis.png"
+            src="/assets/images/logo_2.png"
             alt="NOVAXIS International"
-            width="539"
-            height="463"
+            width="828"
+            height="559"
             fetchpriority="high" />
-        </div>
-
-        <div class="hero-carousel__progress">
-          @for (slide of slidesHero; track slide.id; let i = $index) {
-            <button
-              class="hero-carousel__progress-track"
-              (click)="irASlide(i)"
-              [attr.aria-label]="'Ir a la imagen ' + (i + 1)"
-              [attr.aria-current]="i === slideActual() ? 'true' : null">
-              <span
-                class="hero-carousel__progress-fill"
-                [class.hero-carousel__progress-fill--active]="i === slideActual()"
-                [class.hero-carousel__progress-fill--done]="i < slideActual()">
-              </span>
-            </button>
-          }
         </div>
       </div>
     </div>
@@ -209,16 +201,24 @@
       </div>
 
       <div class="timeline-track">
-        @for (hito of expansionHitos; track hito.anio) {
-          <article class="timeline-panel">
-            <span class="timeline-panel__year">{{ hito.anio }}</span>
+        @for (hito of expansionHitos; track hito.id) {
+          <article class="timeline-panel" [class.timeline-panel--references]="hito.referenciasKeys">
+            <span class="timeline-panel__year">{{ (hito.anioKey ?? hito.anio) | translate }}</span>
             <h4>{{ hito.tituloKey | translate }}</h4>
-            <p>{{ hito.descKey | translate }}</p>
+            @if (hito.referenciasKeys) {
+              <ul class="timeline-panel__references">
+                @for (refKey of hito.referenciasKeys; track refKey) {
+                  <li>{{ refKey | translate }}</li>
+                }
+              </ul>
+            } @else if (hito.descKey) {
+              <p>{{ hito.descKey | translate }}</p>
+            }
           </article>
         }
       </div>
       <div class="timeline-dots" aria-hidden="true">
-        @for (hito of expansionHitos; track hito.anio) {
+        @for (hito of expansionHitos; track hito.id) {
           <span class="timeline-dots__dot"></span>
         }
       </div>
@@ -354,17 +354,18 @@
       <div class="section-heading reveal">
         <p class="section-eyebrow">{{ 'sectores.eyebrow' | translate }}</p>
         <h2>{{ 'sectores.title' | translate }}</h2>
+        <p>{{ 'sectores.desc' | translate }}</p>
       </div>
 
       <div class="sector-grid">
         <article class="sector-card reveal reveal-delay-100" tabindex="0">
           <div class="sector-card__inner">
             <div class="sector-card__front">
-              <img src="https://images.pexels.com/photos/12809142/pexels-photo-12809142.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/12809142/pexels-photo-12809142.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
               <h3>{{ 'sectores.card1_title' | translate }}</h3>
             </div>
             <div class="sector-card__back">
-              <img src="https://images.pexels.com/photos/12809142/pexels-photo-12809142.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/12809142/pexels-photo-12809142.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
               <div class="sector-card__back-glass"></div>
               <div class="sector-card__back-content">
                 <div class="sector-card__back-icon" aria-hidden="true">
@@ -379,11 +380,11 @@
         <article class="sector-card reveal reveal-delay-200" tabindex="0">
           <div class="sector-card__inner">
             <div class="sector-card__front">
-              <img src="https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/37594924/pexels-photo-37594924.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" data-fallback="https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
               <h3>{{ 'sectores.card2_title' | translate }}</h3>
             </div>
             <div class="sector-card__back">
-              <img src="https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/37594924/pexels-photo-37594924.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" data-fallback="https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
               <div class="sector-card__back-glass"></div>
               <div class="sector-card__back-content">
                 <div class="sector-card__back-icon" aria-hidden="true">
@@ -398,11 +399,11 @@
         <article class="sector-card reveal reveal-delay-300" tabindex="0">
           <div class="sector-card__inner">
             <div class="sector-card__front">
-              <img src="https://images.pexels.com/photos/5953729/pexels-photo-5953729.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/5953729/pexels-photo-5953729.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
               <h3>{{ 'sectores.card3_title' | translate }}</h3>
             </div>
             <div class="sector-card__back">
-              <img src="https://images.pexels.com/photos/5953729/pexels-photo-5953729.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/5953729/pexels-photo-5953729.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
               <div class="sector-card__back-glass"></div>
               <div class="sector-card__back-content">
                 <div class="sector-card__back-icon" aria-hidden="true">
@@ -417,11 +418,11 @@
         <article class="sector-card reveal reveal-delay-100" tabindex="0">
           <div class="sector-card__inner">
             <div class="sector-card__front">
-              <img src="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
               <h3>{{ 'sectores.card4_title' | translate }}</h3>
             </div>
             <div class="sector-card__back">
-              <img src="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
               <div class="sector-card__back-glass"></div>
               <div class="sector-card__back-content">
                 <div class="sector-card__back-icon" aria-hidden="true">
@@ -436,11 +437,11 @@
         <article class="sector-card reveal reveal-delay-200" tabindex="0">
           <div class="sector-card__inner">
             <div class="sector-card__front">
-              <img src="https://images.pexels.com/photos/12571569/pexels-photo-12571569.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/12571569/pexels-photo-12571569.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
               <h3>{{ 'sectores.card5_title' | translate }}</h3>
             </div>
             <div class="sector-card__back">
-              <img src="https://images.pexels.com/photos/12571569/pexels-photo-12571569.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/12571569/pexels-photo-12571569.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
               <div class="sector-card__back-glass"></div>
               <div class="sector-card__back-content">
                 <div class="sector-card__back-icon" aria-hidden="true">
@@ -459,8 +460,13 @@
   <!-- SEGURIDAD EN INSTALACIONES NUCLEARES -->
   <section class="nuclear-band" id="nuclear">
     <div class="nuclear-band__media" aria-hidden="true">
+      <!-- Reactor de investigación TRIGA (resplandor azul por radiación Cherenkov). Foto: Christopher
+           Farwell, USGS, 2017. Dominio público: https://www.usgs.gov/media/images/a-blue-glow-emitted-radiation-during-operation-usgs-triga-reactor-denver-co
+           Conviene descargarla a /assets/images/ y servirla desde el propio sitio. -->
       <img
-        src="https://images.pexels.com/photos/18334961/pexels-photo-18334961.jpeg?auto=compress&cs=tinysrgb&w=1600&h=1100&fit=crop"
+        src="https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/media/images/Blue_Glow_2017-10-27_Christopher_Farwell.JPG?itok=l3RhysZb"
+        data-fallback="https://images.pexels.com/photos/18334961/pexels-photo-18334961.jpeg?auto=compress&cs=tinysrgb&w=1600&h=1100&fit=crop"
+        (error)="alFallarImagen($event)"
         alt=""
         class="nuclear-band__image"
         loading="lazy"
@@ -484,13 +490,17 @@
         <p>{{ 'nuclear.desc' | translate }}</p>
       </div>
 
+      <!-- Trío de 3 columnas centrado en la página: cada tarjeta centra a su
+           vez ícono, título y descripción, para que el bloque se lea como un
+           conjunto equilibrado y no como una fila pegada a la izquierda. -->
       <div class="nuclear-grid">
-        @for (item of nuclearHighlights; track item.icon) {
-          <div class="nuclear-item reveal">
+        @for (item of nuclearHighlights; track item.icon; let i = $index) {
+          <article class="nuclear-item reveal">
             <span class="nuclear-item__corner nuclear-item__corner--tl" aria-hidden="true"></span>
             <span class="nuclear-item__corner nuclear-item__corner--tr" aria-hidden="true"></span>
             <span class="nuclear-item__corner nuclear-item__corner--bl" aria-hidden="true"></span>
             <span class="nuclear-item__corner nuclear-item__corner--br" aria-hidden="true"></span>
+            <span class="nuclear-item__index" aria-hidden="true">{{ (i + 1).toString().padStart(2, '0') }}</span>
             <div class="nuclear-item__icon" [attr.data-icon]="item.icon">
               @switch (item.icon) {
                 @case ('camera') {
@@ -506,7 +516,7 @@
             </div>
             <h3>{{ item.tituloKey | translate }}</h3>
             <p>{{ item.descKey | translate }}</p>
-          </div>
+          </article>
         }
       </div>
 
@@ -519,142 +529,197 @@
     </div>
   </section>
 
-  <!-- GENERADOR NOVAXIS POWER: sección interactiva de producto -->
+  <!-- GENERADOR NOVAXIS POWER: imagen del equipo + ficha técnica siempre visible -->
   <section class="section-band section-band--raised generator-section" id="equipo">
+    <!-- Capa de textura: metal cepillado opaco con los reflejos del logo
+         (oro + plata). Es decorativa; GSAP mueve el brillo con el scroll. -->
+    <div class="generator-metal" aria-hidden="true">
+      <span class="generator-metal__brushed"></span>
+      <span class="generator-metal__sheen"></span>
+      <span class="generator-metal__glow generator-metal__glow--gold"></span>
+      <span class="generator-metal__glow generator-metal__glow--silver"></span>
+    </div>
+
     <div class="section-shell">
       <div class="section-heading section-heading--center reveal">
-        <p class="section-eyebrow">{{ 'generador.eyebrow' | translate }}</p>
+        <!-- Placa de marca + anuncio del nuevo servicio. El logo es de dos
+             tonos (oro + plata) y su texto plateado necesita fondo oscuro,
+             así que vive sobre una placa ahumada. -->
+        <div class="generator-brandlockup">
+          <div class="generator-brandplate">
+            <img
+              class="generator-brandplate__logo"
+              src="/assets/images/novaxis-power-logo.png"
+              alt="NOVAXIS POWER"
+              width="636"
+              height="190"
+              decoding="async" />
+            <span class="generator-brandplate__shine" aria-hidden="true"></span>
+          </div>
+          <p class="section-eyebrow generator-eyebrow">{{ 'generador.eyebrow' | translate }}</p>
+        </div>
         <h2>{{ 'generador.title' | translate }}</h2>
         <p>{{ 'generador.desc' | translate }}</p>
-        <span class="generator-instruction">{{ 'generador.instruction' | translate }}</span>
       </div>
 
-      <div class="generator-stage" (pointerleave)="salirGeneradorSpec(generadorSpecHovered() || '')">
-        <ng-template #generatorSpecDetails let-spec>
-          <span class="generator-tooltip__eyebrow">{{ 'generador.spec_sheet' | translate }}</span>
-          <strong class="generator-tooltip__title">{{ spec.titleKey | translate }}</strong>
-          @switch (spec.id) {
-            @case ('power') {
-              <div class="generator-metrics">
-                <div class="generator-metrics__primary">
-                  <strong>60 <span>kVA</span></strong>
-                  <strong>48 <span>kW</span></strong>
-                </div>
-                <div class="generator-metrics__caption">{{ 'generador.rated' | translate }}</div>
-                <div class="generator-metrics__secondary">
-                  <span>{{ 'generador.standby' | translate }}</span>
-                  <strong>66 kVA <i>/</i> 53 kW</strong>
-                </div>
-              </div>
-            }
-            @case ('electrical') {
-              <div class="generator-electrical">
-                <strong class="generator-electrical__voltage">400/230 <span>V</span></strong>
-                <div class="generator-spec-tags">
-                  <span>50 Hz</span>
-                  <span>{{ 'generador.phase' | translate }}</span>
-                  <span>86.6 A</span>
-                  <span>PF 0.8</span>
-                </div>
-              </div>
-            }
-            @case ('engine') {
-              <div class="generator-brandmarks">
-                <span class="generator-brandmarks__item"><img src="/assets/images/spec-weichai.png" alt="WEICHAI" /></span>
-                <span class="generator-brandmarks__item"><img src="/assets/images/spec-stamford.png" alt="STAMFORD" /></span>
-              </div>
-            }
-            @case ('controller') {
-              <div class="generator-brandmarks generator-brandmarks--controller">
-                <span class="generator-brandmarks__item"><img src="/assets/images/spec-deepsea.png" alt="DSE · Deep Sea Electronics" /></span>
-              </div>
-            }
-            @case ('fuel') {
-              <div class="generator-fuel-mark">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3C9.5 7.1 6.5 10.3 6.5 14a5.5 5.5 0 0 0 11 0c0-3.7-3-6.9-5.5-11Z"/><path d="M9.5 15.2a2.5 2.5 0 0 0 2.5 2.3"/></svg>
-                <strong>{{ 'generador.fuel_value' | translate }}</strong>
-              </div>
-            }
-            @case ('testing') {
-              <div class="generator-testing">
-                <div class="generator-testing__logos">
-                  <img class="generator-testing__sgs" src="/assets/images/spec-sgs.png" alt="SGS" />
-                  <img class="generator-testing__quality" src="/assets/images/spec-quality-marks.png" alt="CE · ISO 9001 · RoHS" />
-                </div>
-                <div class="generator-spec-tags generator-spec-tags--testing">
-                  <span>{{ 'generador.load_test' | translate }}</span>
-                  <span>{{ 'generador.altitude' | translate }}</span>
-                </div>
-              </div>
-            }
-          }
-        </ng-template>
-        <img
-          class="generator-visual"
-          src="/assets/images/novaxis-generator-set.png"
-          [alt]="'generador.image_alt' | translate"
-          loading="lazy"
-          decoding="async" />
-        <div class="generator-stage__scrim" aria-hidden="true"></div>
+      <div class="generator-offer reveal reveal-delay-100">
+        <ul class="generator-offer__services" [attr.aria-label]="'generador.offer_label' | translate">
+          <li>
+            <span class="generator-offer__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m21 8-9-5-9 5v8l9 5 9-5V8Z"/><path d="m3 8 9 5 9-5"/><path d="M12 13v8"/></svg>
+            </span>
+            <span>{{ 'generador.offer_sales' | translate }}</span>
+          </li>
+          <li>
+            <span class="generator-offer__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z"/></svg>
+            </span>
+            <span>{{ 'generador.offer_installation' | translate }}</span>
+          </li>
+          <li>
+            <span class="generator-offer__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 2v10"/><path d="M18.4 5.6a9 9 0 1 1-12.8 0"/></svg>
+            </span>
+            <span>{{ 'generador.offer_commissioning' | translate }}</span>
+          </li>
+        </ul>
+      </div>
 
-        @for (spec of generadorSpecs; track spec.id) {
-          <button
-            type="button"
-            class="generator-hotspot"
-            [class.generator-hotspot--power]="spec.id === 'power'"
-            [class.generator-hotspot--electrical]="spec.id === 'electrical'"
-            [class.generator-hotspot--engine]="spec.id === 'engine'"
-            [class.generator-hotspot--controller]="spec.id === 'controller'"
-            [class.generator-hotspot--fuel]="spec.id === 'fuel'"
-            [class.generator-hotspot--testing]="spec.id === 'testing'"
-            [class.is-active]="generadorSpecActiva() === spec.id"
-            [attr.data-side]="spec.side"
-            [attr.aria-label]="(spec.titleKey | translate) + ': ' + (spec.valueKey | translate)"
-            [attr.aria-describedby]="'generator-tooltip-' + spec.id"
-            [attr.aria-pressed]="generadorSpecSeleccionado() === spec.id"
-            (pointerenter)="activarGeneradorSpec(spec.id)"
-            (focus)="activarGeneradorSpec(spec.id)"
-            (blur)="salirGeneradorSpec(spec.id)"
-            (click)="seleccionarGeneradorSpec(spec.id)">
-            <span class="generator-hotspot__pulse" aria-hidden="true"></span>
-            <span class="generator-hotspot__marker" aria-hidden="true">
-              @switch (spec.id) {
-                @case ('power') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/></svg>
+      <!-- La ventana de especificaciones se abre al pasar el cursor o enfocar con
+           teclado; el botón la fija (útil en táctil) y Esc la cierra. -->
+      <div class="generator-display"
+           (pointerenter)="abrirFichaGenerador($event)"
+           (pointerleave)="salirFichaGenerador()"
+           (focusin)="enfocarFichaGenerador()"
+           (focusout)="salirEnfoqueFichaGenerador($event)"
+           (keydown.escape)="cerrarFichaGenerador()">
+        <figure class="generator-stage">
+          <img
+            class="generator-visual"
+            src="/assets/images/novaxis-generator-set.png"
+            [alt]="'generador.image_alt' | translate"
+            loading="lazy"
+            decoding="async" />
+          <!-- Esquinas del marco: refuerzan la lectura de "ficha de producto". -->
+          <span class="generator-stage__tick generator-stage__tick--tl" aria-hidden="true"></span>
+          <span class="generator-stage__tick generator-stage__tick--tr" aria-hidden="true"></span>
+          <span class="generator-stage__tick generator-stage__tick--bl" aria-hidden="true"></span>
+          <span class="generator-stage__tick generator-stage__tick--br" aria-hidden="true"></span>
+          <span class="generator-stage__glint" aria-hidden="true"></span>
+        </figure>
+
+        <button class="generator-spec-toggle" type="button"
+                [attr.aria-expanded]="generadorFichaAbierta()"
+                [attr.aria-pressed]="generadorFichaFijada()"
+                aria-controls="generator-spec-sheet"
+                (click)="alternarFichaGenerador()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+          {{ (generadorFichaFijada() ? 'generador.hide_specs' : 'generador.pin_specs') | translate }}
+        </button>
+
+        <aside class="generator-spec-sheet" id="generator-spec-sheet"
+               [class.is-open]="generadorFichaAbierta()"
+               [attr.aria-label]="'generador.all_specs' | translate"
+               [attr.aria-hidden]="!generadorFichaAbierta()"
+               aria-live="polite"
+               role="region">
+          <header class="generator-spec-sheet__header">
+            <div class="generator-spec-sheet__heading">
+              <span class="generator-spec-sheet__kicker">NOVAXIS POWER</span>
+              <h3 class="generator-spec-sheet__title">{{ 'generador.spec_sheet' | translate }}</h3>
+            </div>
+            <button class="generator-spec-sheet__close" type="button"
+                    [attr.aria-label]="'generador.hide_specs' | translate"
+                    (click)="cerrarFichaGenerador()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </header>
+
+          <ul class="generator-spec-sheet__list">
+            @for (spec of generadorSpecs; track spec.id) {
+              <li class="generator-spec" [class.generator-spec--power]="spec.id === 'power'">
+                <div class="generator-spec__head">
+                  <span class="generator-spec__icon" aria-hidden="true">
+                    @switch (spec.id) {
+                      @case ('power') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m13 2-9 12h7l-1 8 10-13h-7l1-7Z"/></svg>
+                      }
+                      @case ('electrical') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M2 12h4l3-7 5 14 3-7h5"/></svg>
+                      }
+                      @case ('engine') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 9h12l3 3v6H5l-2-3V9h1Z"/><path d="M7 9V6h5v3M19 12h2v4h-2M7 13h4v3H7z"/></svg>
+                      }
+                      @case ('controller') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v4H9zM9 16h2M14 16h1M2 9h3M2 14h3M19 9h3M19 14h3M9 2v3M14 2v3M9 19v3M14 19v3"/></svg>
+                      }
+                      @case ('fuel') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3C9.5 7 6.5 10.3 6.5 14a5.5 5.5 0 0 0 11 0c0-3.7-3-7-5.5-11Z"/></svg>
+                      }
+                      @case ('testing') {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 8 3v5c0 5-3.4 8-8 10-4.6-2-8-5-8-10V6l8-3Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+                      }
+                    }
+                  </span>
+                  <h4 class="generator-spec__title">{{ spec.titleKey | translate }}</h4>
+                </div>
+
+                @switch (spec.id) {
+                  @case ('power') {
+                    <div class="generator-metrics">
+                      <div class="generator-metrics__primary">
+                        <strong>60 <span>kVA</span></strong>
+                        <strong>48 <span>kW</span></strong>
+                      </div>
+                      <div class="generator-metrics__caption">{{ 'generador.rated' | translate }}</div>
+                      <div class="generator-metrics__secondary">
+                        <span>{{ 'generador.standby' | translate }}</span>
+                        <strong>66 kVA <i>/</i> 53 kW</strong>
+                      </div>
+                    </div>
+                  }
+                  @case ('electrical') {
+                    <div class="generator-electrical">
+                      <strong class="generator-electrical__voltage">400/230 <span>V</span></strong>
+                      <div class="generator-spec-tags">
+                        <span>50 Hz</span>
+                        <span>{{ 'generador.phase' | translate }}</span>
+                        <span>86.6 A</span>
+                        <span>PF 0.8</span>
+                      </div>
+                    </div>
+                  }
+                  @case ('engine') {
+                    <div class="generator-brandmarks">
+                      <span class="generator-brandmarks__item"><img src="/assets/images/spec-weichai.png" alt="WEICHAI" /></span>
+                      <span class="generator-brandmarks__item"><img src="/assets/images/spec-stamford.png" alt="STAMFORD" /></span>
+                    </div>
+                  }
+                  @case ('controller') {
+                    <div class="generator-brandmarks generator-brandmarks--controller">
+                      <span class="generator-brandmarks__item"><img src="/assets/images/spec-deepsea.png" alt="DSE · Deep Sea Electronics" /></span>
+                    </div>
+                  }
+                  @case ('fuel') {
+                    <strong class="generator-fuel-value">{{ 'generador.fuel_value' | translate }}</strong>
+                  }
+                  @case ('testing') {
+                    <div class="generator-testing">
+                      <div class="generator-testing__logos">
+                        <img class="generator-testing__sgs" src="/assets/images/spec-sgs.png" alt="SGS" />
+                        <img class="generator-testing__quality" src="/assets/images/spec-quality-marks.png" alt="CE · ISO 9001 · RoHS" />
+                      </div>
+                      <div class="generator-spec-tags">
+                        <span>{{ 'generador.load_test' | translate }}</span>
+                        <span>{{ 'generador.altitude' | translate }}</span>
+                      </div>
+                    </div>
+                  }
                 }
-                @case ('electrical') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-7 5 14 3-7h5"/></svg>
-                }
-                @case ('engine') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12l3 3v6H5l-2-3V9h1Z"/><path d="M7 9V6h5v3M19 12h2v4h-2M7 13h4v3H7z"/></svg>
-                }
-                @case ('controller') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v4H9zM9 16h2M14 16h1M2 9h3M2 14h3M19 9h3M19 14h3M9 2v3M14 2v3M9 19v3M14 19v3"/></svg>
-                }
-                @case ('fuel') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C9.5 7 6.5 10.3 6.5 14a5.5 5.5 0 0 0 11 0c0-3.7-3-7-5.5-11Z"/></svg>
-                }
-                @case ('testing') {
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 8 3v5c0 5-3.4 8-8 10-4.6-2-8-5-8-10V6l8-3Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
-                }
-              }
-            </span>
-            <span
-              class="generator-tooltip"
-              [class.is-open]="generadorSpecActiva() === spec.id"
-              [attr.data-spec-tooltip]="spec.id"
-              [id]="'generator-tooltip-' + spec.id"
-              [attr.aria-hidden]="generadorSpecActiva() !== spec.id"
-              role="tooltip">
-              <ng-container [ngTemplateOutlet]="generatorSpecDetails" [ngTemplateOutletContext]="{ $implicit: spec }"></ng-container>
-            </span>
-          </button>
-        }
-        @if (generadorSpecActivaItem(); as specActiva) {
-          <aside class="generator-spec-card" [attr.data-spec]="specActiva.id" aria-live="polite">
-            <ng-container [ngTemplateOutlet]="generatorSpecDetails" [ngTemplateOutletContext]="{ $implicit: specActiva }"></ng-container>
-          </aside>
-        }
+              </li>
+            }
+          </ul>
+        </aside>
       </div>
     </div>
   </section>
@@ -731,7 +796,7 @@
           @for (n of proyectosIndices; track n) {
             <article class="project-card" [class.is-active]="proyectoActivo() === n" [attr.data-indice]="n">
               <div class="project-card__media">
-                <img [src]="proyectosImagenes[n - 1]" class="project-card__image" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+                <img [src]="proyectosImagenes[n - 1]" [attr.data-fallback]="proyectosRespaldo[n - 1]" (error)="alFallarImagen($event)" class="project-card__image" alt="" loading="lazy" decoding="async" aria-hidden="true" />
               </div>
               <div class="project-card__content">
                 <span class="project-card__eyebrow">{{ 'proyectos.p' + n + '_year' | translate }}</span>
@@ -828,10 +893,11 @@
     </div>
   </section>
 
-  <!-- La sección de contacto queda comentada temporalmente; el acceso se conserva en el footer.
-  <section class="section-band section-band--contact" id="contacto">
-    <div class="section-shell contact-layout">
-      <div class="section-heading reveal">
+  <!-- CONTACTO: una ficha por oficina. Cada oficina recibe el correo en su propia
+       dirección (ver `oficinas` en el .ts); el formulario cambia de destino al elegir otra. -->
+  <section class="section-band section-band--contact contact-hub" id="contacto">
+    <div class="section-shell">
+      <div class="section-heading section-heading--center reveal">
         <p class="section-eyebrow">{{ 'contacto.eyebrow' | translate }}</p>
         <h2>
           {{ 'contacto.title_pre' | translate }}
@@ -840,84 +906,147 @@
         <p>{{ 'contacto.desc' | translate }}</p>
       </div>
 
-      <aside class="contact-trust reveal reveal-delay-100" [attr.aria-label]="'contacto.security_title' | translate">
-        <div class="contact-trust__heading">
-          <span class="contact-trust__icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-          </span>
-          <div>
-            <p class="section-eyebrow">{{ 'contacto.security_eyebrow' | translate }}</p>
-            <h3>{{ 'contacto.security_title' | translate }}</h3>
-          </div>
-        </div>
-        <p class="contact-trust__copy">{{ 'contacto.security_desc' | translate }}</p>
-        <a class="contact-trust__email" [href]="'mailto:' + emailContacto">{{ emailContacto }}</a>
-        <ul class="contact-trust__list">
-          <li>{{ 'contacto.security_item1' | translate }}</li>
-          <li>{{ 'contacto.security_item2' | translate }}</li>
-          <li>{{ 'contacto.security_item3' | translate }}</li>
-        </ul>
-      </aside>
+      <div class="office-grid-wrap">
+        <span class="office-grid__line" aria-hidden="true"></span>
+        <ul class="office-grid">
+          @for (oficina of oficinas; track oficina.id) {
+            <li
+              class="office-card"
+              [class.is-hq]="oficina.esMatriz"
+              [attr.data-oficina]="oficina.id">
+              <div class="office-card__top">
+                <img
+                  class="office-card__flag"
+                  [src]="'https://flagcdn.com/w80/' + oficina.codigoISO + '.png'"
+                  alt=""
+                  width="80"
+                  height="54"
+                  loading="lazy"
+                  decoding="async" />
+                <span class="office-card__badge">{{ oficina.rolKey | translate }}</span>
+              </div>
 
-      <form class="contact-form reveal reveal-delay-200" (ngSubmit)="enviarContacto()">
-        <label>
-          {{ 'contacto.label_telefono' | translate }}
-          <input type="tel" name="telefono" [(ngModel)]="contactoForm.telefono" placeholder="+591 700 00000" autocomplete="tel" maxlength="40" />
-        </label>
-        <label>
-          {{ 'contacto.label_tipo_proyecto' | translate }}
-          <select name="tipoProyecto" [(ngModel)]="contactoForm.tipoProyecto" required>
-            <option value="">{{ 'contacto.option_select' | translate }}</option>
-            <option value="nuevo">{{ 'contacto.option_nuevo' | translate }}</option>
-            <option value="mantenimiento">{{ 'contacto.option_mantenimiento' | translate }}</option>
-            <option value="otro">{{ 'contacto.option_otro' | translate }}</option>
-          </select>
-        </label>
-        <label>
-          {{ 'contacto.label_nombre' | translate }}
-          <input type="text" name="nombre" [(ngModel)]="contactoForm.nombre" autocomplete="name" maxlength="120" required />
-        </label>
-        <label>
-          {{ 'contacto.label_email' | translate }}
-          <input type="email" name="email" [(ngModel)]="contactoForm.email" autocomplete="email" maxlength="254" required />
-        </label>
-        <label class="contact-form__wide">
-          {{ 'contacto.label_servicio' | translate }}
-          <select name="servicio" [(ngModel)]="contactoForm.servicio" required>
-            <option value="">{{ 'contacto.option_select_servicio' | translate }}</option>
-            <option value="videovigilancia">{{ 'contacto.option_video' | translate }}</option>
-            <option value="control-acceso">{{ 'contacto.option_acceso' | translate }}</option>
-            <option value="alarmas">{{ 'contacto.option_alarmas' | translate }}</option>
-            <option value="integracion">{{ 'contacto.option_integracion' | translate }}</option>
-            <option value="interfonia">{{ 'contacto.option_interfonia' | translate }}</option>
-            <option value="redes">{{ 'contacto.option_redes' | translate }}</option>
-            <option value="nuclear">{{ 'contacto.option_nuclear' | translate }}</option>
-            <option value="hvac">{{ 'contacto.option_hvac' | translate }}</option>
-          </select>
-        </label>
-        <label class="contact-form__wide">
-          {{ 'contacto.label_mensaje' | translate }}
-          <textarea rows="5" name="mensaje" [(ngModel)]="contactoForm.mensaje" minlength="10" maxlength="900" required></textarea>
-        </label>
+              <div class="office-card__heading">
+                <h3 class="office-card__name">{{ oficina.empresa }}</h3>
+                <p class="office-card__country">{{ oficina.nombreKey | translate }}</p>
+              </div>
 
-        <p class="contact-form__privacy">{{ 'contacto.privacy_note' | translate }}</p>
+              <address class="office-card__details">
+                @if (oficina.direccion) {
+                  <p class="office-card__line">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                    <span>{{ oficina.direccion }}</span>
+                  </p>
+                }
+                <p class="office-card__line">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>
+                  <a [href]="'tel:' + oficina.telefonoHref">{{ oficina.telefono }}</a>
+                </p>
+                <p class="office-card__line">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                  <a [href]="'mailto:' + oficina.email">{{ oficina.email }}</a>
+                </p>
+              </address>
 
-        <button
-          type="submit"
-          class="contact-form__wide btn-primary">
-          {{ 'contacto.submit' | translate }}
-        </button>
-
-        <div class="contact-form__wide" aria-live="polite">
-          @if (estadoEnvio() === 'preparado') {
-            <p class="form-message form-message--success" role="status">{{ 'contacto.preparado' | translate }}</p>
-            @if (correoPreparado()) {
-              <a class="contact-form__fallback" [href]="correoPreparado()">{{ 'contacto.open_mail' | translate }}</a>
-            }
+              <a class="office-card__action" [href]="'mailto:' + oficina.email">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                {{ 'contacto.write_office' | translate }}
+              </a>
+            </li>
           }
-        </div>
-      </form>
+        </ul>
+      </div>
+
+      <!-- FORMULARIO DE CONTACTO: desactivado por ahora. Para volver a usarlo, quita este
+           comentario y cambia el enlace de cada tarjeta (office-card__action) por el botón
+           que llama a seleccionarOficina(oficina.id). La lógica ya está en el .ts.
+      <div class="office-panel" id="office-panel" role="region" [attr.aria-label]="('contacto.write_to' | translate) + ' ' + oficinaActiva().empresa">
+        <span class="office-panel__sweep" aria-hidden="true"></span>
+        <aside class="office-panel__aside">
+          <div class="office-panel__intro">
+            <p class="section-eyebrow">{{ 'contacto.sending_to' | translate }}</p>
+            <h3 class="office-panel__title">
+              {{ 'contacto.write_to' | translate }}
+              <span>{{ oficinaActiva().empresa }}</span>
+            </h3>
+            <a class="office-panel__email" [href]="'mailto:' + oficinaActiva().email">{{ oficinaActiva().email }}</a>
+          </div>
+
+          <div class="office-trust">
+            <div class="office-trust__heading">
+              <span class="office-trust__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+              </span>
+              <h4>{{ 'contacto.security_title' | translate }}</h4>
+            </div>
+            <p class="office-trust__copy">{{ 'contacto.security_desc' | translate }}</p>
+            <ul class="office-trust__list">
+              <li>{{ 'contacto.security_item1' | translate }}</li>
+              <li>{{ 'contacto.security_item2' | translate }}</li>
+              <li>{{ 'contacto.security_item3' | translate }}</li>
+            </ul>
+          </div>
+        </aside>
+
+        <form class="office-form" ngNativeValidate (ngSubmit)="enviarContacto()">
+          <label>
+            {{ 'contacto.label_nombre' | translate }}
+            <input type="text" name="nombre" [(ngModel)]="formActivo().nombre" autocomplete="name" maxlength="120" required />
+          </label>
+          <label>
+            {{ 'contacto.label_email' | translate }}
+            <input type="email" name="email" [(ngModel)]="formActivo().email" autocomplete="email" maxlength="254" required />
+          </label>
+          <label>
+            {{ 'contacto.label_telefono' | translate }}
+            <input type="tel" name="telefono" [(ngModel)]="formActivo().telefono" autocomplete="tel" maxlength="40" />
+          </label>
+          <label>
+            {{ 'contacto.label_tipo_proyecto' | translate }}
+            <select name="tipoProyecto" [(ngModel)]="formActivo().tipoProyecto" required>
+              <option value="">{{ 'contacto.option_select' | translate }}</option>
+              <option value="nuevo">{{ 'contacto.option_nuevo' | translate }}</option>
+              <option value="mantenimiento">{{ 'contacto.option_mantenimiento' | translate }}</option>
+              <option value="otro">{{ 'contacto.option_otro' | translate }}</option>
+            </select>
+          </label>
+          <label class="office-form__wide">
+            {{ 'contacto.label_servicio' | translate }}
+            <select name="servicio" [(ngModel)]="formActivo().servicio" required>
+              <option value="">{{ 'contacto.option_select_servicio' | translate }}</option>
+              <option value="videovigilancia">{{ 'contacto.option_video' | translate }}</option>
+              <option value="control-acceso">{{ 'contacto.option_acceso' | translate }}</option>
+              <option value="alarmas">{{ 'contacto.option_alarmas' | translate }}</option>
+              <option value="integracion">{{ 'contacto.option_integracion' | translate }}</option>
+              <option value="interfonia">{{ 'contacto.option_interfonia' | translate }}</option>
+              <option value="redes">{{ 'contacto.option_redes' | translate }}</option>
+              <option value="nuclear">{{ 'contacto.option_nuclear' | translate }}</option>
+              <option value="hvac">{{ 'contacto.option_hvac' | translate }}</option>
+            </select>
+          </label>
+          <label class="office-form__wide">
+            {{ 'contacto.label_mensaje' | translate }}
+            <textarea rows="5" name="mensaje" [(ngModel)]="formActivo().mensaje" minlength="10" maxlength="900" required></textarea>
+          </label>
+
+          <p class="office-form__privacy">{{ 'contacto.privacy_note' | translate }}</p>
+
+          <button type="submit" class="office-form__wide btn-primary office-form__submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            {{ 'contacto.submit' | translate }}
+          </button>
+
+          <div class="office-form__wide" aria-live="polite">
+            @if (estadoEnvio() === 'preparado') {
+              <p class="form-message form-message--success" role="status">{{ 'contacto.preparado' | translate }}</p>
+              @if (correoPreparado()) {
+                <a class="office-form__fallback" [href]="correoPreparado()">{{ 'contacto.open_mail' | translate }}</a>
+              }
+            }
+          </div>
+        </form>
+      </div>
+      -->
     </div>
   </section>
-  -->
 </main>

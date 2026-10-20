@@ -5,8 +5,8 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideTranslateService } from '@ngx-translate/core';
-import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideTranslateLoader, provideTranslateService } from '@ngx-translate/core';
+import { TranslateClientLoader } from './core/translate-client.loader';
 
 import { routes } from './app.routes';
 import {
@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideTranslateService({
       lang: 'es',
       fallbackLang: 'es',
-      loader: provideTranslateHttpLoader({ prefix: '/i18n/', suffix: '.json' }),
+      loader: provideTranslateLoader(TranslateClientLoader),
     }),
     provideClientHydration(withEventReplay(), withNoIncrementalHydration()),
   ],

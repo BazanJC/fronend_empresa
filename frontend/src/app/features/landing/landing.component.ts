@@ -9,8 +9,10 @@ import {
   signal,
   PLATFORM_ID,
   ChangeDetectionStrategy,
+  Injector,
+  afterNextRender,
 } from '@angular/core';
-import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MapaMundialComponent } from '../../shared/mapa-mundial/mapa-mundial.component';
@@ -22,9 +24,33 @@ import { filter, take } from 'rxjs';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+type OficinaId = 'tunez' | 'nueva_york' | 'bolivia';
+
+interface FormularioContacto {
+  nombre: string;
+  email: string;
+  telefono: string;
+  tipoProyecto: string;
+  servicio: string;
+  mensaje: string;
+}
+
+interface OficinaContacto {
+  id: OficinaId;
+  codigoISO: string;
+  nombreKey: string;
+  rolKey: string;
+  empresa: string;
+  direccion: string | null;
+  telefono: string;
+  telefonoHref: string;
+  email: string;
+  esMatriz: boolean;
+}
+
 @Component({
   selector: 'app-landing',
-  imports: [FormsModule, TranslatePipe, NgTemplateOutlet, MapaMundialComponent, CountUpDirective],
+  imports: [FormsModule, TranslatePipe, MapaMundialComponent, CountUpDirective],
   templateUrl: './landing.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './landing.component.scss',
@@ -33,6 +59,7 @@ export class LandingComponent implements OnDestroy {
   private el = inject(ElementRef<HTMLElement>);
   private applicationRef = inject(ApplicationRef);
   private destroyRef = inject(DestroyRef);
+  private injector = inject(Injector);
   private contactService = inject(ContactService);
   readonly emailContacto = this.contactService.recipient;
   private observer: IntersectionObserver | null = null;
@@ -48,9 +75,6 @@ export class LandingComponent implements OnDestroy {
   paisLatamHovered = signal<string | null>(null);
   paisLatamSeleccionado = signal<string | null>(null);
   paisLatamActivo = computed(() => this.paisLatamHovered() ?? this.paisLatamSeleccionado());
-  generadorSpecHovered = signal<string | null>(null);
-  generadorSpecSeleccionado = signal<string | null>(null);
-  generadorSpecActiva = computed(() => this.generadorSpecHovered() ?? this.generadorSpecSeleccionado());
 
   slidesHero = CLIENT_HERO_IMAGES.map((image, index) => ({
     id: index + 1,
@@ -79,6 +103,7 @@ export class LandingComponent implements OnDestroy {
     { id: 'libia', codigoISO: 'ly', anio: 2019, proyectos: 1 },
     { id: 'mauritania', codigoISO: 'mr', anio: 2023, proyectos: 1 },
     { id: 'ucrania', codigoISO: 'ua', anio: 2024, proyectos: 1 },
+    { id: 'nueva_york', codigoISO: 'us', anio: 2026, proyectos: null },
   ];
 
   proyectosIndices = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -96,8 +121,20 @@ export class LandingComponent implements OnDestroy {
     'https://images.pexels.com/photos/36566099/pexels-photo-36566099.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 5. Infraestructuras estratégicas - Mauritania
     'https://images.pexels.com/photos/29886913/pexels-photo-29886913.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 6. Infraestructuras estratégicas - Ucrania
     'https://images.pexels.com/photos/10958528/pexels-photo-10958528.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', // 7. Banco Mundial - Túnez (vidrios)
-    'https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 8. Centro médico de radioterapia; Pexels: https://www.pexels.com/photo/a-room-with-radiotherapy-for-cancer-treatment-11288661/
+    '/assets/images/proyectos/aben-cidtn-el-alto.jpg', // 8. Bolivia (ABEN): foto propia de la instalación. Hasta que exista el archivo se usa la de respaldo (ver proyectosRespaldo).
     'https://images.pexels.com/photos/37591149/pexels-photo-37591149.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 9. Cámara de seguridad en infraestructura urbana; Pexels: https://www.pexels.com/photo/outdoor-surveillance-camera-on-building-wall-37591149/
+  ];
+  // Imagen alternativa por proyecto (mismo orden). Si la principal falla, se intenta esta una vez.
+  proyectosRespaldo: (string | null)[] = [
+    null,
+    null,
+    null,
+    'https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 4. Gobierno
+    null,
+    null,
+    null,
+    'https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=900&h=540&fit=crop', // 8. Radioterapia (referencia)
+    null,
   ];
   proyectoActivo = signal(1);
   proyectosPausados = signal(false);
@@ -191,60 +228,67 @@ export class LandingComponent implements OnDestroy {
 
   paisLatamActivoItem = computed(() => this.latamPaises.find((pais) => pais.id === this.paisLatamActivo()) ?? null);
 
+  // Ventana emergente de especificaciones: se abre con el puntero o el foco
+  // del teclado, y se puede fijar con el botón (necesario en táctil).
+  generadorFichaAbierta = signal(false);
+  generadorFichaFijada = signal(false);
+  private generadorPunteroDentro = false;
+  private generadorEnfocado = false;
+
   generadorSpecs = [
-    { id: 'power', titleKey: 'generador.spec_power', valueKey: 'generador.power_value', side: 'right' },
-    { id: 'electrical', titleKey: 'generador.spec_electrical', valueKey: 'generador.electrical_value', side: 'left' },
-    { id: 'engine', titleKey: 'generador.spec_engine', valueKey: 'generador.engine_value', side: 'right' },
-    { id: 'controller', titleKey: 'generador.spec_controller', valueKey: 'generador.controller_value', side: 'right' },
-    { id: 'fuel', titleKey: 'generador.spec_fuel', valueKey: 'generador.fuel_value', side: 'left' },
-    { id: 'testing', titleKey: 'generador.spec_testing', valueKey: 'generador.testing_value', side: 'left' },
+    { id: 'power', titleKey: 'generador.spec_power' },
+    { id: 'electrical', titleKey: 'generador.spec_electrical' },
+    { id: 'engine', titleKey: 'generador.spec_engine' },
+    { id: 'controller', titleKey: 'generador.spec_controller' },
+    { id: 'fuel', titleKey: 'generador.spec_fuel' },
+    { id: 'testing', titleKey: 'generador.spec_testing' },
   ];
 
-  generadorSpecActivaItem = computed(() => this.generadorSpecs.find((spec) => spec.id === this.generadorSpecActiva()) ?? null);
-
-  activarGeneradorSpec(id: string): void {
-    if (this.generadorSpecActiva() === id) return;
-    const anterior = this.generadorSpecActiva();
-    this.generadorSpecHovered.set(id);
-    this.animarTooltipGenerador(anterior, id);
+  abrirFichaGenerador(event?: PointerEvent): void {
+    if (event?.pointerType === 'touch') return;
+    this.generadorPunteroDentro = true;
+    this.generadorFichaAbierta.set(true);
   }
 
-  salirGeneradorSpec(id: string): void {
-    if (this.generadorSpecHovered() !== id) return;
-    const anterior = this.generadorSpecActiva();
-    this.generadorSpecHovered.set(null);
-    this.animarTooltipGenerador(anterior, this.generadorSpecActiva());
+  salirFichaGenerador(): void {
+    this.generadorPunteroDentro = false;
+    this.actualizarVisibilidadFichaGenerador();
   }
 
-  seleccionarGeneradorSpec(id: string): void {
-    const anterior = this.generadorSpecActiva();
-    this.generadorSpecSeleccionado.set(this.generadorSpecSeleccionado() === id ? null : id);
-    this.animarTooltipGenerador(anterior, this.generadorSpecActiva());
+  enfocarFichaGenerador(): void {
+    this.generadorEnfocado = true;
+    this.generadorFichaAbierta.set(true);
   }
 
-  private animarTooltipGenerador(anterior: string | null, actual: string | null): void {
-    if (this.prefersReducedMotion) return;
-    requestAnimationFrame(() => {
-      const stage = (this.el.nativeElement as HTMLElement).querySelector<HTMLElement>('.generator-stage');
-      const tooltipAnterior = anterior
-        ? stage?.querySelector<HTMLElement>(`[data-spec-tooltip="${anterior}"]`)
-        : null;
-      const tooltipActual = actual
-        ? stage?.querySelector<HTMLElement>(`[data-spec-tooltip="${actual}"]`)
-        : null;
+  salirEnfoqueFichaGenerador(event: FocusEvent): void {
+    const contenedor = event.currentTarget;
+    if (contenedor instanceof HTMLElement && event.relatedTarget instanceof Node && contenedor.contains(event.relatedTarget)) return;
 
-      if (tooltipAnterior && tooltipAnterior !== tooltipActual) {
-        gsap.killTweensOf(tooltipAnterior);
-        gsap.to(tooltipAnterior, { autoAlpha: 0, y: 5, duration: 0.2, ease: 'power2.out' });
-      }
-      if (tooltipActual) {
-        gsap.killTweensOf(tooltipActual);
-        gsap.fromTo(tooltipActual,
-          { autoAlpha: 0, y: 9, scale: 0.98, filter: 'blur(3px)' },
-          { autoAlpha: 1, y: 0, scale: 1, filter: 'blur(0px)', duration: 0.38, ease: 'power2.out' },
-        );
-      }
-    });
+    this.generadorEnfocado = false;
+    this.actualizarVisibilidadFichaGenerador();
+  }
+
+  alternarFichaGenerador(): void {
+    if (this.generadorFichaFijada()) {
+      this.cerrarFichaGenerador();
+      return;
+    }
+
+    this.generadorFichaFijada.set(true);
+    this.generadorFichaAbierta.set(true);
+  }
+
+  cerrarFichaGenerador(): void {
+    this.generadorFichaFijada.set(false);
+    this.generadorPunteroDentro = false;
+    this.generadorEnfocado = false;
+    this.generadorFichaAbierta.set(false);
+  }
+
+  private actualizarVisibilidadFichaGenerador(): void {
+    this.generadorFichaAbierta.set(
+      this.generadorFichaFijada() || this.generadorPunteroDentro || this.generadorEnfocado,
+    );
   }
 
   activarPaisLatam(id: string): void {
@@ -300,11 +344,27 @@ export class LandingComponent implements OnDestroy {
     { icon: 'doc', tituloKey: 'nuclear.item4_title', descKey: 'nuclear.item4_desc' },
   ];
 
+  private readonly expansionReferenciasTunisia = [
+    'expansion.ref_gct',
+    'expansion.ref_scg',
+    'expansion.ref_steg',
+    'expansion.ref_prisons',
+    'expansion.ref_ports',
+    'expansion.ref_world_bank',
+    'expansion.ref_oim',
+  ] as const;
+
   expansionHitos = [
-    { anio: '2009', tituloKey: 'expansion.item1_title', descKey: 'expansion.item1_desc' },
-    { anio: '2017-2019', tituloKey: 'expansion.item2_title', descKey: 'expansion.item2_desc' },
-    { anio: '2021-2024', tituloKey: 'expansion.item3_title', descKey: 'expansion.item3_desc' },
-    { anio: '2025-2026', tituloKey: 'expansion.item4_title', descKey: 'expansion.item4_desc' },
+    { id: '2009', anio: '2009', tituloKey: 'expansion.item1_title', descKey: 'expansion.item1_desc' },
+    {
+      id: 'refs-tunisia',
+      anioKey: 'expansion.references_year',
+      tituloKey: 'expansion.references_title',
+      referenciasKeys: this.expansionReferenciasTunisia,
+    },
+    { id: '2017-2019', anio: '2017-2019', tituloKey: 'expansion.item2_title', descKey: 'expansion.item2_desc' },
+    { id: '2021-2024', anio: '2021-2024', tituloKey: 'expansion.item3_title', descKey: 'expansion.item3_desc' },
+    { id: '2025-2026', anio: '2025-2026', tituloKey: 'expansion.item4_title', descKey: 'expansion.item4_desc' },
   ];
 
   private ctx?: gsap.Context;
@@ -330,6 +390,7 @@ export class LandingComponent implements OnDestroy {
     gsap.registerPlugin(ScrollTrigger);
     this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    this.revisarImagenesRotas();
     this.iniciarCarrusel();
     this.iniciarAnimacionesGsap();
     this.iniciarObservadorHero();
@@ -372,6 +433,7 @@ export class LandingComponent implements OnDestroy {
         // sin desplazamientos ni escalados de entrada.
         gsap.set(
           [
+            '.hero-brand-eyebrow',
             '.hero-title',
             '.hero-subtitle',
             '.hero-actions .btn-primary, .hero-actions .btn-secondary',
@@ -386,7 +448,8 @@ export class LandingComponent implements OnDestroy {
         });
         heroTl
           .from('.hero-brand-badge', { y: -14, scale: 0.9, opacity: 0, duration: 0.85, ease: 'back.out(1.25)' }, 0.35)
-          .from('.hero-title', { y: 32, opacity: 0, duration: 1.1 })
+          .from('.hero-brand-eyebrow', { y: 16, opacity: 0, duration: 0.75 }, 0.45)
+          .from('.hero-title', { y: 32, opacity: 0, duration: 1.1 }, '-=0.55')
           .from('.hero-subtitle', { y: 25, opacity: 0, duration: 0.9 }, '-=0.6')
           .from('.hero-actions .btn-primary, .hero-actions .btn-secondary', {
             y: 20,
@@ -607,7 +670,8 @@ export class LandingComponent implements OnDestroy {
       const timelineTrack = this.el.nativeElement.querySelector('.timeline-track') as HTMLElement | null;
       const timelinePanels = gsap.utils.toArray<HTMLElement>('.timeline-panel');
       const timelineDots = gsap.utils.toArray<HTMLElement>('.timeline-dots__dot');
-      const alturaHeaderFijo = 92;
+      const alturaHeaderFijo = (): number =>
+        parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 92;
 
       if (timelinePin && timelineTrack && timelinePanels.length > 1 && !this.prefersReducedMotion && window.matchMedia('(min-width: 901px)').matches) {
         if (timelineDots[0]) timelineDots[0].classList.add('is-active');
@@ -617,7 +681,7 @@ export class LandingComponent implements OnDestroy {
           ease: 'none',
           scrollTrigger: {
             trigger: timelinePin,
-            start: 'top top+=' + alturaHeaderFijo,
+            start: () => 'top top+=' + alturaHeaderFijo(),
             end: () => '+=' + (timelineTrack.scrollWidth - timelinePin.offsetWidth),
             scrub: 1,
             pin: true,
@@ -700,9 +764,9 @@ export class LandingComponent implements OnDestroy {
       // "escaneo", acorde al tema de vigilancia/monitoreo de la sección.
       gsap.fromTo(
         '.nuclear-item',
-        { clipPath: 'inset(0 0 0 100% round 1.15rem)', opacity: 0 },
+        { clipPath: 'inset(0 0 0 100% round 1rem)', opacity: 0 },
         {
-          clipPath: 'inset(0 0 0 0% round 1.15rem)',
+          clipPath: 'inset(0 0 0 0% round 1rem)',
           opacity: 1,
           stagger: 0.12,
           duration: 0.8,
@@ -712,6 +776,10 @@ export class LandingComponent implements OnDestroy {
             start: 'top 85%',
             toggleActions: 'play reverse play reverse',
           },
+          // El clip se borra al terminar: un clip-path persistente recorta
+          // también el box-shadow exterior, así que dejaba sin efecto el
+          // halo de las tarjetas al pasar el mouse.
+          clearProps: 'clipPath',
         },
       );
 
@@ -730,35 +798,174 @@ export class LandingComponent implements OnDestroy {
         });
       }
 
-      // 8b. Presentación de producto: el generador entra como pieza principal
-      // y los puntos técnicos aparecen después con una cascada contenida.
+      // 8b. Generador NOVAXIS POWER — lanzamiento del nuevo servicio.
+      // La banda de metal cepillado recibe varios gestos: el título barre un
+      // reflejo dorado, las tres piezas del alcance entran escalonadas, la
+      // foto se descubre con un clip ascendente y el fondo se mueve en
+      // parallax. Los bucles se pausan cuando la sección sale de pantalla
+      // (ScrollTrigger onToggle) para no gastar CPU de más.
       if (!this.prefersReducedMotion) {
-        gsap.from('.generator-visual', {
-          scrollTrigger: {
-            trigger: '.generator-stage',
-            start: 'top 82%',
-            toggleActions: 'play none none none',
-          },
-          y: 22,
-          opacity: 0,
-          scale: 0.985,
-          duration: 0.9,
-          ease: 'power3.out',
-          clearProps: 'opacity,transform',
-        });
-        gsap.from('.generator-hotspot', {
-          scrollTrigger: {
-            trigger: '.generator-stage',
-            start: 'top 82%',
-            toggleActions: 'play none none none',
-          },
-          scale: 0.55,
-          opacity: 0,
-          stagger: 0.09,
-          duration: 0.48,
-          ease: 'back.out(1.5)',
-          clearProps: 'opacity,transform',
-        });
+        const generador = this.el.nativeElement.querySelector('#equipo') as HTMLElement | null;
+
+        if (generador) {
+          const titulo = generador.querySelector<HTMLElement>('.section-heading h2');
+          const brilloPlaca = generador.querySelector<HTMLElement>('.generator-brandplate__shine');
+          const destelloMarco = generador.querySelector<HTMLElement>('.generator-stage__glint');
+          const piezas = generador.querySelectorAll<HTMLElement>('.generator-offer__services li');
+          const escenario = generador.querySelector<HTMLElement>('.generator-stage');
+
+          // Reflejo del título: background-position recorre el degradado y
+          // deja pasar una banda dorada cada pocos segundos.
+          if (titulo) {
+            const brilloTitulo = gsap.fromTo(
+              titulo,
+              { backgroundPosition: '115% 0' },
+              {
+                backgroundPosition: '-15% 0',
+                duration: 2.8,
+                ease: 'power2.inOut',
+                repeat: -1,
+                repeatDelay: 4.6,
+                paused: true,
+              },
+            );
+
+            ScrollTrigger.create({
+              trigger: generador,
+              start: 'top bottom',
+              end: 'bottom top',
+              onToggle: (self) => (self.isActive ? brilloTitulo.play() : brilloTitulo.pause()),
+            });
+          }
+
+          // Entrada única: piezas del alcance + descubrimiento de la foto.
+          const entrada = gsap.timeline({
+            scrollTrigger: { trigger: generador, start: 'top 72%', toggleActions: 'play none none none' },
+            defaults: { ease: 'power3.out' },
+          });
+
+          if (piezas.length) {
+            // clearProps devuelve el transform al CSS: sin esto el inline de
+            // GSAP taparía el hover (levantar la pieza y el barrido de luz).
+            entrada.from(
+              piezas,
+              { y: 26, opacity: 0, stagger: 0.1, duration: 0.65, clearProps: 'transform,opacity' },
+              0,
+            );
+          }
+
+          if (escenario) {
+            // clearProps borra el clip al terminar: si quedara inline,
+            // recortaría el resplandor dorado del marco.
+            entrada.fromTo(
+              escenario,
+              { clipPath: 'inset(0 0 100% 0 round 1.2rem)' },
+              {
+                clipPath: 'inset(0 0 0% 0 round 1.2rem)',
+                duration: 1,
+                ease: 'power3.inOut',
+                clearProps: 'clipPath',
+              },
+              0.12,
+            );
+          }
+
+          // Parallax por capas: la placa, las piezas y la foto viajan a
+          // distinta velocidad para que la sección tenga profundidad.
+          gsap.to('.generator-brandlockup', {
+            y: -30,
+            ease: 'none',
+            scrollTrigger: { trigger: generador, start: 'top bottom', end: 'bottom top', scrub: 1 },
+          });
+
+          gsap.to('.generator-offer', {
+            y: -16,
+            ease: 'none',
+            scrollTrigger: { trigger: generador, start: 'top bottom', end: 'bottom top', scrub: 1.2 },
+          });
+
+          // La foto se mueve dentro del marco (zoom lento + deriva vertical):
+          // el efecto se nota sobre todo al entrar y salir de la sección.
+          gsap.fromTo(
+            '.generator-visual',
+            { yPercent: -3.5, scale: 1.07 },
+            {
+              yPercent: 3.5,
+              scale: 1.015,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: escenario ?? generador,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 0.9,
+              },
+            },
+          );
+
+          // Reflejo que cruza la placa del logo, en loop mientras se ve.
+          if (brilloPlaca) {
+            gsap.set(brilloPlaca, { rotation: 8 });
+            const barridoPlaca = gsap
+              .timeline({ repeat: -1, repeatDelay: 4, paused: true })
+              .fromTo(
+                brilloPlaca,
+                { xPercent: -170, opacity: 0 },
+                { xPercent: 170, opacity: 1, duration: 1.15, ease: 'power2.inOut' },
+              )
+              .to(brilloPlaca, { opacity: 0, duration: 0.25 }, '-=0.25');
+
+            ScrollTrigger.create({
+              trigger: generador,
+              start: 'top bottom',
+              end: 'bottom top',
+              onToggle: (self) => (self.isActive ? barridoPlaca.play() : barridoPlaca.pause()),
+            });
+          }
+
+          // Destello que recorre el marco del equipo cada tanto: le da el
+          // "acabado" metálico al producto.
+          if (destelloMarco) {
+            gsap.set(destelloMarco, { rotation: 12 });
+            const barridoMarco = gsap
+              .timeline({ repeat: -1, repeatDelay: 5.5, paused: true })
+              .fromTo(
+                destelloMarco,
+                { xPercent: -180, opacity: 0 },
+                { xPercent: 180, opacity: 1, duration: 1.7, ease: 'power2.inOut' },
+              )
+              .to(destelloMarco, { opacity: 0, duration: 0.4 }, '-=0.4');
+
+            ScrollTrigger.create({
+              trigger: generador,
+              start: 'top bottom',
+              end: 'bottom top',
+              onToggle: (self) => (self.isActive ? barridoMarco.play() : barridoMarco.pause()),
+            });
+          }
+
+          // El reflejo grande del fondo se desplaza con el scroll.
+          gsap.to('.generator-metal__sheen', {
+            xPercent: 7,
+            yPercent: 4,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: generador,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 1,
+            },
+          });
+
+          // Los halos respiran muy lento: le dan vida al metal sin distraer.
+          gsap.to('.generator-metal__glow--gold', {
+            x: 40,
+            y: 30,
+            duration: 14,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut',
+          });
+        }
       }
 
       // 9. Especialidades Tecnológicas — el carrusel se mueve solo (CSS),
@@ -880,18 +1087,56 @@ export class LandingComponent implements OnDestroy {
         clearProps: 'opacity,transform',
       });
 
-      // 13. Formulario de Contacto
-      gsap.from('.contact-form', {
-        scrollTrigger: {
-          trigger: '.contact-form',
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-        y: 35,
-        opacity: 0,
-        duration: 0.85,
-        ease: 'power2.out',
-      });
+      // 13. Contacto por oficina: una línea se dibuja sobre las fichas, estas
+      // entran en cascada y luego sube el panel del formulario. Los cambios
+      // de oficina se animan aparte (ver animarCambioOficina).
+      if (!this.prefersReducedMotion) {
+        const contactoTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.office-grid-wrap',
+            start: 'top 82%',
+            toggleActions: 'play none none none',
+          },
+        });
+        contactoTl
+          .fromTo(
+            '.office-grid__line',
+            { scaleX: 0 },
+            { scaleX: 1, duration: 1.1, ease: 'power3.inOut', transformOrigin: 'left center' },
+          )
+          .from(
+            '.office-card',
+            {
+              y: 42,
+              opacity: 0,
+              stagger: 0.14,
+              duration: 0.85,
+              ease: 'power3.out',
+              clearProps: 'opacity,transform',
+            },
+            0.15,
+          )
+          .from(
+            '.office-card__flag',
+            { scale: 0.6, opacity: 0, stagger: 0.14, duration: 0.6, ease: 'back.out(1.8)', clearProps: 'opacity,transform' },
+            0.4,
+          );
+
+        if (this.el.nativeElement.querySelector('.office-panel')) {
+          gsap.from('.office-panel', {
+            scrollTrigger: {
+              trigger: '.office-panel',
+              start: 'top 88%',
+              toggleActions: 'play none none none',
+            },
+            y: 36,
+            opacity: 0,
+            duration: 0.9,
+            ease: 'power2.out',
+            clearProps: 'opacity,transform',
+          });
+        }
+      }
 
       // 14. Efecto de Inclinación 3D en Hover para Pantallas Grandes
       if (!this.prefersReducedMotion && window.matchMedia('(min-width: 1024px)').matches) {
@@ -1117,24 +1362,135 @@ export class LandingComponent implements OnDestroy {
     });
   }
 
-  contactoForm = {
-    nombre: '',
-    telefono: '',
-    email: '',
-    tipoProyecto: '',
-    servicio: '',
-    mensaje: '',
+  // ---------------------------------------------------------------
+  // Contacto por oficina. Cada oficina tiene su propio correo de destino.
+  // TODO(cliente): los datos marcados "REEMPLAZAR" son provisionales; solo
+  // los de Nueva York (nombre, teléfono, dirección) vienen confirmados.
+  // Ningún correo de abajo es real: hay que poner el definitivo de cada sede.
+  // ---------------------------------------------------------------
+  readonly oficinas: OficinaContacto[] = [
+    {
+      id: 'tunez',
+      codigoISO: 'tn',
+      nombreKey: 'mapa.paises.tunez.nombre',
+      rolKey: 'contacto.rol_matriz',
+      empresa: 'NOVAXIS International',
+      direccion: 'Gabès', // TODO(cliente): dirección completa
+      telefono: '+216 00 000 000', // TODO(cliente): REEMPLAZAR
+      telefonoHref: '+21600000000',
+      email: 'REEMPLAZAR-tunez@example.com', // TODO(cliente): REEMPLAZAR
+      esMatriz: true,
+    },
+    {
+      id: 'nueva_york',
+      codigoISO: 'us',
+      nombreKey: 'mapa.paises.nueva_york.nombre',
+      rolKey: 'contacto.rol_oficina',
+      empresa: 'NOVAXIS NY',
+      direccion: '4207 NY30, Amsterdam, NY 12010',
+      telefono: '+1 518 391 3180',
+      telefonoHref: '+15183913180',
+      email: 'REEMPLAZAR-ny@example.com', // TODO(cliente): REEMPLAZAR
+      esMatriz: false,
+    },
+    {
+      id: 'bolivia',
+      codigoISO: 'bo',
+      nombreKey: 'mapa.paises.bolivia.nombre',
+      rolKey: 'contacto.rol_latam',
+      empresa: 'NOVAXIS Bolivia', // TODO(cliente): confirmar razón social
+      direccion: null, // TODO(cliente): dirección (se oculta mientras sea null)
+      telefono: '+591 000 00000', // TODO(cliente): REEMPLAZAR
+      telefonoHref: '+59100000000',
+      email: 'REEMPLAZAR-bolivia@example.com', // TODO(cliente): REEMPLAZAR
+      esMatriz: false,
+    },
+  ];
+
+  oficinaActivaId = signal<OficinaId>('tunez');
+  oficinaActiva = computed(() => this.oficinas.find((o) => o.id === this.oficinaActivaId()) ?? this.oficinas[0]);
+
+  // Un borrador por oficina: al cambiar de sede no se pierde lo escrito.
+  private contactoForms: Record<OficinaId, FormularioContacto> = {
+    tunez: this.formularioVacio(),
+    nueva_york: this.formularioVacio(),
+    bolivia: this.formularioVacio(),
   };
+  formActivo = computed(() => this.contactoForms[this.oficinaActivaId()]);
+
+  private formularioVacio(): FormularioContacto {
+    return { nombre: '', email: '', telefono: '', tipoProyecto: '', servicio: '', mensaje: '' };
+  }
+
+  seleccionarOficina(id: OficinaId): void {
+    const cambia = this.oficinaActivaId() !== id;
+    if (cambia) {
+      this.oficinaActivaId.set(id);
+      this.estadoEnvio.set('idle');
+      this.correoPreparado.set(null);
+    }
+    if (!this.isBrowser) return;
+
+    // En pantallas angostas las fichas se apilan y el formulario queda lejos:
+    // se lleva la vista hasta él para que el cambio de oficina se note.
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      this.el.nativeElement.querySelector('#office-panel')?.scrollIntoView({
+        behavior: this.prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    }
+
+    if (cambia && !this.prefersReducedMotion) {
+      afterNextRender(() => this.animarCambioOficina(), { injector: this.injector });
+    }
+  }
+
+  // Transición del panel al cambiar de oficina: el contenido nuevo entra en
+  // cascada y una barra de acento recorre el borde superior del panel.
+  private animarCambioOficina(): void {
+    const animar = () => {
+      gsap.killTweensOf('.office-panel__intro > *, .office-trust, .office-form > *');
+      gsap.fromTo(
+        '.office-panel__intro > *',
+        { y: 14, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.07, duration: 0.5, ease: 'power2.out', clearProps: 'opacity,transform' },
+      );
+      gsap.fromTo(
+        '.office-form > label',
+        { y: 12, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.05, duration: 0.45, ease: 'power2.out', delay: 0.08, clearProps: 'opacity,transform' },
+      );
+      gsap.fromTo(
+        '.office-panel__sweep',
+        { scaleX: 0, opacity: 1 },
+        { scaleX: 1, duration: 0.7, ease: 'power3.inOut', onComplete: () => { gsap.to('.office-panel__sweep', { opacity: 0, duration: 0.4 }); } },
+      );
+    };
+    if (this.ctx) this.ctx.add(animar);
+    else animar();
+  }
 
   enviarContacto(): void {
-    const mailto = this.contactService.crearEnlace({
-      nombre: this.contactoForm.nombre.trim(),
-      telefono: this.contactoForm.telefono.trim(),
-      email: this.contactoForm.email.trim(),
-      tipoProyecto: this.contactoForm.tipoProyecto,
-      servicio: this.contactoForm.servicio,
-      mensaje: this.contactoForm.mensaje.trim(),
-    });
+    const oficina = this.oficinaActiva();
+    const f = this.formActivo();
+
+    // Los saltos de línea en el asunto o nombre podrían inyectar cabeceras en
+    // el enlace mailto, así que se aplanan antes de armarlo.
+    const linea = (valor: string): string => valor.replace(/[\r\n]+/g, ' ').trim();
+    const nombre = linea(f.nombre);
+
+    const cuerpo = [
+      `Nombre: ${nombre}`,
+      `Correo: ${linea(f.email)}`,
+      `Teléfono: ${linea(f.telefono)}`,
+      `Tipo de proyecto: ${linea(f.tipoProyecto)}`,
+      `Servicio: ${linea(f.servicio)}`,
+      '',
+      f.mensaje.trim(),
+    ].join('\n');
+
+    const asunto = `Contacto web · ${oficina.empresa} · ${nombre}`;
+    const mailto = `mailto:${oficina.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
 
     this.correoPreparado.set(mailto);
     this.estadoEnvio.set('preparado');
@@ -1156,6 +1512,34 @@ export class LandingComponent implements OnDestroy {
     this.iniciarCarrusel();
   }
 
+  /**
+   * Una imagen no cargó. Si tiene `data-fallback` se prueba esa una sola vez (se borra el
+   * atributo para no entrar en bucle si el respaldo también falla); si no, se marca como
+   * fallida y el CSS muestra el fondo de la tarjeta en su lugar, en vez de un hueco vacío.
+   */
+  alFallarImagen(evento: Event): void {
+    const img = evento.target;
+    if (!(img instanceof HTMLImageElement)) return;
+
+    const respaldo = img.dataset['fallback'];
+    if (respaldo) {
+      delete img.dataset['fallback'];
+      img.src = respaldo;
+      return;
+    }
+    img.classList.add('is-failed');
+  }
+
+  // Con hidratación, una imagen puede fallar antes de que Angular enganche (error): se revisan
+  // las que ya terminaron de cargar sin dimensiones.
+  private revisarImagenesRotas(): void {
+    this.el.nativeElement.querySelectorAll('img[data-fallback]').forEach((img: HTMLImageElement) => {
+      if (img.complete && img.naturalWidth === 0 && img.currentSrc) {
+        this.alFallarImagen({ target: img } as unknown as Event);
+      }
+    });
+  }
+
   marcarImagenHeroLista(indice: number): void {
     this.heroImagesLoaded.update((loaded) => new Set(loaded).add(indice));
   }
@@ -1165,8 +1549,10 @@ export class LandingComponent implements OnDestroy {
   }
 
   seleccionarProyectoNuclear(): void {
-    this.contactoForm.tipoProyecto = 'nuevo';
-    this.contactoForm.servicio = 'nuclear';
+    Object.values(this.contactoForms).forEach((form) => {
+      form.tipoProyecto = 'nuevo';
+      form.servicio = 'nuclear';
+    });
   }
 
   pausarCarrusel(): void {

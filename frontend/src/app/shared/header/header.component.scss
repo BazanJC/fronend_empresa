@@ -54,24 +54,38 @@
 .nav-track-container a:focus-visible,
 .nav-track-container button:focus-visible,
 .header-language-control button:focus-visible,
-.xl\:hidden:focus-visible {
+.lg\:hidden:focus-visible,
+.header-theme-toggle:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 3px;
 }
 
-.nav-track-container a[aria-current='location'] {
-  color: var(--color-primary);
-}
+// Botones de la navegación. El grosor no cambia al activarse: si cambiara, el texto
+// se ensancharía y desplazaría a los demás botones y a la cápsula.
+.nav-link {
+  position: relative;
+  z-index: 10;
+  color: var(--color-on-surface);
+  font-weight: 650;
+  transition: color 300ms ease;
 
-.nav-track-container a[aria-current='location']::after {
-  position: absolute;
-  right: 1rem;
-  bottom: 0.2rem;
-  left: 1rem;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--color-primary);
-  content: '';
+  &:hover,
+  &.is-active {
+    color: var(--color-primary);
+  }
+
+  // Punto en "Más" cuando la sección en pantalla está dentro de su menú.
+  &.has-active::before {
+    position: absolute;
+    top: 0.5rem;
+    inset-inline-end: 0.45rem;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-primary) 70%, transparent);
+    content: '';
+  }
 }
 
 @media (min-width: 1024px) and (max-width: 1279px) {
@@ -101,23 +115,36 @@
   border-color: color-mix(in srgb, var(--color-outline) 30%, transparent);
 }
 
-// Cápsula / Píldora Flotante Activa (Indicador suave)
+// Cápsula flotante activa. Se coloca con transform (acelerado por GPU). Las transiciones
+// de movimiento solo se activan con .is-animated, una vez que ya está en su sitio; el
+// easing tiene un leve rebote para que el desplazamiento se sienta elástico.
 .nav-floating-pill {
   position: absolute;
+  top: 0;
+  left: 0;
   border-radius: 9999px;
   background: color-mix(in srgb, var(--color-primary) 14%, transparent);
   border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
   box-shadow:
     0 0 20px color-mix(in srgb, var(--color-primary-container) 25%, transparent),
     inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition:
-    left 400ms cubic-bezier(0.22, 1, 0.36, 1),
-    width 400ms cubic-bezier(0.22, 1, 0.36, 1),
-    top 400ms cubic-bezier(0.22, 1, 0.36, 1),
-    height 400ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 250ms ease;
+  opacity: 0;
+  transition: opacity 250ms ease;
+  will-change: transform, width;
   pointer-events: none;
   z-index: 1;
+
+  &.is-visible {
+    opacity: 1;
+  }
+
+  &.is-animated {
+    transition:
+      transform 520ms cubic-bezier(0.34, 1.28, 0.64, 1),
+      width 520ms cubic-bezier(0.34, 1.28, 0.64, 1),
+      height 520ms cubic-bezier(0.34, 1.28, 0.64, 1),
+      opacity 250ms ease;
+  }
 
   &::after {
     content: '';
@@ -175,6 +202,13 @@
   }
 }
 
+.btn-nav-cta.is-active {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, #0066e0 35%, transparent),
+    0 8px 26px rgba(0, 102, 224, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
 :host-context(.dark) .btn-nav-cta {
   background: linear-gradient(135deg, #005ed1 0%, #1690ce 100%);
   border: 1px solid rgba(79, 195, 247, 0.5);
@@ -192,6 +226,37 @@
 .lg\:hidden svg {
   width: 1.35rem;
   height: 1.35rem;
+}
+
+.header-theme-toggle svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+// Avance de lectura: línea que crece sobre el borde inferior del header. El .ts le
+// escribe el transform directamente.
+.header-progress {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  overflow: hidden;
+  pointer-events: none;
+
+  span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-brand, linear-gradient(90deg, var(--color-primary), var(--color-accent-400)));
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
+  }
+}
+
+:host-context([dir='rtl']) .header-progress span {
+  transform-origin: right center;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -334,7 +399,7 @@
 
 @media (max-width: 1023px) {
   #mobile-navigation {
-    max-height: calc(100svh - 108px);
+    max-height: calc(100svh - var(--header-h, 92px) - 1rem);
     overflow-y: auto;
     overscroll-behavior: contain;
     scrollbar-width: thin;
@@ -342,6 +407,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .nav-link,
   .nav-more-chevron,
   .header-more-menu,
   .header-more-menu a,

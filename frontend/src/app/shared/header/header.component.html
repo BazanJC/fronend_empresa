@@ -1,26 +1,30 @@
-<nav class="fixed top-0 left-0 right-0 z-50 bg-surface/85 backdrop-blur-2xl border-b border-outline-variant/60 shadow-lg shadow-black/5 transition-colors duration-300">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 flex items-center justify-between lg:grid lg:grid-cols-12 lg:gap-4">
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/85 backdrop-blur-2xl border-b border-outline-variant/60 shadow-lg shadow-black/5 transition-colors duration-300">
+  <!-- En escritorio: [logo | navegación | acciones]. Las columnas laterales son iguales (1fr)
+       y la central se ajusta a su contenido, así la navegación queda centrada en la pantalla
+       aunque tenga más o menos botones. -->
+  <div #barra class="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4">
 
-    <!-- Izquierda: Logo (col-span-3) -->
-    <div class="lg:col-span-3 flex items-center justify-start">
-      <a href="#hero" class="brand-logo-link group" [attr.aria-label]="'footer.inicio' | translate">
+    <!-- Izquierda: Logo -->
+    <div class="flex items-center justify-start">
+      <a href="#hero" class="brand-logo-link group" [attr.aria-label]="'footer.inicio' | translate" (click)="irASeccion('hero', $event)">
         <div class="header-brand-badge">
           <img src="/assets/images/logo-novaxis.png" alt="NOVAXIS International" class="h-16 md:h-20 w-auto object-contain" />
         </div>
       </a>
     </div>
 
-    <!-- Centro: Navegación Principal (col-span-6) perfectamente centrado en la pantalla -->
-    <div class="hidden lg:col-span-6 lg:flex items-center justify-center">
+    <!-- Centro: botones principales en el mismo orden en que aparecen las secciones -->
+    <div class="hidden lg:flex items-center justify-center">
       <nav class="relative flex items-center gap-1.5 p-1.5 rounded-full nav-track-container" [attr.aria-label]="'footer.navegacion' | translate">
-        <!-- Cápsula / Píldora Activa Flotante -->
+        <!-- Cápsula activa: se desliza hacia el botón de la sección en pantalla -->
         <span
           class="nav-floating-pill"
-          [class.opacity-0]="!indicadorListo()"
-          [style.left.px]="indicadorLeft()"
+          aria-hidden="true"
+          [class.is-visible]="indicadorVisible()"
+          [class.is-animated]="indicadorAnimado()"
           [style.width.px]="indicadorWidth()"
-          [style.top.px]="indicadorTop()"
-          [style.height.px]="indicadorHeight()">
+          [style.height.px]="indicadorHeight()"
+          [style.transform]="'translate3d(' + indicadorX() + 'px,' + indicadorY() + 'px,0)'">
         </span>
 
         @for (item of navPrincipal; track item.id) {
@@ -28,42 +32,38 @@
             #navLink
             [attr.data-id]="item.id"
             [href]="'#' + item.id"
-            class="relative z-10 px-2.5 2xl:px-4 py-2 text-[13px] 2xl:text-[15px] rounded-full transition-all duration-300 select-none whitespace-nowrap"
-            [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
-            [class.text-primary]="seccionActiva() === item.id"
-            [class.font-bold]="seccionActiva() === item.id"
-            [class.text-on-surface]="seccionActiva() !== item.id"
-            [class.font-semibold]="seccionActiva() !== item.id"
-            [class.hover:text-primary]="seccionActiva() !== item.id">
+            class="nav-link px-2.5 2xl:px-4 py-2 text-[13px] 2xl:text-[15px] rounded-full select-none whitespace-nowrap"
+            [class.is-active]="grupoActivo() === item.id"
+            [attr.aria-current]="grupoActivo() === item.id ? 'location' : null"
+            (click)="irASeccion(item.id, $event)">
             {{ item.key | translate }}
           </a>
         }
+
+        <!-- "Más" reúne las secciones secundarias. Cuando la sección en pantalla está
+             aquí dentro, el botón muestra un punto y la cápsula se queda en su grupo,
+             para que el recorrido sea siempre de izquierda a derecha. -->
         <div class="relative header-more-control">
           <button
             #navLink
             type="button"
             data-id="mas"
-            class="relative z-10 flex items-center gap-1 px-2.5 2xl:px-4 py-2 text-[13px] 2xl:text-[15px] rounded-full transition-all duration-300 select-none whitespace-nowrap"
+            class="nav-link flex items-center gap-1 px-2.5 2xl:px-4 py-2 text-[13px] 2xl:text-[15px] rounded-full select-none whitespace-nowrap"
+            [class.has-active]="masActivo()"
             [attr.aria-expanded]="menuMasAbierto()"
             aria-controls="header-more-menu"
             [attr.aria-label]="'nav.more_sections' | translate"
-            [attr.aria-current]="seccionMasActiva() ? 'location' : null"
-            [class.text-primary]="seccionMasActiva()"
-            [class.font-bold]="seccionMasActiva()"
-            [class.text-on-surface]="!seccionMasActiva()"
-            [class.font-semibold]="!seccionMasActiva()"
-            (click)="toggleMenuMas()"
-            (keydown.escape)="cerrarMenuMas()">
+            (click)="toggleMenuMas()">
             {{ 'nav.more' | translate }}
             <svg class="nav-more-chevron" [class.is-open]="menuMasAbierto()" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 7.5 5 5 5-5" /></svg>
           </button>
           @if (menuMasAbierto()) {
-            <div id="header-more-menu" class="header-more-menu glass-card" role="group" [attr.aria-label]="'nav.more_sections' | translate" (keydown.escape)="cerrarMenuMas()">
+            <div id="header-more-menu" class="header-more-menu glass-card" role="group" [attr.aria-label]="'nav.more_sections' | translate">
               <span class="header-more-menu__eyebrow">{{ 'nav.explore' | translate }}</span>
               @for (item of navMas; track item.id) {
                 <a
                   [href]="'#' + item.id"
-                  (click)="cerrarMenuMas()"
+                  (click)="irASeccion(item.id, $event)"
                   [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
                   [class.is-active]="seccionActiva() === item.id">
                   {{ item.key | translate }}
@@ -76,9 +76,9 @@
       </nav>
     </div>
 
-    <!-- Derecha: Acciones (col-span-3) alineado simétricamente a la derecha -->
-    <div class="hidden lg:col-span-3 lg:flex items-center justify-end gap-2 2xl:gap-3.5">
-      <!-- Selector de Idioma -->
+    <!-- Derecha: acciones, alineadas al borde derecho -->
+    <div class="hidden lg:flex items-center justify-end gap-2 2xl:gap-3.5">
+      <!-- Selector de idioma -->
       <div class="relative header-language-control">
         <button
           class="glass-card rounded-full px-3 2xl:px-4 py-2 text-xs font-semibold flex items-center gap-1.5 hover:border-primary/50 transition-all cursor-pointer"
@@ -88,13 +88,16 @@
           [attr.aria-label]="'nav.language' | translate"
           (click)="toggleIdiomaMenu()">
           {{ language.idiomaActual().codigo.toUpperCase() }}
-          <span class="text-[0.65rem] opacity-60">▾</span>
+          <span class="text-[0.65rem] opacity-60" aria-hidden="true">▾</span>
         </button>
         @if (idiomaMenuAbierto()) {
           <div id="header-language-menu" class="absolute top-full mt-2 rtl:right-auto rtl:left-0 right-0 glass-card rounded-xl overflow-hidden min-w-[170px] z-20 py-1.5 shadow-2xl border border-outline-variant">
             @for (idioma of language.idiomas; track idioma.codigo) {
               <button
+                type="button"
                 class="w-full text-start px-4 py-2.5 text-sm hover:bg-primary/10 transition-colors font-medium cursor-pointer"
+                [attr.lang]="idioma.codigo"
+                [attr.aria-current]="language.idiomaActual().codigo === idioma.codigo ? 'true' : null"
                 [class.text-primary]="language.idiomaActual().codigo === idioma.codigo"
                 [class.font-bold]="language.idiomaActual().codigo === idioma.codigo"
                 (click)="seleccionarIdioma(idioma.codigo)">
@@ -105,24 +108,33 @@
         }
       </div>
 
-      <!-- Toggle Modo Claro / Oscuro -->
+      <!-- Modo claro / oscuro -->
       <button
         type="button"
-        class="w-10 h-10 rounded-full glass-card flex items-center justify-center text-base hover:scale-105 active:scale-95 transition-all cursor-pointer"
+        class="header-theme-toggle w-10 h-10 rounded-full glass-card flex items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer"
         (click)="theme.toggle()"
         [attr.aria-label]="(theme.isDark() ? 'nav.light_mode' : 'nav.dark_mode') | translate"
         [attr.aria-pressed]="theme.isDark()">
-        {{ theme.isDark() ? '☀️' : '🌙' }}
+        @if (theme.isDark()) {
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+        } @else {
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg>
+        }
       </button>
 
-      <!-- Botón de Contacto Principal con Alto Contraste -->
-      <a href="#contacto" class="btn-nav-cta">
+      <!-- Botón de contacto: lleva a la sección #contacto y se resalta cuando estás en ella -->
+      <a
+        href="#contacto"
+        class="btn-nav-cta"
+        [class.is-active]="contactoActivo()"
+        [attr.aria-current]="contactoActivo() ? 'location' : null"
+        (click)="irASeccion('contacto', $event)">
         {{ 'nav.cta' | translate }}
       </a>
     </div>
 
-    <!-- Botón Menú Móvil -->
-    <button class="lg:hidden w-11 h-11 flex items-center justify-center rounded-lg glass-card cursor-pointer" (click)="toggleMenuMovil()" type="button"
+    <!-- Botón de menú móvil -->
+    <button class="header-mobile-toggle lg:hidden w-11 h-11 flex items-center justify-center rounded-lg glass-card cursor-pointer" (click)="toggleMenuMovil()" type="button"
       [attr.aria-label]="(menuMovilAbierto() ? 'nav.close_menu' : 'nav.open_menu') | translate"
       [attr.aria-expanded]="menuMovilAbierto()" aria-controls="mobile-navigation">
       @if (menuMovilAbierto()) {
@@ -133,22 +145,14 @@
     </button>
   </div>
 
-  <!-- Menú Móvil Mejorado -->
+  <!-- Menú móvil: una sola lista, en el mismo orden que la página -->
   @if (menuMovilAbierto()) {
     <div id="mobile-navigation" class="lg:hidden glass-card mx-4 mb-4 rounded-xl p-4 flex flex-col gap-2 shadow-2xl border border-outline-variant/80">
       <span class="mobile-nav-label">{{ 'nav.main_sections' | translate }}</span>
-      @for (item of navPrincipal; track item.id) {
-        <a [href]="'#' + item.id" (click)="cerrarMenuMovil()"
+      @for (item of navTodas; track item.id) {
+        <a [href]="'#' + item.id" (click)="irASeccion(item.id, $event)"
            class="mobile-nav-link"
-           [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
-           [class.is-active]="seccionActiva() === item.id">
-          {{ item.key | translate }}
-        </a>
-      }
-      <span class="mobile-nav-label mobile-nav-label--more">{{ 'nav.explore' | translate }}</span>
-      @for (item of navMas; track item.id) {
-        <a [href]="'#' + item.id" (click)="cerrarMenuMovil()"
-           class="mobile-nav-link mobile-nav-link--secondary"
+           [class.mobile-nav-link--secondary]="item.grupo !== item.id"
            [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
            [class.is-active]="seccionActiva() === item.id">
           {{ item.key | translate }}
@@ -157,7 +161,10 @@
       <div class="flex flex-wrap items-center gap-2 pt-3 border-t border-outline-variant/60">
         @for (idioma of language.idiomas; track idioma.codigo) {
           <button
+            type="button"
             class="px-3 py-1.5 text-xs glass-card rounded-full font-semibold"
+            [attr.lang]="idioma.codigo"
+            [attr.aria-current]="language.idiomaActual().codigo === idioma.codigo ? 'true' : null"
             [class.text-primary]="language.idiomaActual().codigo === idioma.codigo"
             [class.border-primary]="language.idiomaActual().codigo === idioma.codigo"
             (click)="seleccionarIdioma(idioma.codigo)">
@@ -175,23 +182,29 @@
           }
         </button>
       </div>
-      <a href="#contacto" (click)="cerrarMenuMovil()" class="btn-nav-cta w-full text-center mt-2">
+      <a href="#contacto" (click)="irASeccion('contacto', $event)" class="btn-nav-cta w-full text-center mt-2"
+         [class.is-active]="contactoActivo()" [attr.aria-current]="contactoActivo() ? 'location' : null">
         {{ 'nav.cta' | translate }}
       </a>
     </div>
   }
-</nav>
 
-<!-- Espaciador -->
-<div class="h-[84px] md:h-[92px]"></div>
+  <!-- Avance de lectura de la página -->
+  <div class="header-progress" aria-hidden="true"><span #progreso></span></div>
+</header>
+
+<!-- Espaciador: toma la altura real de la barra (la mide el .ts); las clases son el valor
+     de respaldo para el primer pintado y el render en servidor. -->
+<div class="h-[84px] md:h-[92px]" [style.height.px]="alturaBarra() || null"></div>
 
 <!-- ============================================================ -->
 <!-- Modal de plataforma: paso 1 = selección, paso 2 = login -->
+<!-- (hoy ningún botón lo abre; ver openPlatformModal en el .ts) -->
 <!-- ============================================================ -->
 @if (platformModalOpen()) {
 <div class="tech-modal-overlay" (click)="closePlatformModal()">
-  <div class="relative w-full max-w-xl glass-card p-10 modal-zoom rounded-xl" (click)="$event.stopPropagation()">
-    <button class="absolute top-6 right-6 text-on-surface-variant hover:text-primary transition-colors text-2xl" (click)="closePlatformModal()">✕</button>
+  <div class="relative w-full max-w-xl glass-card p-10 modal-zoom rounded-xl" role="dialog" aria-modal="true" [attr.aria-label]="'plataforma.titulo' | translate" (click)="$event.stopPropagation()">
+    <button type="button" class="absolute top-6 right-6 text-on-surface-variant hover:text-primary transition-colors text-2xl" (click)="closePlatformModal()">✕</button>
 
     @if (vistaModal() === 'seleccion') {
       <!-- PASO 1: elegir a qué portal se quiere entrar -->
@@ -200,6 +213,7 @@
       <div class="space-y-4">
         @for (opcion of platformOptions; track opcion.numero) {
           <button
+            type="button"
             class="w-full text-left glass-card rounded-xl p-6 hover:border-primary/60 transition-all"
             (click)="seleccionarPlataforma(opcion)">
             <h4 class="text-lg font-semibold mb-1">{{ opcion.numero }}. {{ opcion.tituloKey | translate }}</h4>
@@ -211,7 +225,7 @@
 
     @if (vistaModal() === 'login' && opcionSeleccionada(); as opcion) {
       <!-- PASO 2: formulario de acceso, según el tipo de portal elegido -->
-      <button class="text-sm text-primary mb-6 flex items-center gap-1 hover:gap-2 transition-all" (click)="volverASeleccion()">
+      <button type="button" class="text-sm text-primary mb-6 flex items-center gap-1 hover:gap-2 transition-all" (click)="volverASeleccion()">
         {{ 'plataforma.volver' | translate }}
       </button>
 
@@ -223,13 +237,13 @@
         <form class="space-y-5" (ngSubmit)="enviarLogin()">
           <label class="flex flex-col gap-1 text-sm font-semibold">
             {{ 'plataforma.label_rx' | translate }}
-            <input type="text" name="rx" [(ngModel)]="loginForm.rx"
+            <input type="text" name="rx" [(ngModel)]="loginForm.rx" autocomplete="off"
                    [placeholder]="'plataforma.placeholder_rx' | translate"
                    class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
           </label>
           <label class="flex flex-col gap-1 text-sm font-semibold">
             {{ 'plataforma.label_codigo' | translate }}
-            <input type="text" name="codigoAcceso" [(ngModel)]="loginForm.codigoAcceso"
+            <input type="text" name="codigoAcceso" [(ngModel)]="loginForm.codigoAcceso" autocomplete="off"
                    [placeholder]="'plataforma.placeholder_codigo' | translate"
                    class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
           </label>
@@ -245,12 +259,12 @@
         <form class="space-y-5" (ngSubmit)="enviarLogin()">
           <label class="flex flex-col gap-1 text-sm font-semibold">
             {{ 'plataforma.label_usuario' | translate }}
-            <input type="text" name="usuario" [(ngModel)]="loginForm.usuario"
+            <input type="text" name="usuario" [(ngModel)]="loginForm.usuario" autocomplete="username"
                    class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
           </label>
           <label class="flex flex-col gap-1 text-sm font-semibold">
             {{ 'plataforma.label_password' | translate }}
-            <input type="password" name="password" [(ngModel)]="loginForm.password"
+            <input type="password" name="password" [(ngModel)]="loginForm.password" autocomplete="current-password"
                    class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
           </label>
           <button type="submit" class="w-full bg-primary-container text-on-primary-container p-4 rounded-lg font-semibold hover:brightness-110 transition-all">

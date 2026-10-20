@@ -10,7 +10,8 @@
 
 .footer-main {
 	display: grid;
-	grid-template-columns: minmax(15rem, 1.7fr) minmax(8rem, 0.8fr) minmax(12rem, 1.1fr) minmax(15rem, 1.2fr);
+	// Tres columnas: marca, navegación y servicios (la de contacto está comentada en el HTML).
+	grid-template-columns: minmax(16rem, 1.7fr) minmax(9rem, 0.8fr) minmax(12rem, 1.1fr);
 	gap: clamp(2rem, 4vw, 4.5rem);
 	padding-block: 4.5rem 3.75rem;
 }

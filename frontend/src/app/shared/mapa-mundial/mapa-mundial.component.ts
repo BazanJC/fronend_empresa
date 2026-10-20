@@ -137,6 +137,16 @@ const PAISES: PaisPresencia[] = [
     topoId: '804',
     proyectos: ['proyecto1'],
   },
+  {
+    id: 'nueva_york',
+    codigoISO: 'us',
+    lat: 40.7128,
+    lng: -74.006,
+    anioIngreso: 2026,
+    imagenUrl: 'https://images.pexels.com/photos/466685/pexels-photo-466685.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop',
+    topoId: '840',
+    proyectos: [],
+  },
 ];
 
 const WORLD_ATLAS_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
