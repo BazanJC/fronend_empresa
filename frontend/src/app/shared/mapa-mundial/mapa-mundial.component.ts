@@ -88,6 +88,16 @@ const PAISES: PaisPresencia[] = [
     proyectos: ['proyecto1'],
   },
   {
+    id: 'colombia',
+    codigoISO: 'co',
+    lat: 4.711,
+    lng: -74.0721,
+    anioIngreso: 2026,
+    imagenUrl: '/assets/images/extras/tecnico.png',
+    topoId: '170',
+    proyectos: [],
+  },
+  {
     id: 'guinea_bissau',
     codigoISO: 'gw',
     lat: 11.8636,

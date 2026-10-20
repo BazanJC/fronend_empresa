@@ -10,38 +10,38 @@
 
 .footer-main {
 	display: grid;
-	// Tres columnas: marca, navegación y servicios (la de contacto está comentada en el HTML).
-	grid-template-columns: minmax(16rem, 1.7fr) minmax(9rem, 0.8fr) minmax(12rem, 1.1fr);
+	grid-template-columns: minmax(16rem, 1.7fr) minmax(9rem, 0.8fr) minmax(12rem, 1.1fr) minmax(13rem, 1.2fr);
 	gap: clamp(2rem, 4vw, 4.5rem);
 	padding-block: 4.5rem 3.75rem;
 }
 
 .footer-logo-link {
 	display: inline-flex;
-	margin-bottom: 1.5rem;
+	margin-bottom: 1rem;
 }
 
 .footer-logo-badge {
 	display: grid;
-	width: min(100%, 15rem);
-	min-height: 5.25rem;
-	padding: 0.65rem 1rem;
+	width: min(100%, 9rem);
+	padding: 0;
 	place-items: center;
-	border: 1px solid color-mix(in srgb, var(--color-primary) 25%, var(--color-outline-variant));
-	border-radius: 8px;
-	background: #ffffff;
-	box-shadow: 0 8px 26px color-mix(in srgb, var(--color-primary-container) 18%, transparent);
+	background: transparent;
+	transition: transform 180ms ease;
 }
 
 .footer-logo-link:hover .footer-logo-badge {
 	transform: translateY(-2px);
 }
 
+:host-context(.dark) .footer-logo-badge img {
+	filter: brightness(0) invert(1);
+}
+
 .footer-logo-badge img {
 	display: block;
 	width: 100%;
-	max-width: 12.5rem;
-	max-height: 3.8rem;
+	max-width: 9rem;
+	max-height: 3rem;
 	object-fit: contain;
 }
 
@@ -92,7 +92,6 @@
 .footer-link-list a:focus-visible,
 .footer-contact-link:focus-visible,
 .footer-contact-cta:focus-visible,
-.footer-whatsapp-cta:focus-visible,
 .footer-logo-link:focus-visible {
 	outline: 2px solid var(--color-primary);
 	outline-offset: 4px;
@@ -170,61 +169,6 @@
 	text-decoration: none;
 }
 
-.footer-whatsapp-card {
-	margin-top: 1.35rem;
-	padding: 1rem;
-	border: 1px solid color-mix(in srgb, #25d366 28%, var(--color-outline-variant));
-	border-radius: 12px;
-	background: color-mix(in srgb, #25d366 7%, var(--color-surface-container-lowest));
-}
-
-.footer-whatsapp-card p {
-	margin: 0 0 0.85rem;
-	color: var(--color-on-surface-variant);
-	font-size: 0.8rem;
-	line-height: 1.5;
-}
-
-.footer-whatsapp-cta {
-	display: flex;
-	min-height: 3rem;
-	align-items: center;
-	gap: 0.65rem;
-	padding: 0.7rem 0.85rem;
-	border-radius: 8px;
-	background: #128c52;
-	box-shadow: 0 8px 20px color-mix(in srgb, #128c52 20%, transparent);
-	color: #fff;
-	font-size: 0.86rem;
-	font-weight: 750;
-	text-decoration: none;
-	transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
-}
-
-.footer-whatsapp-cta:hover {
-	transform: translateY(-2px);
-	background: #0d7845;
-	box-shadow: 0 11px 24px color-mix(in srgb, #128c52 28%, transparent);
-}
-
-.footer-whatsapp-cta svg {
-	width: 1.25rem;
-	height: 1.25rem;
-	flex: none;
-	fill: currentColor;
-}
-
-.footer-whatsapp-cta__arrow {
-	margin-left: auto;
-	fill: none !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.footer-whatsapp-cta {
-		transition: none;
-	}
-}
-
 .footer-bottom {
 	display: flex;
 	flex-wrap: wrap;
@@ -268,10 +212,6 @@
 	.footer-brand,
 	.footer-contact {
 		grid-column: 1 / -1;
-	}
-
-	.footer-logo-badge {
-		min-height: 4.75rem;
 	}
 
 	.footer-bottom {

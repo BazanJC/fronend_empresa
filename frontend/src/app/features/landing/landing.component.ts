@@ -9,11 +9,8 @@ import {
   signal,
   PLATFORM_ID,
   ChangeDetectionStrategy,
-  Injector,
-  afterNextRender,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { MapaMundialComponent } from '../../shared/mapa-mundial/mapa-mundial.component';
 import { AtlasExpansionComponent } from './atlas-expansion/atlas-expansion.component';
@@ -27,15 +24,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 type OficinaId = 'tunez' | 'nueva_york' | 'bolivia';
 
-interface FormularioContacto {
-  nombre: string;
-  email: string;
-  telefono: string;
-  tipoProyecto: string;
-  servicio: string;
-  mensaje: string;
-}
-
 interface OficinaContacto {
   id: OficinaId;
   codigoISO: string;
@@ -43,15 +31,15 @@ interface OficinaContacto {
   rolKey: string;
   empresa: string;
   direccion: string | null;
-  telefono: string;
-  telefonoHref: string;
+  telefono: string | null;
+  telefonoHref: string | null;
   email: string;
   esMatriz: boolean;
 }
 
 @Component({
   selector: 'app-landing',
-  imports: [FormsModule, TranslatePipe, MapaMundialComponent, AtlasExpansionComponent, CountUpDirective],
+  imports: [TranslatePipe, MapaMundialComponent, AtlasExpansionComponent, CountUpDirective],
   templateUrl: './landing.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './landing.component.scss',
@@ -60,7 +48,6 @@ export class LandingComponent implements OnDestroy {
   private el = inject(ElementRef<HTMLElement>);
   private applicationRef = inject(ApplicationRef);
   private destroyRef = inject(DestroyRef);
-  private injector = inject(Injector);
   private contactService = inject(ContactService);
   readonly emailContacto = this.contactService.recipient;
   private observer: IntersectionObserver | null = null;
@@ -69,12 +56,9 @@ export class LandingComponent implements OnDestroy {
   private prefersReducedMotion = false;
   private heroLoopTweens: gsap.core.Tween[] = [];
   private cardTiltCleanups: Array<() => void> = [];
-  estadoEnvio = signal<'idle' | 'preparado'>('idle');
-  correoPreparado = signal<string | null>(null);
   carruselPausado = signal(false);
-  paisDestacado = signal<string | null>(null);
   paisLatamHovered = signal<string | null>(null);
-  paisLatamSeleccionado = signal<string | null>(null);
+  paisLatamSeleccionado = signal<string | null>('bolivia');
   paisLatamActivo = computed(() => this.paisLatamHovered() ?? this.paisLatamSeleccionado());
 
   slidesHero = CLIENT_HERO_IMAGES.map((image, index) => ({
@@ -92,19 +76,6 @@ export class LandingComponent implements OnDestroy {
     { value: '9', labelKey: 'stats.proyectos', icon: 'briefcase' },
     { value: '9', labelKey: 'stats.fabricantes', icon: 'shield' },
     { value: '8+', labelKey: 'stats.paises', icon: 'globe' },
-  ];
-
-  paisesPresencia = [
-    { id: 'tunez', codigoISO: 'tn', anio: 2009, proyectos: 2 },
-    { id: 'bolivia', codigoISO: 'bo', anio: 2025, proyectos: 1 },
-    { id: 'panama', codigoISO: 'pa', anio: 2022, proyectos: null },
-    { id: 'honduras', codigoISO: 'hn', anio: 2026, proyectos: 1 },
-    { id: 'guinea_bissau', codigoISO: 'gw', anio: 2017, proyectos: 1 },
-    { id: 'sri_lanka', codigoISO: 'lk', anio: 2018, proyectos: 1 },
-    { id: 'libia', codigoISO: 'ly', anio: 2019, proyectos: 1 },
-    { id: 'mauritania', codigoISO: 'mr', anio: 2023, proyectos: 1 },
-    { id: 'ucrania', codigoISO: 'ua', anio: 2024, proyectos: 1 },
-    { id: 'nueva_york', codigoISO: 'us', anio: 2026, proyectos: null },
   ];
 
   proyectosIndices = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -166,8 +137,7 @@ export class LandingComponent implements OnDestroy {
     });
   };
 
-  // Fusión con lo que antes era la sección "Tecnologías" — mismas 6
-  // Ninguna de estas imágenes se repite con las del carrusel del hero.
+  // Especialidades técnicas que se muestran en la sección Servicios.
   tecnologiasCards = [
     { img: 'https://images.pexels.com/photos/7364948/pexels-photo-7364948.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card1_title', descKey: 'tecnologias.card1_desc' },
     { img: 'https://images.pexels.com/photos/13657523/pexels-photo-13657523.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card2_title', descKey: 'tecnologias.card2_desc' },
@@ -179,12 +149,8 @@ export class LandingComponent implements OnDestroy {
     { img: 'https://images.pexels.com/photos/17842832/pexels-photo-17842832.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card7_title', descKey: 'tecnologias.card7_desc' },
     { img: 'https://images.pexels.com/photos/32497161/pexels-photo-32497161.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card8_title', descKey: 'tecnologias.card8_desc' },
     { img: 'https://images.pexels.com/photos/18471529/pexels-photo-18471529.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card9_title', descKey: 'tecnologias.card9_desc' },
+    { img: '/assets/images/extras/tecnico.png', tituloKey: 'tecnologias.card10_title', descKey: 'tecnologias.card10_desc' },
   ];
-
-  // Duplicado para que el carrusel automático (ver .tech-carousel en el
-  // .scss) pueda hacer un loop perfecto trasladando exactamente -50%, sin
-  // salto visible en la costura.
-  tecnologiasCardsLoop = [...this.tecnologiasCards, ...this.tecnologiasCards];
 
   // Especialidad breve por fabricante — contenido público conocido de cada
   // marca (no confirmado por el cliente); ajustar si hace falta precisión.
@@ -198,8 +164,7 @@ export class LandingComponent implements OnDestroy {
     { nombre: 'Ruijie Networks', especialidad: 'Equipamiento de redes', logo: 'ruijie.png' },
   ];
 
-  // Duplicado para el loop continuo del carrusel (mismo criterio que
-  // tecnologiasCardsLoop).
+  // Duplicado para el loop continuo del carrusel de aliados.
   aliadosLoop = [...this.aliados, ...this.aliados];
 
   porqueItems = [
@@ -222,9 +187,9 @@ export class LandingComponent implements OnDestroy {
 
   latamPaises = [
     { id: 'bolivia', codigoISO: 'bo', nombreKey: 'latam.pais1_nombre', estadoKey: 'latam.pais1_estado', esSede: true, silueta: 'M13.292 15.419 17.841 15.948 20.998 15.81 22.367 13.918 27.732 11.395 30.978 9.054 38.993 8 38.353 12.672 39.104 15.07 38.596 19.261 45.264 24.875 52.131 25.918 54.537 28.26 58.688 29.507 61.228 31.342 65.092 31.278 68.646 33.147 68.911 36.807 70.126 38.651 70.192 41.39 68.404 41.498 70.766 48.916 82.535 49.175 81.629 52.88 82.292 55.41 85.626 57.216 87.083 61.219 86.001 66.311 84.301 69.158 84.897 72.873 82.976 74.221 82.888 72.211 77.169 68.882 71.473 68.783 60.786 70.677 57.849 76.425 57.695 79.956 55.266 87.863 54.272 86.44 47.295 86.171 44.889 91.504 41.289 86.709 33.252 85.097 28.152 91.088 23.736 92 21.329 82.874 18.017 75.505 19.96 69.191 16.737 66.443 15.92 61.776 12.917 57.39 16.781 50.463 14.153 45.104 15.544 42.961 14.462 40.605 16.847 37.439 16.98 32.057 17.267 27.631 18.591 25.503Z' },
-    { id: 'panama', codigoISO: 'pa', nombreKey: 'latam.pais2_nombre', estadoKey: 'latam.pais2_estado', esSede: false, silueta: 'M90.414 46.257 88.617 48.419 92 57.158 89.251 61.573 84.546 60.495 82.643 67.689 77.727 63.429 74.608 55.427 78.203 51.459 74.502 50.454 71.753 45.528 64.458 41.403 58.009 42.359 55.048 47.514 49.128 51.258 45.903 51.761 44.476 54.849 51.454 62.902 47.489 64.807 45.374 66.987 38.502 67.739 35.965 58.89 34.062 61.423 29.198 60.545 26.238 54.573 20.211 53.594 16.405 51.861 10.115 51.886 9.692 55.1 8 52.866 8.74 49.927 9.956 46.911 9.427 44.221 11.595 42.46 8.529 40.245 8.476 34.252 14.132 32.916 19.419 38.257 19.101 41.428 24.969 42.082 26.344 40.875 30.414 44.522 37.604 43.466 43.894 39.692 52.775 36.695 57.797 32.261 65.885 33.118 65.357 34.579 73.551 35.109 80.106 37.678 84.863 42.133Z' },
-    { id: 'honduras', codigoISO: 'hn', nombreKey: 'latam.pais3_nombre', estadoKey: 'latam.pais3_estado', esSede: false, silueta: 'M92 43.049 87.371 42.764 85.52 44.684 80.794 46.509 77.383 46.509 74.411 48.309 71.682 47.669 69.392 45.538 67.979 45.94 66.225 49.279 64.91 49.161 64.715 52.023 59.988 55.875 57.503 57.528 56.09 59.274 52.095 56.442 49.172 60.171 46.346 60.076 43.179 60.407 43.471 67.239 41.473 67.356 39.768 70.532 35.578 71.12 33.239 66.768 29.146 65.567 30.072 59.982 28.22 58.472 25.443 57.481 19.499 59.133 19.012 57.268 14.919 55.025 11.995 52.236 8 51.054 10.826 47.504 9.754 44.756 10.729 42.076 17.111 38.135 23.299 32.786 24.712 33.333 27.684 30.857 31.534 30.667 32.8 31.81 34.896 31.119 41.181 32.381 47.418 32.024 51.803 30.453 53.362 28.88 57.698 29.619 60.914 30.572 64.471 30.238 67.151 29.023 73.339 30.976 75.483 31.286 79.624 33.904 83.522 37.043 88.443 39.204Z' },
-    { id: 'colombia', codigoISO: 'co', nombreKey: 'latam.pais4_nombre', estadoKey: null, esSede: false, silueta: 'M80.215 64.286 79.281 64.902 78.294 61.954 76.911 60.375 75.259 62.09 65.543 61.98 65.615 65.105 68.524 65.62 68.363 67.528 67.357 67.013 64.555 67.832 64.537 71.463 66.746 73.278 67.519 76.141 67.411 78.303 65.166 92 62.67 89.342 61.179 89.224 64.394 84.133 60.569 81.8 57.588 82.231 55.774 81.361 53.026 82.688 49.309 82.062 46.381 76.825 44.065 75.541 42.466 73.185 39.162 70.821 37.833 71.294 35.696 70.112 33.236 68.465 31.817 69.259 27.597 68.567 26.375 66.414 25.442 66.498 20.449 63.644 19.785 62.098 21.634 61.726 21.419 59.226 22.586 57.417 25.064 57.079 27.166 53.942 29.069 51.32 27.237 50.126 28.171 47.222 27.058 42.644 28.117 41.329 27.327 37.082 25.316 34.402 25.962 31.958 27.561 32.325 28.495 30.825 27.345 27.856 27.956 27.122 30.524 27.275 34.277 23.754 36.325 23.214 36.378 21.545 37.294 17.255 40.15 14.9 43.292 14.805 43.688 13.746 47.603 14.168 51.518 11.601 53.475 10.462 55.881 8 57.641 8.311 58.952 9.659 57.983 11.376 54.786 12.23 53.511 14.771 51.589 16.224 50.135 18.114 49.524 21.733 48.141 24.686 50.727 25.028 51.356 27.344 52.469 28.454 52.846 30.484 52.254 32.35 52.433 33.398 53.673 33.815 54.858 35.577 61.269 35.092 64.16 35.73 67.68 40.047 69.692 39.512 73.283 39.784 76.121 39.206 77.899 40.072 77.001 42.771 75.887 44.459 75.492 48.043 76.498 51.37 77.917 52.851 78.078 53.976 75.564 56.462 77.36 57.561 78.689 59.31Z' },
+    { id: 'panama', codigoISO: 'pa', nombreKey: 'latam.pais2_nombre', esSede: false, silueta: 'M90.414 46.257 88.617 48.419 92 57.158 89.251 61.573 84.546 60.495 82.643 67.689 77.727 63.429 74.608 55.427 78.203 51.459 74.502 50.454 71.753 45.528 64.458 41.403 58.009 42.359 55.048 47.514 49.128 51.258 45.903 51.761 44.476 54.849 51.454 62.902 47.489 64.807 45.374 66.987 38.502 67.739 35.965 58.89 34.062 61.423 29.198 60.545 26.238 54.573 20.211 53.594 16.405 51.861 10.115 51.886 9.692 55.1 8 52.866 8.74 49.927 9.956 46.911 9.427 44.221 11.595 42.46 8.529 40.245 8.476 34.252 14.132 32.916 19.419 38.257 19.101 41.428 24.969 42.082 26.344 40.875 30.414 44.522 37.604 43.466 43.894 39.692 52.775 36.695 57.797 32.261 65.885 33.118 65.357 34.579 73.551 35.109 80.106 37.678 84.863 42.133Z' },
+    { id: 'honduras', codigoISO: 'hn', nombreKey: 'latam.pais3_nombre', esSede: false, silueta: 'M92 43.049 87.371 42.764 85.52 44.684 80.794 46.509 77.383 46.509 74.411 48.309 71.682 47.669 69.392 45.538 67.979 45.94 66.225 49.279 64.91 49.161 64.715 52.023 59.988 55.875 57.503 57.528 56.09 59.274 52.095 56.442 49.172 60.171 46.346 60.076 43.179 60.407 43.471 67.239 41.473 67.356 39.768 70.532 35.578 71.12 33.239 66.768 29.146 65.567 30.072 59.982 28.22 58.472 25.443 57.481 19.499 59.133 19.012 57.268 14.919 55.025 11.995 52.236 8 51.054 10.826 47.504 9.754 44.756 10.729 42.076 17.111 38.135 23.299 32.786 24.712 33.333 27.684 30.857 31.534 30.667 32.8 31.81 34.896 31.119 41.181 32.381 47.418 32.024 51.803 30.453 53.362 28.88 57.698 29.619 60.914 30.572 64.471 30.238 67.151 29.023 73.339 30.976 75.483 31.286 79.624 33.904 83.522 37.043 88.443 39.204Z' },
+    { id: 'colombia', codigoISO: 'co', nombreKey: 'latam.pais4_nombre', esSede: false, silueta: 'M80.215 64.286 79.281 64.902 78.294 61.954 76.911 60.375 75.259 62.09 65.543 61.98 65.615 65.105 68.524 65.62 68.363 67.528 67.357 67.013 64.555 67.832 64.537 71.463 66.746 73.278 67.519 76.141 67.411 78.303 65.166 92 62.67 89.342 61.179 89.224 64.394 84.133 60.569 81.8 57.588 82.231 55.774 81.361 53.026 82.688 49.309 82.062 46.381 76.825 44.065 75.541 42.466 73.185 39.162 70.821 37.833 71.294 35.696 70.112 33.236 68.465 31.817 69.259 27.597 68.567 26.375 66.414 25.442 66.498 20.449 63.644 19.785 62.098 21.634 61.726 21.419 59.226 22.586 57.417 25.064 57.079 27.166 53.942 29.069 51.32 27.237 50.126 28.171 47.222 27.058 42.644 28.117 41.329 27.327 37.082 25.316 34.402 25.962 31.958 27.561 32.325 28.495 30.825 27.345 27.856 27.956 27.122 30.524 27.275 34.277 23.754 36.325 23.214 36.378 21.545 37.294 17.255 40.15 14.9 43.292 14.805 43.688 13.746 47.603 14.168 51.518 11.601 53.475 10.462 55.881 8 57.641 8.311 58.952 9.659 57.983 11.376 54.786 12.23 53.511 14.771 51.589 16.224 50.135 18.114 49.524 21.733 48.141 24.686 50.727 25.028 51.356 27.344 52.469 28.454 52.846 30.484 52.254 32.35 52.433 33.398 53.673 33.815 54.858 35.577 61.269 35.092 64.16 35.73 67.68 40.047 69.692 39.512 73.283 39.784 76.121 39.206 77.899 40.072 77.001 42.771 75.887 44.459 75.492 48.043 76.498 51.37 77.917 52.851 78.078 53.976 75.564 56.462 77.36 57.561 78.689 59.31Z' },
   ];
 
   paisLatamActivoItem = computed(() => this.latamPaises.find((pais) => pais.id === this.paisLatamActivo()) ?? null);
@@ -583,59 +548,101 @@ export class LandingComponent implements OnDestroy {
         });
       }
 
-      // 5. Cascada de Tarjetas de Servicios
-      gsap.from('#servicios .feature-card', {
-        scrollTrigger: {
-          trigger: '#servicios .feature-grid',
-          start: 'top 82%',
-          toggleActions: 'play none none none',
-        },
-        y: 40,
-        opacity: 0,
-        stagger: 0.15,
-        duration: 0.85,
-        ease: 'power2.out',
-        clearProps: 'opacity,transform',
-      });
+      // 5. Perfil y catálogo de servicios. Las especialidades entran en
+      // cascada breve, mientras el proceso de trabajo aparece al final.
+      if (!this.prefersReducedMotion) {
+        gsap.from('#nosotros .nosotros-profile', {
+          scrollTrigger: {
+            trigger: '#nosotros .nosotros-profile',
+            start: 'top 84%',
+            toggleActions: 'play none play none',
+          },
+          immediateRender: false,
+          y: 24,
+          autoAlpha: 0,
+          duration: 0.75,
+          ease: 'power2.out',
+          clearProps: 'opacity,transform,visibility',
+        });
 
-      // 5b. Numeral grande de cada tarjeta: entra con un pequeño "pop" justo
-      // después de la tarjeta, para que se note el peso/orden de cada servicio.
-      // clearProps: al terminar, GSAP borra el opacity/transform inline que
-      // dejó pegado en el elemento — sin esto, un hot-reload de SOLO estilos
-      // (guardar el .scss sin recompilar el componente) queda "tapado" por
-      // el inline viejo y el número no refleja el nuevo valor hasta recargar
-      // la página entera.
-      gsap.from('#servicios .feature-index', {
-        scrollTrigger: {
-          trigger: '#servicios .feature-grid',
-          start: 'top 82%',
-          toggleActions: 'play none none none',
-        },
-        scale: 0.6,
-        opacity: 0,
-        delay: 0.2,
-        stagger: 0.15,
-        duration: 0.7,
-        ease: 'back.out(1.6)',
-        clearProps: 'opacity,transform',
-      });
+        gsap.from('#servicios .service-catalog-card', {
+          scrollTrigger: {
+            trigger: '#servicios .service-catalog-grid',
+            start: 'top 82%',
+            toggleActions: 'play none play none',
+          },
+          immediateRender: false,
+          y: 34,
+          autoAlpha: 0,
+          scale: 0.985,
+          stagger: 0.085,
+          duration: 0.72,
+          ease: 'power2.out',
+          clearProps: 'opacity,transform,visibility',
+        });
 
-      // 5c. Tarjetas de presencia regional: entrada editorial con cascada
-      // breve. El contenido permanece visible si el usuario reduce movimiento.
-      gsap.from('.latam-countries li', {
-        scrollTrigger: {
-          trigger: '.latam-countries',
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-        y: 28,
-        opacity: 0,
-        scale: 0.97,
-        stagger: 0.12,
-        duration: 0.72,
-        ease: 'power3.out',
-        clearProps: 'opacity,transform',
-      });
+        gsap.from('#servicios .service-catalog-card__media img', {
+          scrollTrigger: {
+            trigger: '#servicios .service-catalog-grid',
+            start: 'top 82%',
+            toggleActions: 'play none play none',
+          },
+          immediateRender: false,
+          scale: 1.08,
+          stagger: 0.085,
+          duration: 1,
+          ease: 'power2.out',
+          clearProps: 'transform',
+        });
+
+        gsap.from('#servicios .services-process-card', {
+          scrollTrigger: {
+            trigger: '#servicios .service-process',
+            start: 'top 83%',
+            toggleActions: 'play none play none',
+          },
+          immediateRender: false,
+          y: 28,
+          autoAlpha: 0,
+          stagger: 0.12,
+          duration: 0.72,
+          ease: 'power2.out',
+          clearProps: 'opacity,transform,visibility',
+        });
+      }
+
+      // 5c. El mapa y las fichas regionales entran con un movimiento breve.
+      // En modo de movimiento reducido, el bloque permanece visible sin tween.
+      if (!this.prefersReducedMotion) {
+        gsap.from('.latam-map-panel', {
+          scrollTrigger: {
+            trigger: '.latam-presence-grid',
+            start: 'top 83%',
+            toggleActions: 'play none none none',
+          },
+          y: 22,
+          scale: 0.98,
+          autoAlpha: 0,
+          duration: 0.78,
+          ease: 'power3.out',
+          clearProps: 'opacity,transform,visibility',
+        });
+
+        gsap.from('.latam-countries li', {
+          scrollTrigger: {
+            trigger: '.latam-presence-grid',
+            start: 'top 83%',
+            toggleActions: 'play none none none',
+          },
+          y: 22,
+          opacity: 0,
+          scale: 0.985,
+          stagger: 0.1,
+          duration: 0.7,
+          ease: 'power3.out',
+          clearProps: 'opacity,transform',
+        });
+      }
 
       // 6. La línea de tiempo de expansión vive ahora en <app-atlas-expansion>:
       // mapa generado con d3-geo + world.json, cámara con ScrollTrigger y
@@ -868,24 +875,7 @@ export class LandingComponent implements OnDestroy {
         }
       }
 
-      // 9. Especialidades Tecnológicas — el carrusel se mueve solo (CSS),
-      // así que acá solo se anima la entrada del contenedor completo, no
-      // tarjeta por tarjeta (no tendría sentido escalonar algo que ya
-      // está en movimiento continuo).
-      gsap.from('.tech-carousel', {
-        scrollTrigger: {
-          trigger: '.tech-carousel',
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-        y: 30,
-        opacity: 0,
-        duration: 0.85,
-        ease: 'power2.out',
-        clearProps: 'opacity,transform',
-      });
-
-      // 10. Carrusel de Aliados Tecnológicos — igual que el de
+      // 9. Carrusel de Aliados Tecnológicos — el conjunto entra en bloque
       // tecnologías, se anima el contenedor completo (las tarjetas ya
       // están en movimiento continuo, no tiene sentido escalonarlas).
       gsap.from('.allies-carousel', {
@@ -1022,20 +1012,6 @@ export class LandingComponent implements OnDestroy {
             0.4,
           );
 
-        if (this.el.nativeElement.querySelector('.office-panel')) {
-          gsap.from('.office-panel', {
-            scrollTrigger: {
-              trigger: '.office-panel',
-              start: 'top 88%',
-              toggleActions: 'play none none none',
-            },
-            y: 36,
-            opacity: 0,
-            duration: 0.9,
-            ease: 'power2.out',
-            clearProps: 'opacity,transform',
-          });
-        }
       }
 
       // 14. Efecto de Inclinación 3D en Hover para Pantallas Grandes
@@ -1263,10 +1239,8 @@ export class LandingComponent implements OnDestroy {
   }
 
   // ---------------------------------------------------------------
-  // Contacto por oficina. Cada oficina tiene su propio correo de destino.
-  // TODO(cliente): los datos marcados "REEMPLAZAR" son provisionales; solo
-  // los de Nueva York (nombre, teléfono, dirección) vienen confirmados.
-  // Ningún correo de abajo es real: hay que poner el definitivo de cada sede.
+  // Contacto por oficina. Las sedes comparten el correo corporativo hasta
+  // que se confirmen buzones locales; solo se publican teléfonos verificados.
   // ---------------------------------------------------------------
   readonly oficinas: OficinaContacto[] = [
     {
@@ -1275,10 +1249,10 @@ export class LandingComponent implements OnDestroy {
       nombreKey: 'mapa.paises.tunez.nombre',
       rolKey: 'contacto.rol_matriz',
       empresa: 'NOVAXIS International',
-      direccion: 'Gabès', // TODO(cliente): dirección completa
-      telefono: '+216 00 000 000', // TODO(cliente): REEMPLAZAR
-      telefonoHref: '+21600000000',
-      email: 'REEMPLAZAR-tunez@example.com', // TODO(cliente): REEMPLAZAR
+      direccion: null,
+      telefono: null,
+      telefonoHref: null,
+      email: this.emailContacto,
       esMatriz: true,
     },
     {
@@ -1290,7 +1264,7 @@ export class LandingComponent implements OnDestroy {
       direccion: '4207 NY30, Amsterdam, NY 12010',
       telefono: '+1 518 391 3180',
       telefonoHref: '+15183913180',
-      email: 'REEMPLAZAR-ny@example.com', // TODO(cliente): REEMPLAZAR
+      email: this.emailContacto,
       esMatriz: false,
     },
     {
@@ -1300,102 +1274,12 @@ export class LandingComponent implements OnDestroy {
       rolKey: 'contacto.rol_latam',
       empresa: 'NOVAXIS Bolivia', // TODO(cliente): confirmar razón social
       direccion: null, // TODO(cliente): dirección (se oculta mientras sea null)
-      telefono: '+591 000 00000', // TODO(cliente): REEMPLAZAR
-      telefonoHref: '+59100000000',
-      email: 'REEMPLAZAR-bolivia@example.com', // TODO(cliente): REEMPLAZAR
+      telefono: null,
+      telefonoHref: null,
+      email: this.emailContacto,
       esMatriz: false,
     },
   ];
-
-  oficinaActivaId = signal<OficinaId>('tunez');
-  oficinaActiva = computed(() => this.oficinas.find((o) => o.id === this.oficinaActivaId()) ?? this.oficinas[0]);
-
-  // Un borrador por oficina: al cambiar de sede no se pierde lo escrito.
-  private contactoForms: Record<OficinaId, FormularioContacto> = {
-    tunez: this.formularioVacio(),
-    nueva_york: this.formularioVacio(),
-    bolivia: this.formularioVacio(),
-  };
-  formActivo = computed(() => this.contactoForms[this.oficinaActivaId()]);
-
-  private formularioVacio(): FormularioContacto {
-    return { nombre: '', email: '', telefono: '', tipoProyecto: '', servicio: '', mensaje: '' };
-  }
-
-  seleccionarOficina(id: OficinaId): void {
-    const cambia = this.oficinaActivaId() !== id;
-    if (cambia) {
-      this.oficinaActivaId.set(id);
-      this.estadoEnvio.set('idle');
-      this.correoPreparado.set(null);
-    }
-    if (!this.isBrowser) return;
-
-    // En pantallas angostas las fichas se apilan y el formulario queda lejos:
-    // se lleva la vista hasta él para que el cambio de oficina se note.
-    if (window.matchMedia('(max-width: 900px)').matches) {
-      this.el.nativeElement.querySelector('#office-panel')?.scrollIntoView({
-        behavior: this.prefersReducedMotion ? 'auto' : 'smooth',
-        block: 'start',
-      });
-    }
-
-    if (cambia && !this.prefersReducedMotion) {
-      afterNextRender(() => this.animarCambioOficina(), { injector: this.injector });
-    }
-  }
-
-  // Transición del panel al cambiar de oficina: el contenido nuevo entra en
-  // cascada y una barra de acento recorre el borde superior del panel.
-  private animarCambioOficina(): void {
-    const animar = () => {
-      gsap.killTweensOf('.office-panel__intro > *, .office-trust, .office-form > *');
-      gsap.fromTo(
-        '.office-panel__intro > *',
-        { y: 14, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.07, duration: 0.5, ease: 'power2.out', clearProps: 'opacity,transform' },
-      );
-      gsap.fromTo(
-        '.office-form > label',
-        { y: 12, opacity: 0 },
-        { y: 0, opacity: 1, stagger: 0.05, duration: 0.45, ease: 'power2.out', delay: 0.08, clearProps: 'opacity,transform' },
-      );
-      gsap.fromTo(
-        '.office-panel__sweep',
-        { scaleX: 0, opacity: 1 },
-        { scaleX: 1, duration: 0.7, ease: 'power3.inOut', onComplete: () => { gsap.to('.office-panel__sweep', { opacity: 0, duration: 0.4 }); } },
-      );
-    };
-    if (this.ctx) this.ctx.add(animar);
-    else animar();
-  }
-
-  enviarContacto(): void {
-    const oficina = this.oficinaActiva();
-    const f = this.formActivo();
-
-    // Los saltos de línea en el asunto o nombre podrían inyectar cabeceras en
-    // el enlace mailto, así que se aplanan antes de armarlo.
-    const linea = (valor: string): string => valor.replace(/[\r\n]+/g, ' ').trim();
-    const nombre = linea(f.nombre);
-
-    const cuerpo = [
-      `Nombre: ${nombre}`,
-      `Correo: ${linea(f.email)}`,
-      `Teléfono: ${linea(f.telefono)}`,
-      `Tipo de proyecto: ${linea(f.tipoProyecto)}`,
-      `Servicio: ${linea(f.servicio)}`,
-      '',
-      f.mensaje.trim(),
-    ].join('\n');
-
-    const asunto = `Contacto web · ${oficina.empresa} · ${nombre}`;
-    const mailto = `mailto:${oficina.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
-
-    this.correoPreparado.set(mailto);
-    this.estadoEnvio.set('preparado');
-    window.location.href = mailto;
-  }
 
   private iniciarCarrusel(): void {
     if (this.carruselTimer) clearInterval(this.carruselTimer);
@@ -1446,13 +1330,6 @@ export class LandingComponent implements OnDestroy {
 
   marcarImagenHeroError(indice: number): void {
     this.heroImagesError.update((failed) => new Set(failed).add(indice));
-  }
-
-  seleccionarProyectoNuclear(): void {
-    Object.values(this.contactoForms).forEach((form) => {
-      form.tipoProyecto = 'nuevo';
-      form.servicio = 'nuclear';
-    });
   }
 
   pausarCarrusel(): void {

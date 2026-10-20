@@ -40,10 +40,10 @@
   },
   "hero": {
     "eyebrow": "NOVAXIS INTERNATIONAL",
-    "title_pre": "Solutions Complètes de",
-    "title_accent": "Sécurité Physique",
-    "tagline": "The Future Vision",
-    "subtitle": "Partenaire stratégique pour la protection des infrastructures critiques. De l'étude initiale à l'installation finale, nous accompagnons vos projets stratégiques de sécurité avec expertise et rigueur technique.",
+    "title_pre": "Protection intégrée des",
+    "title_accent": "infrastructures critiques",
+    "tagline": "Ingénierie pour la continuité opérationnelle",
+    "subtitle": "Nous concevons et intégrons des systèmes de sûreté physique et des technologies spécialisées, de l’évaluation technique à la mise en service et à la maintenance.",
     "cta_primary": "Demander un Conseil Technique",
     "cta_secondary": "Voir les Projets Internationaux",
     "slide1_label": "Vidéosurveillance (CCTV)",
@@ -58,14 +58,16 @@
   },
   "servicios": {
     "eyebrow": "Services",
-    "heading": "Solutions intégrées pour la sécurité critique",
-    "heading_desc": "Une approche technique avec diagnostic, conception, installation et support opérationnel.",
-    "card1_title": "Étude de Projet",
-    "card1_desc": "Nous analysons votre infrastructure pour concevoir la meilleure stratégie de sécurité, avec visites techniques et analyse des risques.",
-    "card2_title": "Design & Conception",
-    "card2_desc": "Nous concevons des solutions sur mesure, en sélectionnant les équipements les plus adaptés à vos besoins spécifiques.",
-    "card3_title": "Installation & Intégration",
-    "card3_desc": "Notre équipe technique installe et configure chaque système en tenant compte des exigences du projet."
+    "heading": "Services de sécurité et d'intégration technologique",
+    "heading_desc": "Nous concevons, fournissons et intégrons des solutions pour protéger les actifs et assurer la continuité des sites critiques. Chaque projet comprend une formation technique des équipes.",
+    "card1_title": "Évaluation et conception technique",
+    "card1_desc": "Nous évaluons les risques, les exigences opérationnelles et les conditions du site afin de définir l'architecture et le périmètre du projet.",
+    "card2_title": "Fourniture, intégration et formation technique",
+    "card2_desc": "Nous sélectionnons et fournissons les équipements, les intégrons aux systèmes existants et formons les équipes à leur utilisation.",
+    "card3_title": "Installation, mise en service et maintenance",
+    "card3_desc": "Nous installons, configurons et validons chaque solution avant sa mise en service, puis assurons sa maintenance pour préserver sa disponibilité.",
+    "process_eyebrow": "Notre méthode",
+    "process_heading": "De l'évaluation technique au support continu"
   },
   "expansion": {
     "references_year": "Tunisie",
@@ -88,7 +90,7 @@
     "item3_title": "Infrastructures stratégiques (2021-2024)",
     "item3_desc": "Protection d'infrastructures gouvernementales et sécurité électronique pour des infrastructures stratégiques en Mauritanie et en Ukraine.",
     "item4_title": "Expansion mondiale et LATAM (2025-2026)",
-    "item4_desc": "Banque Mondiale en Tunisie, projet nucléaire AIEA/ABEN en Bolivie et création de la filiale NOVAXIS LATAM ENGINEERING.",
+    "item4_desc": "Interventions pour la Banque mondiale en Tunisie, projet nucléaire AIEA/ABEN en Bolivie et création de NOVAXIS LATAM ENGINEERING, présente en Bolivie, au Panama, au Honduras et en Colombie.",
     "stat1_label": "Années d'Expérience",
     "stat2_label": "Pays avec Projets",
     "stat3_label": "Projets Internationaux",
@@ -104,10 +106,7 @@
     "map_placeholder": "[ Carte interactive réelle — Module 5 ]",
     "pais1_label": "Siège (Tunisie)",
     "pais2_label": "Filiale LATAM (Bolivie)",
-    "pais3_label": "Opérations actives",
-    "pais4_label": "Opérations actives",
-    "proyectos_label": "projets",
-    "operaciones_label": "Opérations actives"
+    "proyectos_label": "projets"
   },
   "sectores": {
     "stat1_label": "Projets Stratégiques",
@@ -189,8 +188,8 @@
     "testing_value": "Inspection SGS · essai à 100 % de charge · configuration haute altitude ≥ 3 500 m."
   },
   "tecnologias": {
-    "eyebrow": "Technologies Avancées",
-    "title": "Nous déployons les solutions les plus performantes du marché, intégrant IA et analyse en temps réel",
+    "eyebrow": "Solutions techniques",
+    "title": "Des systèmes intégrés pour protéger les sites et soutenir la continuité des opérations.",
     "card1_title": "Vidéosurveillance",
     "card1_desc": "Systèmes de caméras IP avec analyse intelligente et vidéosurveillance en temps réel.",
     "card2_title": "Contrôle d'Accès",
@@ -209,6 +208,8 @@
     "card8_desc": "Service technique CVC et maintenance préventive des systèmes critiques.",
     "card9_title": "Équipements Scientifiques",
     "card9_desc": "Fourniture et maintenance d'équipements scientifiques et de laboratoire, avec distribution de composants et consommables spécialisés.",
+    "card10_title": "Formation technique",
+    "card10_desc": "Formation pratique des opérateurs et des équipes de maintenance à l’utilisation sûre et à l’entretien des systèmes installés.",
     "link_more": "Demander des Informations →"
   },
   "proyectos": {
@@ -265,7 +266,7 @@
     "eyebrow": "Contact",
     "title_pre": "Parlons de votre",
     "title_accent": "Projet",
-    "desc": "Notre équipe qualifiée assure la maintenance, les évaluations en laboratoire et l’assistance technique pour les équipements et technologies nucléaires. Nous accompagnons aussi les démarches d’évaluation et de certification ISO.",
+    "desc": "Consultez les coordonnées de nos bureaux et choisissez le moyen de contact adapté à votre projet ou à votre besoin d’assistance technique.",
     "security_eyebrow": "Contact direct",
     "security_title": "Assistance spécialisée",
     "security_desc": "Décrivez-nous vos besoins en évaluation ou en maintenance. Nous vous guiderons sur les prochaines étapes et l’assistance possible.",
@@ -325,12 +326,16 @@
       },
       "panama": {
         "nombre": "Panama",
-        "descripcion": "Opérations actives de sécurité électronique et d'intégration de systèmes."
+        "descripcion": "Le Panama fait partie de la présence régionale de NOVAXIS en Amérique latine."
       },
       "honduras": {
         "nombre": "Honduras",
-        "descripcion": "Opérations actives avec coopération internationale.",
+        "descripcion": "Expérience en modernisation et maintenance de systèmes de sécurité électronique avec des institutions locales et internationales.",
         "proyecto1": "PNUD/UNAH — modernisation et maintenance de la sécurité électronique"
+      },
+      "colombia": {
+        "nombre": "Colombie",
+        "descripcion": "La Colombie fait partie de la couverture régionale de NOVAXIS LATAM ENGINEERING."
       },
       "guinea_bissau": {
         "nombre": "Guinée-Bissau",
@@ -387,7 +392,7 @@
     "ingresar": "Se connecter"
   },
   "footer": {
-    "descripcion": "Des spécialistes qualifiés en maintenance, évaluations de laboratoire et technologies nucléaires. Nous accompagnons les organisations dans leurs processus d’évaluation et de certification ISO.",
+    "descripcion": "Ingénierie, sûreté physique et technologies spécialisées pour les infrastructures critiques, avec un accompagnement technique à chaque étape du projet.",
     "navegacion": "Navigation",
     "inicio": "Accueil",
     "servicios": "Services",
@@ -415,8 +420,9 @@
   "nosotros": {
     "eyebrow": "Qui Nous Sommes",
     "title": "Ingénierie de sécurité physique pour infrastructures critiques",
-    "desc": "Fondée en 2009 à Gabès (Tunisie), NOVAXIS International est une société d'ingénierie spécialisée dans la conception, la fourniture, l'intégration, l'installation et la maintenance de solutions de sécurité physique pour les infrastructures critiques, les institutions gouvernementales, les organisations internationales et les complexes industriels.",
+    "desc": "NOVAXIS International est une société d'ingénierie fondée à Gabès, en Tunisie. Nous accompagnons les institutions publiques, les organisations internationales et les acteurs industriels dans leurs projets de sécurité physique et de technologie pour les infrastructures critiques.",
     "desc2": "Notre équipe réunit des professionnels qualifiés en maintenance et en évaluation technique. Nous entretenons également des alliances stratégiques avec des fabricants internationaux.",
+    "founded": "Fondée à Gabès, en Tunisie",
     "area1": "Sécurité électronique",
     "area2": "Vidéosurveillance (CCTV)",
     "area3": "Contrôle d'accès",
@@ -451,15 +457,13 @@
   },
   "latam": {
     "eyebrow": "NOVAXIS LATAM ENGINEERING",
-    "map_label": "Pays mis en avant",
+    "map_label": "Présence régionale",
     "title": "Présence régionale en Amérique latine",
-    "desc": "En 2026, NOVAXIS a établi sa filiale régionale en Bolivie afin de renforcer sa présence en Amérique latine, avec des équipes professionnelles sur le terrain.",
+    "desc": "Depuis son siège régional en Bolivie, NOVAXIS LATAM ENGINEERING relie l'expertise internationale de NOVAXIS aux besoins de l'Amérique latine. Sa présence régionale couvre la Bolivie, le Panama, le Honduras et la Colombie.",
     "pais1_nombre": "Bolivie",
     "pais1_estado": "Siège régional",
     "pais2_nombre": "Panama",
-    "pais2_estado": "Opérations actives",
     "pais3_nombre": "Honduras",
-    "pais3_estado": "Opérations actives",
     "pais4_nombre": "Colombie"
   }
 }
