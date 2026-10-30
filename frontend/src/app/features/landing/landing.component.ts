@@ -891,49 +891,35 @@ export class LandingComponent implements OnDestroy {
         clearProps: 'opacity,transform',
       });
 
-      // 11. Dossier de Proyectos: entra el conjunto con suavidad; cada ficha
-      // conserva su scroll-snap y sus imágenes reciben un parallax discreto.
-      gsap.from('.projects-carousel', {
+      // 11. Dossier de Proyectos: rejilla editorial. Las tarjetas entran con
+      // un stagger suave y la imagen hace un zoom discreto al aparecer.
+      // No hay scroll horizontal ni auto-advance: el usuario controla.
+      gsap.from('.projects-grid', {
         scrollTrigger: {
-          trigger: '.projects-carousel',
-          start: 'top 82%',
+          trigger: '.projects-grid',
+          start: 'top 84%',
           toggleActions: 'play none none none',
         },
-        y: 26,
+        y: 30,
         opacity: 0,
-        duration: 0.85,
+        duration: 0.9,
         ease: 'power2.out',
         clearProps: 'opacity,transform',
       });
 
-      // Parallax dentro del desplazamiento horizontal nativo de la galería.
-      // Conserva el scroll-snap y el gesto táctil, sin fijar la página ni
-      // convertir el scroll vertical en un desplazamiento lateral forzado.
       if (!this.prefersReducedMotion) {
-        const proyectosHost = this.el.nativeElement as HTMLElement;
-        const proyectosViewport = proyectosHost.querySelector('.projects-carousel__viewport') as HTMLElement | null;
-        proyectosViewport?.querySelectorAll('.project-card').forEach((card: Element) => {
-          const image = card.querySelector('.project-card__image') as HTMLElement | null;
-          if (!image) return;
-
-          gsap.fromTo(
-            image,
-            { scale: 1.07, xPercent: -2 },
-            {
-              scale: 1.015,
-              xPercent: 2,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: card,
-                scroller: proyectosViewport,
-                horizontal: true,
-                start: 'left right',
-                end: 'right left',
-                scrub: 0.8,
-                invalidateOnRefresh: true,
-              },
-            },
-          );
+        gsap.from('.projects-grid .project-card', {
+          scrollTrigger: {
+            trigger: '.projects-grid',
+            start: 'top 84%',
+            toggleActions: 'play none none none',
+          },
+          y: 24,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'power2.out',
+          clearProps: 'opacity,transform',
         });
       }
 
