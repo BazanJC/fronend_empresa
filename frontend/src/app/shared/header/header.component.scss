@@ -290,6 +290,17 @@
   text-transform: uppercase;
 }
 
+.header-more-menu__group {
+  padding: .55rem .65rem .25rem;
+  color: color-mix(in srgb, var(--color-on-surface) 55%, transparent);
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 45%, transparent);
+  margin-top: .25rem;
+}
+
 .header-more-menu a {
   position: relative;
   display: flex;

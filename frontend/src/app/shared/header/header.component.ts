@@ -33,13 +33,12 @@ interface SeccionNav {
 const SECCIONES_NAV: SeccionNav[] = [
   { id: 'nosotros', key: 'nav.nosotros', grupo: 'nosotros' },
   { id: 'servicios', key: 'nav.servicios', grupo: 'servicios' },
-  { id: 'expansion', key: 'nav.trayectoria', grupo: 'presencia' },
+  { id: 'aliados', key: 'nav.aliados', grupo: 'servicios' },
+  { id: 'nuclear', key: 'nav.nuclear', grupo: 'nuclear' },
+  { id: 'equipo', key: 'nav.generador', grupo: 'nuclear' },
   { id: 'presencia', key: 'nav.presencia', grupo: 'presencia' },
   { id: 'latam', key: 'nav.latam', grupo: 'presencia' },
-  { id: 'sectores', key: 'nav.sectores', grupo: 'sectores' },
-  { id: 'nuclear', key: 'nav.nuclear', grupo: 'sectores' },
-  { id: 'equipo', key: 'nav.generador', grupo: 'sectores' },
-  { id: 'aliados', key: 'nav.aliados', grupo: 'proyectos' },
+  { id: 'expansion', key: 'nav.trayectoria', grupo: 'presencia' },
   { id: 'proyectos', key: 'nav.proyectos', grupo: 'proyectos' },
   { id: 'porque', key: 'nav.porque', grupo: 'proyectos' },
 ];
@@ -85,6 +84,26 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
   navTodas = SECCIONES_NAV;
   navPrincipal = SECCIONES_NAV.filter((s) => s.grupo === s.id);
   navMas = SECCIONES_NAV.filter((s) => s.grupo !== s.id);
+
+  // El menú "Más" se agrupa por categoría para que sea escaneable.
+  navMasGrupos = computed(() => {
+    const grupos = new Map<string, SeccionNav[]>();
+    for (const item of this.navMas) {
+      if (!grupos.has(item.grupo)) grupos.set(item.grupo, []);
+      grupos.get(item.grupo)!.push(item);
+    }
+    const etiquetas: Record<string, string> = {
+      servicios: 'nav.servicios',
+      nuclear: 'nav.nuclear',
+      presencia: 'nav.presencia',
+      proyectos: 'nav.proyectos',
+    };
+    return [...grupos.entries()].map(([grupo, items]) => ({
+      grupo,
+      etiqueta: etiquetas[grupo] ?? grupo,
+      items,
+    }));
+  });
 
   /** Sección que está en pantalla ('' = hero, estadísticas o fuera de las secciones). */
   seccionActiva = signal<string>('');

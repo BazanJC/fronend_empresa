@@ -15,7 +15,6 @@
   },
   "nav": {
     "servicios": "Services",
-    "sectores": "Sectors",
     "proyectos": "Projects",
     "contacto": "Contact",
     "presencia": "Presence",
@@ -115,7 +114,6 @@
     "stat4_label": "Satisfaction Rate",
     "eyebrow": "Where we work",
     "title": "Experience in critical sectors",
-    "desc": "We design, install and maintain security and technology-integration systems for international organizations, governments and infrastructure where continuity and trust are essential.",
     "card1_title": "Energy",
     "card1_desc": "Physical security and access control for energy facilities, with video surveillance and perimeter detection that protect operational continuity.",
     "card2_title": "Government and institutions",
@@ -298,14 +296,7 @@
     "submit": "Prepare email",
     "enviando": "Sending…",
     "exito": "Thank you! We received your request and will respond soon.",
-    "error": "There was a problem sending your message. Please try again.",
-    "rol_matriz": "Headquarters",
-    "rol_oficina": "Office",
-    "rol_latam": "LATAM office",
-    "write_office": "Write to this office",
-    "office_selected": "Office selected",
-    "write_to": "Write to",
-    "sending_to": "Your message goes to"
+    "error": "There was a problem sending your message. Please try again."
   },
   "mapa": {
     "cargando": "Loading map…",
@@ -321,7 +312,7 @@
       },
       "bolivia": {
         "nombre": "Bolivia (LATAM subsidiary)",
-        "descripcion": "Regional subsidiary NOVAXIS LATAM ENGINEERING, established in 2026 for Latin America.",
+        "descripcion": "Regional subsidiary NOVAXIS LATAM ENGINEERING, created in 2026 for Latin America.",
         "proyecto1": "IAEA/ABEN — physical protection of a nuclear facility"
       },
       "panama": {
@@ -442,12 +433,12 @@
   "porque": {
     "eyebrow": "Why NOVAXIS?",
     "title": "The strategic partner your project needs",
-    "item1_title": "More than 15 years of experience",
+    "item1_title": "More than 17 years of experience",
     "item1_desc": "Proven track record on critical projects since 2009.",
     "item2_title": "Maintenance specialists",
     "item2_desc": "Qualified professionals in maintenance, technical evaluation, and specialized support tailored to each project.",
     "item3_title": "Alliances with world leaders",
-    "item3_desc": "Genetec, Bosch, Axis, HID Global, IDEMIA and more leading manufacturers.",
+    "item3_desc": "Genetec, Bosch, Axis, HID Global, IDEMIA, Commend, Belden, APC, Ruijie and other leading manufacturers.",
     "item4_title": "Critical infrastructure and nuclear",
     "item4_desc": "Unique experience in nuclear facilities, irradiation and international organizations.",
     "item5_title": "Turnkey solutions",

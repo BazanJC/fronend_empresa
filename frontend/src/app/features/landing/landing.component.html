@@ -131,7 +131,15 @@
         <p>{{ 'nosotros.desc2' | translate }}</p>
         <a href="#servicios">{{ 'nav.servicios' | translate }} <span aria-hidden="true">↗</span></a>
       </div>
-    </div>
+
+    <ul class="nosotros-sectors" aria-label="{{ 'sectores.title' | translate }}">
+      <li>{{ 'sectores.card1_title' | translate }}</li>
+      <li>{{ 'sectores.card2_title' | translate }}</li>
+      <li>{{ 'sectores.card3_title' | translate }}</li>
+      <li>{{ 'sectores.card4_title' | translate }}</li>
+      <li>{{ 'sectores.card5_title' | translate }}</li>
+    </ul>
+  </div>
   </div>
 </section>
 
@@ -194,213 +202,30 @@
        1200px el propio componente cae al timeline apilado, sin mapa. -->
   <app-atlas-expansion />
 
-  <!-- CTA DE EXPANSIÓN -->
-  <section class="section-band section-band--expansion">
-    <div class="section-shell">
-      <div class="cta-strip reveal">
-        <div>
-          <h3>{{ 'expansion.cta_title' | translate }}</h3>
-          <p>{{ 'expansion.cta_desc' | translate }}</p>
-        </div>
-        <a class="btn-primary" href="#contacto">{{ 'expansion.cta_button' | translate }}</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRESENCIA INTERNACIONAL -->
-  <section class="section-band section-band--map" id="presencia">
+  <!-- ALIADOS TECNOLÓGICOS -->
+  <section class="section-band section-band--allies" id="aliados">
     <div class="section-shell">
       <div class="section-heading section-heading--center reveal">
-        <p class="section-eyebrow">{{ 'presencia.eyebrow' | translate }}</p>
-        <h2>
-          {{ 'presencia.title_pre' | translate }}
-          <span>{{ 'presencia.title_accent' | translate }}</span>
-        </h2>
+        <p class="section-eyebrow">{{ 'aliados.eyebrow' | translate }}</p>
+        <h2>{{ 'aliados.title' | translate }}</h2>
+        <p>{{ 'aliados.desc' | translate }}</p>
       </div>
-
-      <div class="map-frame reveal reveal-delay-100">
-        <app-mapa-mundial></app-mapa-mundial>
-      </div>
-    </div>
-  </section>
-
-  <!-- NOVAXIS LATAM -->
-<section class="section-band section-band--latam" id="latam">
-  <div class="section-shell">
-    <div class="section-heading section-heading--center reveal">
-      <p class="section-eyebrow">{{ 'latam.eyebrow' | translate }}</p>
-      <h2>{{ 'latam.title' | translate }}</h2>
-      <p>{{ 'latam.desc' | translate }}</p>
-    </div>
-    <div class="latam-presence-grid">
-      <aside class="latam-map-panel" aria-hidden="true">
-        <div class="latam-map-panel__caption">
-          <span>{{ 'latam.map_label' | translate }}</span>
-          @if (paisLatamActivoItem(); as paisActivo) {
-            <strong>
-              <img [src]="'https://flagcdn.com/w80/' + paisActivo.codigoISO + '.png'" alt="" />
-              {{ paisActivo.nombreKey | translate }}
-            </strong>
-          } @else {
-            <strong>LATAM</strong>
+      <div class="allies-carousel reveal reveal-delay-100">
+        <div class="allies-carousel__track">
+          @for (aliado of aliadosLoop; track $index) {
+            <div class="allies-carousel__card" tabindex="0">
+              <div class="allies-carousel__inner">
+                <div class="allies-carousel__front">
+                  <img [src]="'/assets/images/aliados/' + aliado.logo" [alt]="aliado.nombre" class="allies-carousel__logo" loading="lazy" decoding="async" />
+                </div>
+                <div class="allies-carousel__back">
+                  <strong>{{ aliado.nombre }}</strong>
+                  <span>{{ aliado.especialidad }}</span>
+                </div>
+              </div>
+            </div>
           }
         </div>
-        <div class="latam-map-panel__canvas">
-          <span class="latam-map-panel__orbit latam-map-panel__orbit--outer"></span>
-          <span class="latam-map-panel__orbit latam-map-panel__orbit--inner"></span>
-          @for (pais of latamPaises; track pais.id) {
-            <svg
-              class="latam-map-panel__shape"
-              [class.is-current]="paisLatamActivo() === pais.id"
-              [attr.data-pais]="pais.id"
-              viewBox="0 0 100 100"
-              focusable="false">
-              <path [attr.d]="pais.silueta" />
-            </svg>
-          }
-        </div>
-        <span class="latam-map-panel__coordinates" aria-hidden="true">LATAM · 2026</span>
-      </aside>
-      <ul class="latam-countries" [attr.aria-label]="'latam.title' | translate">
-        @for (pais of latamPaises; track pais.id; let i = $index) {
-          <li
-            [attr.data-pais]="pais.id"
-            [class.is-sede]="pais.esSede"
-            [class.is-active]="paisLatamActivo() === pais.id"
-            (pointerenter)="activarPaisLatam(pais.id)"
-            (pointerleave)="salirPaisLatam(pais.id)"
-            (focusin)="activarPaisLatam(pais.id)"
-            (focusout)="salirPaisLatam(pais.id)"
-            (click)="seleccionarPaisLatam(pais.id)"
-            (keydown.enter)="seleccionarPaisLatam(pais.id); $event.preventDefault()"
-            (keydown.space)="seleccionarPaisLatam(pais.id); $event.preventDefault()"
-            tabindex="0"
-            [attr.aria-pressed]="paisLatamSeleccionado() === pais.id">
-            <div class="latam-countries__topline">
-              <span class="latam-countries__index">0{{ i + 1 }}</span>
-              <img
-                [src]="'https://flagcdn.com/w80/' + pais.codigoISO + '.png'"
-                [alt]="pais.nombreKey | translate"
-                class="latam-countries__flag"
-                loading="lazy"
-                decoding="async" />
-              @if (pais.estadoKey) {
-                <span class="latam-countries__badge">{{ pais.estadoKey | translate }}</span>
-              }
-            </div>
-            <span class="latam-countries__nombre">{{ pais.nombreKey | translate }}</span>
-          </li>
-        }
-      </ul>
-    </div>
-  </div>
-</section>
-
-  <!-- SECTORES -->
-  <section class="section-band section-band--sectores" id="sectores">
-    <div class="section-shell">
-      <div class="section-heading reveal">
-        <p class="section-eyebrow">{{ 'sectores.eyebrow' | translate }}</p>
-        <h2>{{ 'sectores.title' | translate }}</h2>
-        <p>{{ 'sectores.desc' | translate }}</p>
-      </div>
-
-      <div class="sector-grid">
-        <article class="sector-card reveal reveal-delay-100" tabindex="0">
-          <div class="sector-card__inner">
-            <div class="sector-card__front">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/12809142/pexels-photo-12809142.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
-              <h3>{{ 'sectores.card1_title' | translate }}</h3>
-            </div>
-            <div class="sector-card__back">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/12809142/pexels-photo-12809142.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-              <div class="sector-card__back-glass"></div>
-              <div class="sector-card__back-content">
-                <div class="sector-card__back-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
-                </div>
-                <h3>{{ 'sectores.card1_title' | translate }}</h3>
-                <p>{{ 'sectores.card1_desc' | translate }}</p>
-              </div>
-            </div>
-          </div>
-        </article>
-        <article class="sector-card reveal reveal-delay-200" tabindex="0">
-          <div class="sector-card__inner">
-            <div class="sector-card__front">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/37594924/pexels-photo-37594924.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" data-fallback="https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
-              <h3>{{ 'sectores.card2_title' | translate }}</h3>
-            </div>
-            <div class="sector-card__back">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/37594924/pexels-photo-37594924.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" data-fallback="https://images.pexels.com/photos/16459372/pexels-photo-16459372.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-              <div class="sector-card__back-glass"></div>
-              <div class="sector-card__back-content">
-                <div class="sector-card__back-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
-                </div>
-                <h3>{{ 'sectores.card2_title' | translate }}</h3>
-                <p>{{ 'sectores.card2_desc' | translate }}</p>
-              </div>
-            </div>
-          </div>
-        </article>
-        <article class="sector-card reveal reveal-delay-300" tabindex="0">
-          <div class="sector-card__inner">
-            <div class="sector-card__front">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/5953729/pexels-photo-5953729.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
-              <h3>{{ 'sectores.card3_title' | translate }}</h3>
-            </div>
-            <div class="sector-card__back">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/5953729/pexels-photo-5953729.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-              <div class="sector-card__back-glass"></div>
-              <div class="sector-card__back-content">
-                <div class="sector-card__back-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l5 3V9l5 3V6l5 3v12H3z"/><line x1="7" y1="21" x2="7" y2="17"/></svg>
-                </div>
-                <h3>{{ 'sectores.card3_title' | translate }}</h3>
-                <p>{{ 'sectores.card3_desc' | translate }}</p>
-              </div>
-            </div>
-          </div>
-        </article>
-        <article class="sector-card reveal reveal-delay-100" tabindex="0">
-          <div class="sector-card__inner">
-            <div class="sector-card__front">
-              <img (error)="alFallarImagen($event)" src="/assets/images/extras/reactor.jpg" data-fallback="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
-              <h3>{{ 'sectores.card4_title' | translate }}</h3>
-            </div>
-            <div class="sector-card__back">
-              <img (error)="alFallarImagen($event)" src="/assets/images/extras/reactor.jpg" data-fallback="https://images.pexels.com/photos/11288661/pexels-photo-11288661.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-              <div class="sector-card__back-glass"></div>
-              <div class="sector-card__back-content">
-                <div class="sector-card__back-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>
-                </div>
-                <h3>{{ 'sectores.card4_title' | translate }}</h3>
-                <p>{{ 'sectores.card4_desc' | translate }}</p>
-              </div>
-            </div>
-          </div>
-        </article>
-        <article class="sector-card reveal reveal-delay-200" tabindex="0">
-          <div class="sector-card__inner">
-            <div class="sector-card__front">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/12571569/pexels-photo-12571569.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__image img-tinted" alt="" loading="lazy" decoding="async" aria-hidden="true" />
-              <h3>{{ 'sectores.card5_title' | translate }}</h3>
-            </div>
-            <div class="sector-card__back">
-              <img (error)="alFallarImagen($event)" src="https://images.pexels.com/photos/12571569/pexels-photo-12571569.jpeg?auto=compress&cs=tinysrgb&w=600&h=500&fit=crop" class="sector-card__back-blur" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-              <div class="sector-card__back-glass"></div>
-              <div class="sector-card__back-content">
-                <div class="sector-card__back-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
-                </div>
-                <h3>{{ 'sectores.card5_title' | translate }}</h3>
-                <p>{{ 'sectores.card5_desc' | translate }}</p>
-              </div>
-            </div>
-          </div>
-        </article>
       </div>
     </div>
   </section>
@@ -673,30 +498,105 @@
   </section>
 
   <!-- TECNOLOGIAS -->
-  <!-- ALIADOS TECNOLÓGICOS -->
-  <section class="section-band section-band--allies" id="aliados">
+
+  <!-- PRESENCIA INTERNACIONAL -->
+  <section class="section-band section-band--map" id="presencia">
     <div class="section-shell">
       <div class="section-heading section-heading--center reveal">
-        <p class="section-eyebrow">{{ 'aliados.eyebrow' | translate }}</p>
-        <h2>{{ 'aliados.title' | translate }}</h2>
-        <p>{{ 'aliados.desc' | translate }}</p>
+        <p class="section-eyebrow">{{ 'presencia.eyebrow' | translate }}</p>
+        <h2>
+          {{ 'presencia.title_pre' | translate }}
+          <span>{{ 'presencia.title_accent' | translate }}</span>
+        </h2>
       </div>
-      <div class="allies-carousel reveal reveal-delay-100">
-        <div class="allies-carousel__track">
-          @for (aliado of aliadosLoop; track $index) {
-            <div class="allies-carousel__card" tabindex="0">
-              <div class="allies-carousel__inner">
-                <div class="allies-carousel__front">
-                  <img [src]="'/assets/images/aliados/' + aliado.logo" [alt]="aliado.nombre" class="allies-carousel__logo" loading="lazy" decoding="async" />
-                </div>
-                <div class="allies-carousel__back">
-                  <strong>{{ aliado.nombre }}</strong>
-                  <span>{{ aliado.especialidad }}</span>
-                </div>
-              </div>
-            </div>
+
+      <div class="map-frame reveal reveal-delay-100">
+        <app-mapa-mundial></app-mapa-mundial>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOVAXIS LATAM -->
+<section class="section-band section-band--latam" id="latam">
+  <div class="section-shell">
+    <div class="section-heading section-heading--center reveal">
+      <p class="section-eyebrow">{{ 'latam.eyebrow' | translate }}</p>
+      <h2>{{ 'latam.title' | translate }}</h2>
+      <p>{{ 'latam.desc' | translate }}</p>
+    </div>
+    <div class="latam-presence-grid">
+      <aside class="latam-map-panel" aria-hidden="true">
+        <div class="latam-map-panel__caption">
+          <span>{{ 'latam.map_label' | translate }}</span>
+          @if (paisLatamActivoItem(); as paisActivo) {
+            <strong>
+              <img [src]="'https://flagcdn.com/w80/' + paisActivo.codigoISO + '.png'" alt="" />
+              {{ paisActivo.nombreKey | translate }}
+            </strong>
+          } @else {
+            <strong>LATAM</strong>
           }
         </div>
+        <div class="latam-map-panel__canvas">
+          <span class="latam-map-panel__orbit latam-map-panel__orbit--outer"></span>
+          <span class="latam-map-panel__orbit latam-map-panel__orbit--inner"></span>
+          @for (pais of latamPaises; track pais.id) {
+            <svg
+              class="latam-map-panel__shape"
+              [class.is-current]="paisLatamActivo() === pais.id"
+              [attr.data-pais]="pais.id"
+              viewBox="0 0 100 100"
+              focusable="false">
+              <path [attr.d]="pais.silueta" />
+            </svg>
+          }
+        </div>
+        <span class="latam-map-panel__coordinates" aria-hidden="true">LATAM · 2026</span>
+      </aside>
+      <ul class="latam-countries" [attr.aria-label]="'latam.title' | translate">
+        @for (pais of latamPaises; track pais.id; let i = $index) {
+          <li
+            [attr.data-pais]="pais.id"
+            [class.is-sede]="pais.esSede"
+            [class.is-active]="paisLatamActivo() === pais.id"
+            (pointerenter)="activarPaisLatam(pais.id)"
+            (pointerleave)="salirPaisLatam(pais.id)"
+            (focusin)="activarPaisLatam(pais.id)"
+            (focusout)="salirPaisLatam(pais.id)"
+            (click)="seleccionarPaisLatam(pais.id)"
+            (keydown.enter)="seleccionarPaisLatam(pais.id); $event.preventDefault()"
+            (keydown.space)="seleccionarPaisLatam(pais.id); $event.preventDefault()"
+            tabindex="0"
+            [attr.aria-pressed]="paisLatamSeleccionado() === pais.id">
+            <div class="latam-countries__topline">
+              <span class="latam-countries__index">0{{ i + 1 }}</span>
+              <img
+                [src]="'https://flagcdn.com/w80/' + pais.codigoISO + '.png'"
+                [alt]="pais.nombreKey | translate"
+                class="latam-countries__flag"
+                loading="lazy"
+                decoding="async" />
+              @if (pais.estadoKey) {
+                <span class="latam-countries__badge">{{ pais.estadoKey | translate }}</span>
+              }
+            </div>
+            <span class="latam-countries__nombre">{{ pais.nombreKey | translate }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+  <!-- CTA DE EXPANSIÓN -->
+  <section class="section-band section-band--expansion">
+    <div class="section-shell">
+      <div class="cta-strip reveal">
+        <div>
+          <h3>{{ 'expansion.cta_title' | translate }}</h3>
+          <p>{{ 'expansion.cta_desc' | translate }}</p>
+        </div>
+        <a class="btn-primary" href="#contacto">{{ 'expansion.cta_button' | translate }}</a>
       </div>
     </div>
   </section>
@@ -904,3 +804,4 @@
     </div>
   </section>
 </main>
+

@@ -60,15 +60,18 @@
           @if (menuMasAbierto()) {
             <div id="header-more-menu" class="header-more-menu glass-card" role="group" [attr.aria-label]="'nav.more_sections' | translate">
               <span class="header-more-menu__eyebrow">{{ 'nav.explore' | translate }}</span>
-              @for (item of navMas; track item.id) {
-                <a
-                  [href]="'#' + item.id"
-                  (click)="irASeccion(item.id, $event)"
-                  [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
-                  [class.is-active]="seccionActiva() === item.id">
-                  {{ item.key | translate }}
-                  @if (seccionActiva() === item.id) { <span class="header-more-menu__active-mark" aria-hidden="true"></span> }
-                </a>
+              @for (grupo of navMasGrupos(); track grupo.grupo) {
+                <span class="header-more-menu__group">{{ grupo.etiqueta | translate }}</span>
+                @for (item of grupo.items; track item.id) {
+                  <a
+                    [href]="'#' + item.id"
+                    (click)="irASeccion(item.id, $event)"
+                    [attr.aria-current]="seccionActiva() === item.id ? 'location' : null"
+                    [class.is-active]="seccionActiva() === item.id">
+                    {{ item.key | translate }}
+                    @if (seccionActiva() === item.id) { <span class="header-more-menu__active-mark" aria-hidden="true"></span> }
+                  </a>
+                }
               }
             </div>
           }

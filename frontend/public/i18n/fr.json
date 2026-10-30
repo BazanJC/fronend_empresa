@@ -15,7 +15,6 @@
   },
   "nav": {
     "servicios": "Services",
-    "sectores": "Secteurs",
     "proyectos": "Projets",
     "contacto": "Contact",
     "presencia": "Présence",
@@ -115,7 +114,6 @@
     "stat4_label": "Taux de Satisfaction",
     "eyebrow": "Nos secteurs d’intervention",
     "title": "Une expertise dans les secteurs critiques",
-    "desc": "Nous concevons, installons et maintenons des systèmes de sécurité et d’intégration technologique pour des organismes internationaux, des gouvernements et des infrastructures où la continuité et la confiance sont essentielles.",
     "card1_title": "Énergie",
     "card1_desc": "Sécurité physique et contrôle d’accès pour les installations énergétiques, avec vidéosurveillance et détection périmétrique qui protègent leur continuité d’exploitation.",
     "card2_title": "Gouvernement et institutions",
@@ -298,14 +296,7 @@
     "submit": "Préparer l'e-mail",
     "enviando": "Envoi en cours…",
     "exito": "Merci ! Nous avons bien reçu votre demande, nous vous répondrons bientôt.",
-    "error": "Un problème est survenu lors de l'envoi. Veuillez réessayer.",
-    "rol_matriz": "Siège social",
-    "rol_oficina": "Bureau",
-    "rol_latam": "Bureau LATAM",
-    "write_office": "Écrire à ce bureau",
-    "office_selected": "Bureau sélectionné",
-    "write_to": "Écrire à",
-    "sending_to": "Votre message sera envoyé à"
+    "error": "Un problème est survenu lors de l'envoi. Veuillez réessayer."
   },
   "mapa": {
     "cargando": "Chargement de la carte…",
@@ -442,12 +433,12 @@
   "porque": {
     "eyebrow": "Pourquoi NOVAXIS ?",
     "title": "Le partenaire stratégique dont votre projet a besoin",
-    "item1_title": "Plus de 15 ans d'expérience",
+    "item1_title": "Plus de 17 ans d'expérience",
     "item1_desc": "Historique éprouvé sur des projets critiques depuis 2009.",
     "item2_title": "Spécialistes de la maintenance",
     "item2_desc": "Des professionnels qualifiés en maintenance, évaluation technique et assistance spécialisée, selon les besoins de chaque projet.",
     "item3_title": "Alliances avec les leaders mondiaux",
-    "item3_desc": "Genetec, Bosch, Axis, HID Global, IDEMIA et d'autres fabricants de référence.",
+    "item3_desc": "Genetec, Bosch, Axis, HID Global, IDEMIA, Commend, Belden, APC, Ruijie et d'autres fabricants de référence.",
     "item4_title": "Infrastructures critiques et nucléaire",
     "item4_desc": "Expérience unique dans les installations nucléaires, l'irradiation et les organismes internationaux.",
     "item5_title": "Solutions clé en main",

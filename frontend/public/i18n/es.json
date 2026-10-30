@@ -15,7 +15,6 @@
   },
   "nav": {
     "servicios": "Servicios",
-    "sectores": "Sectores",
     "proyectos": "Proyectos",
     "contacto": "Contacto",
     "presencia": "Presencia",
@@ -115,7 +114,6 @@
     "stat4_label": "Tasa de Satisfacción",
     "eyebrow": "Dónde trabajamos",
     "title": "Experiencia en sectores críticos",
-    "desc": "Diseñamos, instalamos y mantenemos sistemas de seguridad e integración tecnológica para organismos internacionales, gobiernos e infraestructuras donde la continuidad y la confianza son esenciales.",
     "card1_title": "Energía",
     "card1_desc": "Seguridad física y control de accesos para instalaciones energéticas, con videovigilancia y detección perimetral que protegen su continuidad operativa.",
     "card2_title": "Gobierno e instituciones",
@@ -298,14 +296,7 @@
     "submit": "Preparar correo",
     "enviando": "Enviando…",
     "exito": "¡Gracias! Recibimos su solicitud, le responderemos pronto.",
-    "error": "Hubo un problema al enviar. Por favor intente de nuevo.",
-    "rol_matriz": "Casa matriz",
-    "rol_oficina": "Oficina",
-    "rol_latam": "Sede LATAM",
-    "write_office": "Escribir a esta oficina",
-    "office_selected": "Oficina seleccionada",
-    "write_to": "Escribir a",
-    "sending_to": "Tu mensaje irá a"
+    "error": "Hubo un problema al enviar. Por favor intente de nuevo."
   },
   "mapa": {
     "cargando": "Cargando mapa…",
@@ -321,7 +312,7 @@
       },
       "bolivia": {
         "nombre": "Bolivia (filial LATAM)",
-        "descripcion": "Filial regional NOVAXIS LATAM ENGINEERING, establecida en 2026 para América Latina.",
+        "descripcion": "Filial regional NOVAXIS LATAM ENGINEERING, creada en 2026 para América Latina.",
         "proyecto1": "OIEA/ABEN — protección física de instalación nuclear"
       },
       "panama": {
@@ -442,12 +433,12 @@
   "porque": {
     "eyebrow": "¿Por Qué NOVAXIS?",
     "title": "El socio estratégico que su proyecto necesita",
-    "item1_title": "Más de 15 años de experiencia",
+    "item1_title": "Más de 17 años de experiencia",
     "item1_desc": "Trayectoria comprobada en proyectos críticos desde 2009.",
     "item2_title": "Especialistas en mantenimiento",
     "item2_desc": "Profesionales calificados en mantenimiento, evaluación técnica y soporte especializado según las necesidades de cada proyecto.",
     "item3_title": "Alianzas con líderes mundiales",
-    "item3_desc": "Genetec, Bosch, Axis, HID Global, IDEMIA y más fabricantes de referencia.",
+    "item3_desc": "Genetec, Bosch, Axis, HID Global, IDEMIA, Commend, Belden, APC, Ruijie y otros fabricantes de referencia.",
     "item4_title": "Infraestructuras críticas y nuclear",
     "item4_desc": "Experiencia única en instalaciones nucleares, irradiación y organismos internacionales.",
     "item5_title": "Soluciones llave en mano",

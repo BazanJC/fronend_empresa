@@ -2943,6 +2943,36 @@ $accent-blue-strong: #38bdf8;
 .nosotros-profile__story a:hover span { transform: translate(2px, -2px); }
 .nosotros-profile__story a span { transition: transform 180ms ease; }
 
+// Lista compacta de sectores en los que operamos (reemplaza la antigua
+// sección de "Sectores críticos" con flip-cards, que repetía Servicios).
+.nosotros-sectors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 2.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.nosotros-sectors li {
+  padding: 0.5rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 60%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface-container-lowest) 70%, transparent);
+  color: var(--color-on-surface-variant);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: border-color 220ms ease, color 220ms ease, background 220ms ease;
+}
+
+.nosotros-sectors li:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+}
+
 .service-catalog-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
