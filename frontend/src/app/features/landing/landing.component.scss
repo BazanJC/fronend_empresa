@@ -2885,18 +2885,18 @@ $accent-blue-strong: #38bdf8;
 // ============================================================
 .nosotros-profile {
   display: grid;
-  grid-template-columns: minmax(10rem, 0.7fr) minmax(0, 1.8fr);
+  grid-template-columns: minmax(7rem, 0.55fr) minmax(0, 1.6fr);
   align-items: center;
-  gap: clamp(1.5rem, 5vw, 4rem);
-  max-width: 960px;
-  margin: 2.5rem auto 0;
-  padding: clamp(1.5rem, 4vw, 2.75rem);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 25%, var(--color-outline-variant));
-  border-radius: 1.2rem;
+  gap: clamp(1.25rem, 4vw, 3rem);
+  width: 100%;
+  margin: 2.5rem 0 0;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 22%, var(--color-outline-variant));
+  border-radius: 1.25rem;
   background:
-    linear-gradient(130deg, color-mix(in srgb, var(--color-primary-container) 20%, transparent), transparent 55%),
-    color-mix(in srgb, var(--color-surface-container-lowest) 82%, transparent);
-  box-shadow: 0 20px 55px color-mix(in srgb, var(--color-on-surface) 8%, transparent);
+    linear-gradient(130deg, color-mix(in srgb, var(--color-primary-container) 18%, transparent), transparent 60%),
+    color-mix(in srgb, var(--color-surface-container-lowest) 84%, transparent);
+  box-shadow: 0 18px 50px color-mix(in srgb, var(--color-on-surface) 6%, transparent);
 }
 
 .nosotros-profile__since {
@@ -2909,9 +2909,9 @@ $accent-blue-strong: #38bdf8;
 .nosotros-profile__since strong {
   color: var(--color-primary);
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
   font-weight: 850;
-  letter-spacing: -0.07em;
+  letter-spacing: -0.05em;
   line-height: 0.95;
 }
 
@@ -2927,6 +2927,26 @@ $accent-blue-strong: #38bdf8;
   color: var(--color-on-surface-variant);
   font-size: clamp(0.95rem, 1.5vw, 1.08rem);
   line-height: 1.75;
+}
+
+.nosotros-sectors-line {
+  margin: 1.1rem 0 0;
+  color: var(--color-on-surface-variant);
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.nosotros-sectors-line::before {
+  content: '';
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  margin-inline-end: 0.6rem;
+  background: var(--color-primary);
+  vertical-align: middle;
+  opacity: 0.6;
 }
 
 .nosotros-profile__story a {
