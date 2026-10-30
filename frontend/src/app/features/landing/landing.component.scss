@@ -4631,11 +4631,22 @@ $accent-blue-strong: #38bdf8;
 
     .project-card {
       min-height: 18rem;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .project-card__content {
+      padding: 1.5rem 1.75rem;
+      gap: 1rem;
     }
   }
 
   .projects-timeline {
     grid-template-columns: repeat(9, minmax(6rem, 1fr));
+  }
+
+  .projects-carousel__btn {
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }
 
