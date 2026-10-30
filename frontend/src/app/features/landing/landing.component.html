@@ -566,8 +566,7 @@
             (click)="seleccionarPaisLatam(pais.id)"
             (keydown.enter)="seleccionarPaisLatam(pais.id); $event.preventDefault()"
             (keydown.space)="seleccionarPaisLatam(pais.id); $event.preventDefault()"
-            tabindex="0"
-            [attr.aria-pressed]="paisLatamSeleccionado() === pais.id">
+            tabindex="0">
             <div class="latam-countries__topline">
               <span class="latam-countries__index">0{{ i + 1 }}</span>
               <img
@@ -583,7 +582,8 @@
             <span class="latam-countries__nombre">{{ pais.nombreKey | translate }}</span>
           </li>
         }
-      </ul>
+</ul>
+
     </div>
   </div>
 </section>

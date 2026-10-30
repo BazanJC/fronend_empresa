@@ -4790,19 +4790,21 @@ $accent-blue-strong: #38bdf8;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
   background: color-mix(in srgb, var(--color-on-surface) 8%, transparent);
-  color: var(--color-on-surface-variant);
+  color: var(--color-on-surface);
   font-size: 0.68rem;
   font-weight: 700;
   line-height: 1.2;
   text-align: right;
 }
 
-// La casa matriz es la única con la etiqueta rellena.
-.office-card.is-hq .office-card__badge {
+.office-card.is-hq .office-card__badge,
+.office-card.is-active .office-card__badge {
   background: var(--color-primary);
   color: var(--color-on-primary);
   font-weight: 800;
 }
+
+// La casa matriz es la única con la etiqueta rellena (ya cubierta arriba).
 
 .office-card__heading {
   display: grid;
