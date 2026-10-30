@@ -123,17 +123,23 @@
     </div>
 
     <div class="nosotros-profile">
-      <div class="nosotros-profile__since">
-        <strong>2009</strong>
-        <span>{{ 'nosotros.founded' | translate }}</span>
+      <div class="nosotros-profile__identity">
+        <strong class="nosotros-profile__year">2009</strong>
+        <span class="nosotros-profile__founded">{{ 'nosotros.founded' | translate }}</span>
+        <div class="nosotros-profile__sectors">
+          <span class="nosotros-profile__sector">{{ 'sectores.card1_title' | translate }}</span>
+          <span class="nosotros-profile__sector">{{ 'sectores.card2_title' | translate }}</span>
+          <span class="nosotros-profile__sector">{{ 'sectores.card3_title' | translate }}</span>
+          <span class="nosotros-profile__sector">{{ 'sectores.card4_title' | translate }}</span>
+          <span class="nosotros-profile__sector">{{ 'sectores.card5_title' | translate }}</span>
+        </div>
       </div>
       <div class="nosotros-profile__story">
         <p>{{ 'nosotros.desc2' | translate }}</p>
-        <a href="#servicios">{{ 'nav.servicios' | translate }} <span aria-hidden="true">↗</span></a>
+        <p class="nosotros-sectors-line">{{ 'nosotros.sectores' | translate }}</p>
+        <a href="#servicios">{{ 'nav.servicios' | translate }} <span aria-hidden="true">→</span></a>
       </div>
-
-      <p class="nosotros-sectors-line">{{ 'nosotros.sectores' | translate }}</p>
-  </div>
+    </div>
   </div>
 </section>
 
