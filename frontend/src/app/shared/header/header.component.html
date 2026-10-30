@@ -1,7 +1,7 @@
-<header class="fixed top-0 left-0 right-0 z-50 bg-surface/85 backdrop-blur-2xl border-b border-outline-variant/60 shadow-lg shadow-black/5 transition-colors duration-300">
-  <!-- En escritorio: [logo | navegación | acciones]. Las columnas laterales son iguales (1fr)
-       y la central se ajusta a su contenido, así la navegación queda centrada en la pantalla
-       aunque tenga más o menos botones. -->
+﻿<header class="fixed top-0 left-0 right-0 z-50 bg-surface/85 backdrop-blur-2xl border-b border-outline-variant/60 shadow-lg shadow-black/5 transition-colors duration-300">
+  <!-- En escritorio: [logo | navegaciÃ³n | acciones]. Las columnas laterales son iguales (1fr)
+       y la central se ajusta a su contenido, asÃ­ la navegaciÃ³n queda centrada en la pantalla
+       aunque tenga mÃ¡s o menos botones. -->
   <div #barra class="max-w-7xl mx-auto px-4 sm:px-6 py-1.5 flex items-center justify-between lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-4">
 
     <!-- Izquierda: Logo -->
@@ -16,7 +16,7 @@
     <!-- Centro: botones principales en el mismo orden en que aparecen las secciones -->
     <div class="hidden lg:flex items-center justify-center">
       <nav class="relative flex items-center gap-1.5 p-1.5 rounded-full nav-track-container" [attr.aria-label]="'footer.navegacion' | translate">
-        <!-- Cápsula activa: se desliza hacia el botón de la sección en pantalla -->
+        <!-- CÃ¡psula activa: se desliza hacia el botÃ³n de la secciÃ³n en pantalla -->
         <span
           class="nav-floating-pill"
           aria-hidden="true"
@@ -40,8 +40,8 @@
           </a>
         }
 
-        <!-- "Más" reúne las secciones secundarias. Cuando la sección en pantalla está
-             aquí dentro, el botón muestra un punto y la cápsula se queda en su grupo,
+        <!-- "MÃ¡s" reÃºne las secciones secundarias. Cuando la secciÃ³n en pantalla estÃ¡
+             aquÃ­ dentro, el botÃ³n muestra un punto y la cÃ¡psula se queda en su grupo,
              para que el recorrido sea siempre de izquierda a derecha. -->
         <div class="relative header-more-control">
           <button
@@ -70,9 +70,6 @@
                   @if (seccionActiva() === item.id) { <span class="header-more-menu__active-mark" aria-hidden="true"></span> }
                 </a>
               }
-              <button type="button" class="header-more-menu__platform" (click)="openPlatformModal(); cerrarMenuMas()">
-                {{ 'nav.plataforma' | translate }}
-              </button>
             </div>
           }
         </div>
@@ -91,7 +88,7 @@
           [attr.aria-label]="'nav.language' | translate"
           (click)="toggleIdiomaMenu()">
           {{ language.idiomaActual().codigo.toUpperCase() }}
-          <span class="text-[0.65rem] opacity-60" aria-hidden="true">▾</span>
+          <span class="text-[0.65rem] opacity-60" aria-hidden="true">â–¾</span>
         </button>
         @if (idiomaMenuAbierto()) {
           <div id="header-language-menu" class="absolute top-full mt-2 rtl:right-auto rtl:left-0 right-0 glass-card rounded-xl overflow-hidden min-w-[170px] z-20 py-1.5 shadow-2xl border border-outline-variant">
@@ -125,7 +122,7 @@
         }
       </button>
 
-      <!-- Botón de contacto: lleva a la sección #contacto y se resalta cuando estás en ella -->
+      <!-- BotÃ³n de contacto: lleva a la secciÃ³n #contacto y se resalta cuando estÃ¡s en ella -->
       <a
         href="#contacto"
         class="btn-nav-cta"
@@ -136,7 +133,7 @@
       </a>
     </div>
 
-    <!-- Botón de menú móvil -->
+    <!-- BotÃ³n de menÃº mÃ³vil -->
     <button class="header-mobile-toggle lg:hidden w-11 h-11 flex items-center justify-center rounded-lg glass-card cursor-pointer" (click)="toggleMenuMovil()" type="button"
       [attr.aria-label]="(menuMovilAbierto() ? 'nav.close_menu' : 'nav.open_menu') | translate"
       [attr.aria-expanded]="menuMovilAbierto()" aria-controls="mobile-navigation">
@@ -148,7 +145,7 @@
     </button>
   </div>
 
-  <!-- Menú móvil: una sola lista, en el mismo orden que la página -->
+  <!-- MenÃº mÃ³vil: una sola lista, en el mismo orden que la pÃ¡gina -->
   @if (menuMovilAbierto()) {
     <div id="mobile-navigation" class="lg:hidden glass-card mx-4 mb-4 rounded-xl p-4 flex flex-col gap-2 shadow-2xl border border-outline-variant/80">
       <span class="mobile-nav-label">{{ 'nav.main_sections' | translate }}</span>
@@ -185,9 +182,6 @@
           }
         </button>
       </div>
-      <button type="button" class="w-full glass-card rounded-lg px-4 py-3 text-sm font-semibold hover:border-primary/50 transition-all" (click)="openPlatformModal(); toggleMenuMovil()">
-        {{ 'nav.plataforma' | translate }}
-      </button>
       <a href="#contacto" (click)="irASeccion('contacto', $event)" class="btn-nav-cta w-full text-center mt-2"
          [class.is-active]="contactoActivo()" [attr.aria-current]="contactoActivo() ? 'location' : null">
         {{ 'nav.cta' | translate }}
@@ -195,7 +189,7 @@
     </div>
   }
 
-  <!-- Avance de lectura de la página -->
+  <!-- Avance de lectura de la pÃ¡gina -->
   <div class="header-progress" aria-hidden="true"><span #progreso></span></div>
 </header>
 
@@ -203,82 +197,3 @@
      de respaldo para el primer pintado y el render en servidor. -->
 <div class="h-[84px] md:h-[92px]" [style.height.px]="alturaBarra() || null"></div>
 
-<!-- ============================================================ -->
-<!-- Modal de plataforma: paso 1 = selección, paso 2 = login -->
-<!-- El acceso a Plataforma está disponible en el menú principal y en el menú móvil. -->
-<!-- ============================================================ -->
-@if (platformModalOpen()) {
-<div class="tech-modal-overlay" (click)="closePlatformModal()">
-  <div class="relative w-full max-w-xl glass-card p-10 modal-zoom rounded-xl" role="dialog" aria-modal="true" [attr.aria-label]="'plataforma.titulo' | translate" (click)="$event.stopPropagation()">
-    <button type="button" class="absolute top-6 right-6 text-on-surface-variant hover:text-primary transition-colors text-2xl" (click)="closePlatformModal()">✕</button>
-
-    @if (vistaModal() === 'seleccion') {
-      <!-- PASO 1: elegir a qué portal se quiere entrar -->
-      <span class="text-sm font-medium text-primary mb-2 block uppercase tracking-widest">{{ 'plataforma.titulo_eyebrow' | translate }}</span>
-      <h3 class="text-2xl font-bold mb-8">{{ 'plataforma.titulo' | translate }}</h3>
-      <div class="space-y-4">
-        @for (opcion of platformOptions; track opcion.numero) {
-          <button
-            type="button"
-            class="w-full text-left glass-card rounded-xl p-6 hover:border-primary/60 transition-all"
-            (click)="seleccionarPlataforma(opcion)">
-            <h4 class="text-lg font-semibold mb-1">{{ opcion.numero }}. {{ opcion.tituloKey | translate }}</h4>
-            <p class="text-sm text-on-surface-variant">{{ opcion.descripcionKey | translate }}</p>
-          </button>
-        }
-      </div>
-    }
-
-    @if (vistaModal() === 'login' && opcionSeleccionada(); as opcion) {
-      <!-- PASO 2: formulario de acceso, según el tipo de portal elegido -->
-      <button type="button" class="text-sm text-primary mb-6 flex items-center gap-1 hover:gap-2 transition-all" (click)="volverASeleccion()">
-        {{ 'plataforma.volver' | translate }}
-      </button>
-
-      @if (opcion.tipoLogin === 'cliente') {
-        <!-- Login estilo "Acceso a su Servicio" (portal del cliente) -->
-        <h3 class="text-2xl font-bold mb-3 text-center">{{ 'plataforma.login_titulo_cliente' | translate }}</h3>
-        <p class="text-sm text-on-surface-variant text-center mb-8">{{ 'plataforma.login_subtitulo_cliente' | translate }}</p>
-
-        <form class="space-y-5" (ngSubmit)="enviarLogin()">
-          <label class="flex flex-col gap-1 text-sm font-semibold">
-            {{ 'plataforma.label_rx' | translate }}
-            <input type="text" name="rx" [(ngModel)]="loginForm.rx" autocomplete="off"
-                   [placeholder]="'plataforma.placeholder_rx' | translate"
-                   class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
-          </label>
-          <label class="flex flex-col gap-1 text-sm font-semibold">
-            {{ 'plataforma.label_codigo' | translate }}
-            <input type="text" name="codigoAcceso" [(ngModel)]="loginForm.codigoAcceso" autocomplete="off"
-                   [placeholder]="'plataforma.placeholder_codigo' | translate"
-                   class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
-          </label>
-          <button type="submit" class="w-full bg-primary-container text-on-primary-container p-4 rounded-lg font-semibold hover:brightness-110 transition-all">
-            {{ 'plataforma.consultar' | translate }}
-          </button>
-        </form>
-      } @else {
-        <!-- Login estilo "Acceso al Sistema" (técnico / admin) -->
-        <h3 class="text-2xl font-bold mb-3 text-center">{{ 'plataforma.login_titulo_staff' | translate }}</h3>
-        <p class="text-sm text-on-surface-variant text-center mb-8">{{ 'plataforma.login_subtitulo_staff' | translate }}</p>
-
-        <form class="space-y-5" (ngSubmit)="enviarLogin()">
-          <label class="flex flex-col gap-1 text-sm font-semibold">
-            {{ 'plataforma.label_usuario' | translate }}
-            <input type="text" name="usuario" [(ngModel)]="loginForm.usuario" autocomplete="username"
-                   class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
-          </label>
-          <label class="flex flex-col gap-1 text-sm font-semibold">
-            {{ 'plataforma.label_password' | translate }}
-            <input type="password" name="password" [(ngModel)]="loginForm.password" autocomplete="current-password"
-                   class="bg-surface-container-highest border border-outline-variant rounded-lg p-3 outline-none focus:border-primary font-normal" />
-          </label>
-          <button type="submit" class="w-full bg-primary-container text-on-primary-container p-4 rounded-lg font-semibold hover:brightness-110 transition-all">
-            {{ 'plataforma.ingresar' | translate }}
-          </button>
-        </form>
-      }
-    }
-  </div>
-</div>
-}

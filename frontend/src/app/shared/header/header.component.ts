@@ -15,44 +15,9 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ThemeService } from '../../core/theme.service';
 import { LanguageService } from '../../core/language.service';
-
-type TipoLogin = 'cliente' | 'staff';
-
-interface PlataformaOption {
-  numero: string;
-  tituloKey: string;
-  descripcionKey: string;
-  ruta: string;
-  tipoLogin: TipoLogin;
-}
-
-const PLATAFORMA_OPTIONS: PlataformaOption[] = [
-  {
-    numero: '1',
-    tituloKey: 'plataforma.portal_titulo',
-    descripcionKey: 'plataforma.portal_desc',
-    ruta: 'portal.novaxis-international.com',
-    tipoLogin: 'cliente',
-  },
-  {
-    numero: '2',
-    tituloKey: 'plataforma.tecnico_titulo',
-    descripcionKey: 'plataforma.tecnico_desc',
-    ruta: 'tecnico.novaxis-international.com',
-    tipoLogin: 'staff',
-  },
-  {
-    numero: '3',
-    tituloKey: 'plataforma.admin_titulo',
-    descripcionKey: 'plataforma.admin_desc',
-    ruta: 'admin.novaxis-international.com',
-    tipoLogin: 'staff',
-  },
-];
 
 interface SeccionNav {
   id: string;
@@ -85,7 +50,7 @@ const SECCIONES_OBSERVADAS = [...SECCIONES_NAV.map((s) => s.id), ID_CONTACTO];
 
 @Component({
   selector: 'app-header',
-  imports: [FormsModule, TranslatePipe],
+  imports: [TranslatePipe],
   templateUrl: './header.component.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.component.scss',
@@ -116,7 +81,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
   menuMovilAbierto = signal(false);
   menuMasAbierto = signal(false);
   idiomaMenuAbierto = signal(false);
-  platformOptions = PLATAFORMA_OPTIONS;
 
   navTodas = SECCIONES_NAV;
   navPrincipal = SECCIONES_NAV.filter((s) => s.grupo === s.id);
@@ -140,12 +104,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
 
   /** Altura real de la barra fija (incluye su borde). 0 hasta que se mide. */
   alturaBarra = signal(0);
-
-  platformModalOpen = signal(false);
-  vistaModal = signal<'seleccion' | 'login'>('seleccion');
-  opcionSeleccionada = signal<PlataformaOption | null>(null);
-
-  loginForm = { rx: '', codigoAcceso: '', usuario: '', password: '' };
 
   constructor() {
     effect(() => {
@@ -197,7 +155,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
     cancelAnimationFrame(this.frame);
     clearTimeout(this.liberarTimer);
     clearTimeout(this.limiteTimer);
-    if (this.platformModalOpen()) document.body.style.overflow = '';
   }
 
   // ------------------------------------------------------------------
@@ -217,10 +174,6 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
   }
 
   onEscape(): void {
-    if (this.platformModalOpen()) {
-      this.closePlatformModal();
-      return;
-    }
     if (this.menuMasAbierto()) {
       this.menuMasAbierto.set(false);
       // Devuelve el foco al botón "Más" para que el teclado no se pierda.
@@ -425,35 +378,4 @@ export class HeaderComponent implements AfterViewInit, OnDestroy {
     this.menuMasAbierto.set(false);
   }
 
-  // ------------------------------------------------------------------
-  // Modal de plataforma
-  // ------------------------------------------------------------------
-  openPlatformModal(): void {
-    this.platformModalOpen.set(true);
-    this.vistaModal.set('seleccion');
-    this.opcionSeleccionada.set(null);
-    if (this.isBrowser) document.body.style.overflow = 'hidden';
-  }
-
-  closePlatformModal(): void {
-    this.platformModalOpen.set(false);
-    // '' devuelve el control al CSS; 'auto' pisaba cualquier regla propia de la página.
-    if (this.isBrowser) document.body.style.overflow = '';
-  }
-
-  seleccionarPlataforma(opcion: PlataformaOption): void {
-    this.opcionSeleccionada.set(opcion);
-    this.vistaModal.set('login');
-  }
-
-  volverASeleccion(): void {
-    this.vistaModal.set('seleccion');
-    this.opcionSeleccionada.set(null);
-  }
-
-  enviarLogin(): void {
-    const opcion = this.opcionSeleccionada();
-    alert(`Demo: acceso enviado para ${opcion?.ruta}`);
-    this.closePlatformModal();
-  }
 }
