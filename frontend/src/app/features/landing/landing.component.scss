@@ -4388,7 +4388,7 @@ $accent-blue-strong: #38bdf8;
   &::-webkit-scrollbar { display: none; }
 
   .project-card {
-    scroll-snap-align: center;
+    scroll-snap-align: start;
     position: relative;
     isolation: isolate;
     display: grid;
