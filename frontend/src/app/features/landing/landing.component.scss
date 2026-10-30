@@ -4284,7 +4284,7 @@ $accent-blue-strong: #38bdf8;
 .projects-carousel__viewport {
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 90%;
+  grid-auto-columns: 48%;
   gap: 1rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;

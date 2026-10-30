@@ -626,7 +626,7 @@
             [attr.aria-current]="proyectoActivo() === n ? 'step' : null"
             [attr.aria-label]="('proyectos.project_label' | translate) + ' ' + n + ', ' + (('proyectos.p' + n + '_year') | translate)"
             (click)="irAProyecto(n)">
-            <span class="projects-timeline__year">{{ 'proyectos.p' + n + '_year' | translate }}</span>
+            <span class="projects-timeline__year">{{ 'proyectos.p' + n + '_year' | translate }} · {{ 'proyectos.p' + n + '_pais' | translate }}</span>
             <span class="projects-timeline__track" aria-hidden="true">
               <span class="projects-timeline__progress" [attr.data-indice]="n"></span>
             </span>
