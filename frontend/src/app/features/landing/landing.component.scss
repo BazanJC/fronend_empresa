@@ -4553,6 +4553,20 @@ $accent-blue-strong: #38bdf8;
   }
 }
 
+@media (min-width: 1280px) {
+  .projects-carousel__viewport {
+    grid-auto-columns: 32%;
+
+    .project-card {
+      min-height: 18rem;
+    }
+  }
+
+  .projects-timeline {
+    grid-template-columns: repeat(9, minmax(6rem, 1fr));
+  }
+}
+
 @media (max-width: 600px) {
   .projects-carousel {
     gap: 0.5rem;
