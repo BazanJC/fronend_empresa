@@ -603,11 +603,7 @@
 
   <!-- PROYECTOS -->
   <section class="section-band section-band--projects" id="proyectos">
-    <div class="section-shell projects-shell"
-         (mouseenter)="pausarProyectos()"
-         (mouseleave)="reanudarProyectos()"
-         (focusin)="enfocarProyectos()"
-         (focusout)="salirEnfoqueProyectos($event)">
+    <div class="section-shell">
       <div class="section-heading reveal">
         <p class="section-eyebrow">{{ 'proyectos.eyebrow' | translate }}</p>
         <h2>
@@ -616,66 +612,24 @@
         </h2>
       </div>
 
-       <div class="projects-timeline reveal reveal-delay-100"
-         [attr.aria-label]="'proyectos.timeline_label' | translate">
+      <div class="projects-grid reveal reveal-delay-100">
         @for (n of proyectosIndices; track n) {
-          <button
-            class="projects-timeline__step"
-            [class.is-active]="proyectoActivo() === n"
-            [attr.data-indice]="n"
-            [attr.aria-current]="proyectoActivo() === n ? 'step' : null"
-            [attr.aria-label]="('proyectos.project_label' | translate) + ' ' + n + ', ' + (('proyectos.p' + n + '_year') | translate)"
-            (click)="irAProyecto(n)">
-            <span class="projects-timeline__year">{{ 'proyectos.p' + n + '_year' | translate }} · {{ 'proyectos.p' + n + '_pais' | translate }}</span>
-            <span class="projects-timeline__track" aria-hidden="true">
-              <span class="projects-timeline__progress" [attr.data-indice]="n"></span>
-            </span>
-          </button>
+          <article class="project-card" [attr.data-indice]="n">
+            <div class="project-card__media">
+              <img [src]="proyectosImagenes[n - 1]" [attr.data-fallback]="proyectosRespaldo[n - 1]" (error)="alFallarImagen($event)" class="project-card__image" alt="" loading="lazy" decoding="async" aria-hidden="true" />
+              <span class="project-card__year">{{ 'proyectos.p' + n + '_year' | translate }}</span>
+            </div>
+            <div class="project-card__content">
+              <h3>{{ 'proyectos.p' + n + '_cliente' | translate }}</h3>
+              <p class="project-card__pais">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                {{ 'proyectos.p' + n + '_pais' | translate }}
+              </p>
+              <span class="project-card__tag">{{ 'proyectos.p' + n + '_area' | translate }}</span>
+              <a class="project-card__cta" href="#contacto">{{ 'proyectos.view_project' | translate }}</a>
+            </div>
+          </article>
         }
-      </div>
-
-      <div class="projects-carousel reveal reveal-delay-100">
-        <button class="projects-carousel__btn" [attr.aria-label]="'proyectos.previous' | translate"
-                (click)="moverProyecto(-1)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-
-        <div class="projects-carousel__viewport" #proyectosScroller role="region" [attr.aria-label]="'proyectos.carousel_label' | translate">
-          @for (n of proyectosIndices; track n) {
-            <article class="project-card" [class.is-active]="proyectoActivo() === n" [attr.data-indice]="n">
-              <div class="project-card__media">
-                <img [src]="proyectosImagenes[n - 1]" [attr.data-fallback]="proyectosRespaldo[n - 1]" (error)="alFallarImagen($event)" class="project-card__image" alt="" loading="lazy" decoding="async" aria-hidden="true" />
-              </div>
-              <div class="project-card__content">
-                <span class="project-card__eyebrow">{{ 'proyectos.p' + n + '_year' | translate }}</span>
-                <h3>{{ 'proyectos.p' + n + '_cliente' | translate }}</h3>
-                <p class="project-card__pais">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                  {{ 'proyectos.p' + n + '_pais' | translate }}
-                </p>
-                <span class="project-card__tag">{{ 'proyectos.p' + n + '_area' | translate }}</span>
-              </div>
-            </article>
-          }
-        </div>
-      
-        <button class="projects-carousel__btn" [attr.aria-label]="'proyectos.next' | translate"
-                (click)="moverProyecto(1)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-      </div>
-
-      <div class="projects-carousel__footer">
-        <span class="projects-carousel__counter">{{ proyectoActivo().toString().padStart(2, '0') }} / {{ proyectosIndices.length.toString().padStart(2, '0') }}</span>
-        <button class="projects-carousel__autoplay" [attr.aria-label]="(proyectosPausados() ? 'proyectos.play' : 'proyectos.pause') | translate"
-                [attr.aria-pressed]="proyectosPausados()" (click)="alternarPausaProyectos()">
-          @if (proyectosPausados()) {
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg>
-          } @else {
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M7 5h4v14H7zm6 0h4v14h-4z"/></svg>
-          }
-          <span>{{ (proyectosPausados() ? 'proyectos.play' : 'proyectos.pause') | translate }}</span>
-        </button>
       </div>
     </div>
   </section>
