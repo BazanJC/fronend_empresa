@@ -274,7 +274,6 @@
             (click)="seleccionarPaisLatam(pais.id)"
             (keydown.enter)="seleccionarPaisLatam(pais.id); $event.preventDefault()"
             (keydown.space)="seleccionarPaisLatam(pais.id); $event.preventDefault()"
-            role="button"
             tabindex="0"
             [attr.aria-pressed]="paisLatamSeleccionado() === pais.id">
             <div class="latam-countries__topline">

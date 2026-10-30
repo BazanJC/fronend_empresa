@@ -105,7 +105,7 @@ export class LandingComponent implements OnDestroy {
     null,
     null,
     null,
-    '/assets/images/extras/tecnico.png', // 8. Bolivia (ABEN): técnico trabajando en la instalación. La foto propia es la principal (ver proyectosImagenes).
+    '/assets/images/extras/tecnico.jpg', // 8. Bolivia (ABEN): técnico trabajando en la instalación. La foto propia es la principal (ver proyectosImagenes).
     null,
   ];
   proyectoActivo = signal(1);
@@ -149,7 +149,7 @@ export class LandingComponent implements OnDestroy {
     { img: 'https://images.pexels.com/photos/17842832/pexels-photo-17842832.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card7_title', descKey: 'tecnologias.card7_desc' },
     { img: 'https://images.pexels.com/photos/32497161/pexels-photo-32497161.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card8_title', descKey: 'tecnologias.card8_desc' },
     { img: 'https://images.pexels.com/photos/18471529/pexels-photo-18471529.jpeg?auto=compress&cs=tinysrgb&w=500&h=300&fit=crop', tituloKey: 'tecnologias.card9_title', descKey: 'tecnologias.card9_desc' },
-    { img: '/assets/images/extras/tecnico.png', tituloKey: 'tecnologias.card10_title', descKey: 'tecnologias.card10_desc' },
+    { img: '/assets/images/extras/tecnico.jpg', tituloKey: 'tecnologias.card10_title', descKey: 'tecnologias.card10_desc' },
   ];
 
   // Especialidad breve por fabricante — contenido público conocido de cada

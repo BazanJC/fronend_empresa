@@ -3,9 +3,9 @@
 }
 
 .preloader-overlay {
-  --preloader-blue: #2b82bf;
-  --preloader-cyan: #4aa8d4;
-  --preloader-gold: #f4c542;
+  --preloader-blue: var(--color-brand-500);
+  --preloader-cyan: var(--color-accent-400);
+  --preloader-gold: var(--color-accent-400);
   position: fixed;
   z-index: 100;
   inset: 0;
