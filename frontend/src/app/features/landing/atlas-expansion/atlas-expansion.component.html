@@ -38,7 +38,7 @@
                   [attr.data-y]="nodo.y">
                   <circle class="atlas__node-halo" cx="0" cy="0" r="9" />
                   <circle class="atlas__node-dot" cx="0" cy="0" r="3.2" />
-                  <text class="atlas__node-label" x="9" y="3.5" text-anchor="start">{{ nodo.label }}</text>
+                  <text class="atlas__node-label" [attr.x]="nodo.flip ? -9 : 9" [attr.text-anchor]="nodo.flip ? 'end' : 'start'" y="3.5">{{ nodo.label }}</text>
                 </g>
               }
 

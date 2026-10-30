@@ -90,6 +90,7 @@ interface AtlasNode {
   x: number;
   y: number;
   end: number;
+  flip: boolean;
 }
 
 interface AtlasRef {
@@ -115,8 +116,11 @@ const ROUTES: AtlasRouteDef[] = [
   { key: 'libya', label: '2017-19', start: 0.625, end: 0.66, lon: 13.1913, lat: 32.8872 },
   { key: 'mauritania', label: '2021-24', start: 0.69, end: 0.735, lon: -15.9582, lat: 18.0735 },
   { key: 'ukraine', label: '2021-24', start: 0.735, end: 0.78, lon: 30.5234, lat: 50.4501 },
-  { key: 'tunis', label: '2025-26', start: 0.84, end: 0.88, lon: 10.18, lat: 36.8 },
-  { key: 'bolivia', label: '2025-26', start: 0.88, end: 0.93, lon: -68.15, lat: -16.5 },
+  { key: 'tunis', label: '2025-26', start: 0.84, end: 0.87, lon: 10.18, lat: 36.8 },
+  { key: 'bolivia', label: '2025-26', start: 0.87, end: 0.90, lon: -68.15, lat: -16.5 },
+  { key: 'panama', label: '2025-26', start: 0.90, end: 0.92, lon: -79.5197, lat: 8.9936 },
+  { key: 'honduras', label: '2026', start: 0.92, end: 0.94, lon: -87.2, lat: 14.1 },
+  { key: 'colombia', label: '2026', start: 0.94, end: 0.96, lon: -74.0721, lat: 4.711 },
 ];
 
 /** Referencias del panel de Túnez (puntos de referencia en el mapa). */
@@ -277,7 +281,9 @@ export class AtlasExpansionComponent implements OnDestroy {
 
   readonly nodos: AtlasNode[] = ROUTES.map((r) => {
     const [x, y] = toMap(r.lon, r.lat);
-    return { key: r.key, label: r.label, x, y, end: r.end };
+    // Los nodos del oeste (lon < 0) ponen la etiqueta a la izquierda
+    // para que no se solapen con los del este.
+    return { key: r.key, label: r.label, x, y, end: r.end, flip: r.lon < 0 };
   });
 
   readonly referencias: AtlasRef[] = REF_COORDS.map(([lon, lat]) => {

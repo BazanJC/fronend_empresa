@@ -102,7 +102,16 @@
   stroke-width: 1.35;
   stroke-linecap: round;
   opacity: 0;
-  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--color-primary) 35%, transparent));
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-primary) 45%, transparent))
+          drop-shadow(0 0 8px color-mix(in srgb, var(--color-accent-400) 25%, transparent));
+  transition: opacity 240ms ease, filter 240ms ease;
+}
+
+.atlas__route:hover,
+.atlas__route:focus-visible {
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-primary) 65%, transparent))
+          drop-shadow(0 0 12px color-mix(in srgb, var(--color-accent-400) 40%, transparent));
 }
 
 /* ---------- nodos y referencias ---------- */
